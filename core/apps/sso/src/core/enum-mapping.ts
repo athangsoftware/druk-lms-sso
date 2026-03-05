@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 
 export function getRole(status: Role): string {
   const statusMap: Record<keyof typeof Role, string> = {

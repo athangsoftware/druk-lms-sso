@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma';
-import { Prisma, Role } from '@prisma/client';
+import { Prisma, Role } from '@app/prisma';
 import { GetUserListRequest } from './get-user-list-request';
 import { GetUserListResponse } from './get-user-list-response';
 import { SuccessMessages } from '../../../../core/models/message';

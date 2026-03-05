@@ -1,6 +1,6 @@
 import { ErrorResponseModel } from './core/models/error-response.model';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, BadRequestException, HttpStatus } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@app/prisma';
 import { Response } from 'express';
 
 @Catch()

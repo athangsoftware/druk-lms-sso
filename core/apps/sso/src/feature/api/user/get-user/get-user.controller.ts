@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { Authorize } from '@app/shared';
 import { GetUserResponse, GetUserResponseData } from './get-user-response';
 import { PrismaService } from '@app/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 
 @ApiTags('User')
 @ApiBearerAuth()

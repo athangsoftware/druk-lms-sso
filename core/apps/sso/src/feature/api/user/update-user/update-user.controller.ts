@@ -4,7 +4,7 @@ import { Authorize } from '@app/shared';
 import { UpdateUserRequest } from './update-user-request';
 import { UpdateUserResponse } from './update-user-response';
 import { PrismaService } from '@app/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 
 @ApiTags('User')
 @ApiBearerAuth()

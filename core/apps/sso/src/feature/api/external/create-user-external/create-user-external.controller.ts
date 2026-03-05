@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserExternalRequest } from './create-user-external-request';
 import { CreateUserExternalResponse } from './create-user-external-response';
 import { PrismaService } from '@app/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 import { BcryptService, ApiKeyAuthorization, EmailService } from '@app/shared';
 import * as crypto from 'crypto';
 

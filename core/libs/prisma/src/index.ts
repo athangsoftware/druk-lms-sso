@@ -2,7 +2,7 @@
 export * from './types';
 
 // Re-export Prisma Client and types for convenience
-export { PrismaClient, Prisma } from '../generated/client/client';
+export { PrismaClient, Prisma, Role } from '../generated/client/client';
 
 // Client factory
 export { createPrismaClient, createTenantPrismaClient } from './client/prisma-client.factory';

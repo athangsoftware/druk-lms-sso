@@ -4,7 +4,7 @@ import { Authorize, BcryptService } from '@app/shared';
 import { CreateUserRequest } from './create-user-request';
 import { CreateUserResponse } from './create-user-response';
 import { PrismaService } from '@app/prisma';
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 
 @ApiTags('User')
 @ApiBearerAuth()

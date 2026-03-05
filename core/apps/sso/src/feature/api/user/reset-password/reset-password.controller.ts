@@ -4,7 +4,7 @@ import { ResetPasswordRequest } from './reset-password-request';
 import { ResetPasswordResponse } from './reset-password-response';
 import { PrismaService } from '@app/prisma';
 import { Authorize, BcryptService } from '@app/shared';
-import { Role } from '@prisma/client';
+import { Role } from '@app/prisma';
 
 @ApiTags('User')
 @ApiBearerAuth()
