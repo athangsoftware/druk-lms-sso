@@ -1,0 +1,40 @@
+<ng-template #tableActionsTemplate>
+  <ng-content select="[table-action]"></ng-content>
+</ng-template>
+
+@if (!isMobile()) {
+<ui-desktop-data-table [columnGroups]="columnGroups()" [data]="data()" [totalCount]="totalCount()"
+  [isLoading]="isLoading()" [hasError]="hasError()" [errorMessage]="errorMessage()" [(pageSize)]="pageSize"
+  [(sortBy)]="sortBy" [(sortDirection)]="sortDirection" [enableSearch]="enableSearch()"
+  [enablePagination]="enablePagination()" [enableRowSelection]="enableRowSelection()"
+  [enableClickableRows]="enableClickableRows()" [rowSelectionKey]="rowSelectionKey()"
+  [defaultSelectedKeys]="defaultSelectedKeys()" [expandableComponent]="expandableComponent()"
+  [footerComponent]="footerComponent()" [enableHorizontallyScrollable]="enableHorizontallyScrollable()"
+  [initialValue]="initialValue()" [containerHeight]="containerHeight()"
+  [showLoadingOnlyInitial]="showLoadingOnlyInitial()" [resetPageOnQueryChange]="resetPageOnQueryChange()"
+  [(pageNumber)]="pageNumber" (pageChange)="pageChange.emit($event)" (sortChange)="sortChange.emit($event)"
+  (stateChange)="stateChange.emit($event)" (action)="action.emit($event)" (rowClick)="rowClick.emit($event)"
+  (rowSelectionChange)="rowSelectionChange.emit($event)" (footerAction)="footerAction.emit($event)"
+  (filterChange)="filterChange.emit($any($event))" [tableActions]="tableActions()"
+  (tableAction)="tableAction.emit($event)">
+  <!-- Project header actions directly to desktop table -->
+  <ng-container *ngTemplateOutlet="tableActionsTemplate"></ng-container>
+</ui-desktop-data-table>
+} @else {
+<ui-mobile-data-table [columnGroups]="columnGroups()" [data]="data()" [totalCount]="totalCount()"
+  [isLoading]="isLoading()" [hasError]="hasError()" [errorMessage]="errorMessage()" [(pageSize)]="pageSize"
+  [(sortBy)]="sortBy" [(sortDirection)]="sortDirection" [enableSearch]="enableSearch()"
+  [enablePagination]="enablePagination()" [enableRowSelection]="enableRowSelection()"
+  [enableClickableRows]="enableClickableRows()" [rowSelectionKey]="rowSelectionKey()"
+  [defaultSelectedKeys]="defaultSelectedKeys()" [expandableComponent]="expandableComponent()"
+  [footerComponent]="footerComponent()" [initialValue]="initialValue()"
+  [showLoadingOnlyInitial]="showLoadingOnlyInitial()" [resetPageOnQueryChange]="resetPageOnQueryChange()"
+  [(pageNumber)]="pageNumber" (pageChange)="pageChange.emit($event)" (sortChange)="sortChange.emit($event)"
+  (stateChange)="stateChange.emit($event)" (action)="action.emit($event)" (rowClick)="rowClick.emit($event)"
+  (rowSelectionChange)="rowSelectionChange.emit($event)" (footerAction)="footerAction.emit($event)"
+  (filterChange)="filterChange.emit($any($event))" [tableActions]="tableActions()"
+  (tableAction)="tableAction.emit($event)">
+  <!-- Project header actions directly to mobile table -->
+  <ng-container *ngTemplateOutlet="tableActionsTemplate"></ng-container>
+</ui-mobile-data-table>
+}

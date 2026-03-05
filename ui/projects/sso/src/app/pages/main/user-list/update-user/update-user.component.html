@@ -1,0 +1,24 @@
+<ui-base-overlay [title]="'Update User'">
+  <div body>
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5" (submit)="onSubmit()">
+      <div>
+        <app-text-input [label]="'First Name'" [fullWidth]="true" [placeholder]="'First Name'" [formField]="userForm.firstName"></app-text-input>
+      </div>
+      <div>
+        <app-text-input [label]="'Last Name'" [fullWidth]="true" [placeholder]="'Last Name'" [formField]="userForm.lastName"></app-text-input>
+      </div>
+      <div>
+        <app-text-input type="email" [label]="'Email'" [fullWidth]="true" [placeholder]="'Email'" [formField]="userForm.email"></app-text-input>
+      </div>
+      <div>
+        <app-text-input [label]="'Phone Number'" [fullWidth]="true" [placeholder]="'Phone Number'" [formField]="userForm.phoneNumber"></app-text-input>
+      </div>
+      <div>
+        <app-single-selection-field [title]="'Roles'" [items]="roleList.value()?.data ?? []" [display]="'name'" [value]="'id'" [formField]="userForm.role"></app-single-selection-field>
+      </div>
+      <div class="md:col-span-2 flex justify-center pt-2">
+        <ui-button [loading]="updateUserMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

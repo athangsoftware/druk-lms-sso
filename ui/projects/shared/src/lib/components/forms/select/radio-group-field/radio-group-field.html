@@ -1,0 +1,84 @@
+<ui-base-input [title]="label()" [width]="width()" [isRequiredField]="hasRequiredValidator()">
+  <div input class="flex flex-row flex-wrap gap-3 " [ngClass]="containerClass()">
+    @for (item of visibleItems(); track item) {
+    <label class="flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-all bg-white" [ngClass]="{
+        'border-primary-500 bg-primary-50': isSelected()(item) && !hasErrors(),
+        'border-red-500': hasErrors(),
+        'border-gray-300 hover:bg-gray-50': !isSelected()(item) && !hasErrors(),
+        'bg-gray-100 cursor-not-allowed': isDisabled()
+      }">
+      <input type="radio" [name]="radioGroupName()" [value]="getValueId(item)" [checked]="isSelected()(item)"
+        [disabled]="isDisabled()" (change)="onItemChange(item)" class="sr-only peer" />
+
+      <span class="relative grid place-items-center h-4 w-4 rounded-full border border-gray-300 transition-colors duration-150
+               peer-checked:border-[var(--color-primary-500)]
+               after:content-[''] after:h-2 after:w-2 after:rounded-full after:transition-transform after:duration-150 after:scale-0
+               peer-checked:after:scale-100 after:bg-[var(--color-primary-500)]
+               peer-focus-visible:outline-none peer-focus-visible:ring-0
+               peer-disabled:border-gray-300 peer-disabled:after:bg-gray-300"></span>
+
+      @if (icon()(item)) {
+      @switch (iconType()(item)) {
+      @case ('url') {
+      <img class="h-5 w-5 object-contain flex-shrink-0" [src]="icon()(item)!"
+        [alt]="displayText()(item) || 'Item icon'" />
+      }
+      @case ('svg') {
+      <ui-svg-icon [src]="icon()(item)!" [size]="18" [ngStyle]="{'color': itemIconColor()(item)}"
+        class="flex-shrink-0" />
+      }
+      }
+      }
+
+      <span class="text-sm text-gray-900 whitespace-nowrap " [ngClass]="{ 'text-gray-400': isDisabled() }">
+        {{ displayText()(item) }}
+      </span>
+    </label>
+    }
+
+    @if (showMore()) {
+    <button type="button" (click)="showAllItems()"
+      class="flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium border border-dashed transition-all"
+      [ngClass]="{
+        'border-primary-500 text-primary-500 hover:bg-primary-50': !hasErrors() && !isDisabled(),
+        'border-red-500 text-red-500': hasErrors(),
+        'border-gray-300 text-gray-400 cursor-not-allowed': isDisabled()
+      }">
+      More
+    </button>
+    }
+
+    @if (showLess()) {
+    <button type="button" (click)="hideExtraItems()"
+      class="flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium border border-dashed transition-all"
+      [ngClass]="{
+        'border-primary-500 text-primary-500 hover:bg-primary-50': !hasErrors() && !isDisabled(),
+        'border-red-500 text-red-500': hasErrors(),
+        'border-gray-300 text-gray-400 cursor-not-allowed': isDisabled()
+      }">
+      Less
+    </button>
+    }
+
+    @if (customActionText()) {
+    <button type="button" (click)="onCustomActionClick()"
+      class="flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-all" [ngClass]="{
+        'bg-primary-500 text-white hover:bg-primary-600': !isDisabled(),
+        'bg-gray-200 text-gray-400 cursor-not-allowed': isDisabled()
+      }">
+      {{ customActionText() }}
+    </button>
+    }
+  </div>
+
+  <!-- Error Slot -->
+  @if (hasErrors()) {
+  <div error class="mt-1 text-left">
+    <span class="text-xs text-red-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="mt-1 text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

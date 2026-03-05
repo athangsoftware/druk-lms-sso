@@ -1,0 +1,46 @@
+<div (click)="onContainerClick()"
+     (keydown)="onContainerKeydown($event)"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()"
+     [ngClass]="containerClasses()"
+     [attr.tabindex]="isDisabled() ? null : 0">
+
+  <!-- Preview Image -->
+  @if (previewSrc()) {
+    <img [src]="previewSrc()" class="w-full h-full object-cover" [alt]="label()">
+    
+    <!-- Hover Overlay for Actions -->
+    @if (onHover() && !uploading() && !isDisabled()) {
+      <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-2 transition-opacity z-10">
+        <span class="text-white text-xs font-medium bg-black/50 px-2 py-1 rounded backdrop-blur-sm">Change Image</span>
+        <button (click)="onRemoveFileClicked($event)" class="p-2 bg-error-500 rounded-full text-white hover:bg-error-600 transition-colors shadow-sm" title="Remove">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c0 1 1 2 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        </button>
+      </div>
+    }
+  } @else {
+    <!-- Placeholder -->
+    <div class="flex flex-col items-center justify-center p-4 text-center w-full h-full">
+      @if (uploading()) {
+        <ui-spinner></ui-spinner>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-neutral-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span class="text-caption text-neutral-500">{{ label() || 'Upload Image' }}</span>
+      }
+    </div>
+    
+    @if (hasRequiredValidator()) {
+        <span class="absolute top-2 right-2 text-error-500 text-lg leading-none">*</span>
+     }
+  }
+  
+  <input type="file" [id]="fileInputId()" (change)="onFileChange($event)" hidden accept="image/*" [disabled]="isDisabled()" />
+</div>
+
+@if (hasErrors()) {
+<div class="mt-1">
+  <span class="text-caption text-error-500">{{ errorMessage() }}</span>
+</div>
+}

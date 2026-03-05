@@ -1,0 +1,11 @@
+<button (click)="onClick($event)" type="button" [disabled]="disabled() || loading()" [ngClass]="buttonClass()"
+    [attr.aria-label]="ariaLabel()">
+
+    <ui-svg-icon [src]="iconSrc()" [size]="iconSize()" [ngClass]="iconClass()">
+    </ui-svg-icon>
+
+    <ui-spinner class="w-min absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        [borderColor]="loading() ? loaderColor() : 'border-transparent'">
+    </ui-spinner>
+
+</button>

@@ -1,0 +1,129 @@
+<div class="relative z-10 mt-2">
+  <!-- Tooltip wrapper - only when collapsed on non-mobile -->
+  @if (!isExpanded() && !isMobile()) {
+  <div class="relative" [tooltip]="menuItem().label ?? ''" [toolTipPosition]="TooltipPosition.RIGHT">
+
+    <!-- Your existing content -->
+    <!-- Separator -->
+    @if (menuItem().isSeparator && menuItem().isEnabled) {
+    <div class="my-2 mx-2 flex items-center justify-center text-[10px] font-bold tracking-widest sm:mx-3 relative z-50"
+      [class]="headingClasses()">
+      <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+      @if (menuItem().label) {
+      <span class="px-2 truncate uppercase">{{ menuItem().label }}</span>
+      }
+      <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+    </div>
+    }
+
+    <!-- Group Heading -->
+    @if (menuItem().groupHeading && isExpanded()) {
+    <div class="px-2 py-2 text-[10px] font-bold uppercase tracking-widest text-center leading-tight break-words w-full"
+      [class]="headingClasses()">
+      {{ menuItem().groupHeading }}
+    </div>
+    }
+
+    <!-- Menu Item -->
+    @if (!menuItem().isSeparator && !menuItem().groupHeading && menuItem().isEnabled) {
+    <div [class]="itemContainerClasses() + ' ' + menuItemClasses()" [routerLink]="menuItem().link"
+      (click)="onMenuClick(menuItem())">
+      <!-- Icon with background -->
+      <div [class]="iconWrapperClasses()">
+        <div [class]="iconBackgroundClasses()">
+          <ui-svg-icon [src]="menuItem().iconPath ?? ''" [class]="iconClasses()"></ui-svg-icon>
+        </div>
+      </div>
+
+      <!-- Label -->
+      <span [class]="labelClasses()">
+        {{ menuItem().label }}
+      </span>
+    </div>
+    }
+
+  </div>
+  }
+
+  <!-- Collapsed on mobile: render without tooltip to keep taps working -->
+  @if (!isExpanded() && isMobile()) {
+  <!-- Separator -->
+  @if (menuItem().isSeparator && menuItem().isEnabled) {
+  <div class="my-2 mx-2 flex items-center justify-center text-[10px] font-bold tracking-widest sm:mx-3 relative z-50"
+    [class]="headingClasses()">
+    <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+    @if (menuItem().label) {
+    <span class="px-2 truncate uppercase">{{ menuItem().label }}</span>
+    }
+    <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+  </div>
+  }
+
+  <!-- Group Heading (hidden when collapsed) -->
+  @if (menuItem().groupHeading && isExpanded()) {
+  <div class="px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-center leading-tight break-words w-full"
+    [class]="headingClasses()">
+    {{ menuItem().groupHeading }}
+  </div>
+  }
+
+  <!-- Menu Item -->
+  @if (!menuItem().isSeparator && !menuItem().groupHeading && menuItem().isEnabled) {
+  <div [class]="itemContainerClasses() + ' ' + menuItemClasses()" [routerLink]="menuItem().link"
+    (click)="onMenuClick(menuItem())">
+    <!-- Icon with background -->
+    <div [class]="iconWrapperClasses()">
+      <div [class]="iconBackgroundClasses()">
+        <ui-svg-icon [src]="menuItem().iconPath ?? ''" [class]="iconClasses()"></ui-svg-icon>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <span [class]="labelClasses()">
+      {{ menuItem().label }}
+    </span>
+  </div>
+  }
+  }
+
+  <!-- Content without tooltip - when expanded -->
+  @if (isExpanded()) {
+  <!-- Separator -->
+  @if (menuItem().isSeparator && menuItem().isEnabled) {
+  <div class="my-2 mx-2 flex items-center justify-center text-[10px] font-bold tracking-widest sm:mx-3 relative z-50"
+    [class]="headingClasses()">
+    <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+    @if (menuItem().label) {
+    <span class="px-2 truncate uppercase">{{ menuItem().label }}</span>
+    }
+    <span class="border-t flex-grow" [class]="theme().borderClass || 'border-primary-200'"></span>
+  </div>
+  }
+
+  <!-- Group Heading -->
+  @if (menuItem().groupHeading && isExpanded()) {
+  <div class="px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-center leading-tight break-words w-full"
+    [class]="headingClasses()">
+    {{ menuItem().groupHeading }}
+  </div>
+  }
+
+  <!-- Menu Item -->
+  @if (!menuItem().isSeparator && !menuItem().groupHeading && menuItem().isEnabled) {
+  <div [class]="itemContainerClasses() + ' ' + menuItemClasses()" [routerLink]="menuItem().link"
+    (click)="onMenuClick(menuItem())">
+    <!-- Icon with background -->
+    <div [class]="iconWrapperClasses()">
+      <div [class]="iconBackgroundClasses()">
+        <ui-svg-icon [src]="menuItem().iconPath ?? ''" [class]="iconClasses()"></ui-svg-icon>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <span [class]="labelClasses()">
+      {{ menuItem().label }}
+    </span>
+  </div>
+  }
+  }
+</div>

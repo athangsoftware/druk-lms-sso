@@ -1,0 +1,331 @@
+<div #root
+  class="mobile-table-root flex flex-col bg-gradient-to-br from-gray-50 to-gray-100/50 shadow-lg border border-gray-300/50 md:h-auto h-[calc(100dvh-5.5rem)] max-w-full overflow-x-hidden">
+
+  <!-- Search & Filters (mobile fixed header) -->
+  <!-- Search & Filters (mobile fixed header) -->
+  <div class="md:hidden shrink-0 z-10 border-b border-gray-200 bg-white/95 backdrop-blur-md shadow-sm">
+    <!-- Search Row -->
+    @if (enableSearch()) {
+    <div class="px-3 py-2 flex items-center gap-3 border-b border-gray-100">
+      <ui-search-field class="flex-1 min-w-0" placeholder="Search" type="search" [width]="'full'"
+        [showErrorSpace]="false" (valueChange)="onSearchTextChanged($event)"></ui-search-field>
+      <!-- Column Filters Button -->
+      @if (hasFilterConfig()) {
+      <div class="shrink-0">
+        @if (hasActiveColumnFilters()) {
+        <span
+          class="h-10 inline-flex items-center gap-1 text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-md shadow-sm">
+          <button type="button"
+            class="h-full inline-flex items-center gap-1.5 px-3 rounded-md hover:bg-blue-100 active:bg-blue-200 text-blue-700 transition-colors touch-manipulation"
+            (click)="openColumnFilters()" aria-label="Open column filters">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="font-medium">Filters</span>
+            <span class="inline-block w-2 h-2 rounded-full bg-blue-600"></span>
+          </button>
+          <button type="button"
+            class="h-full px-2 rounded-md hover:bg-blue-100 active:bg-blue-200 text-blue-700 transition-colors touch-manipulation"
+            (click)="onClearColumnFilters()" aria-label="Clear column filters">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </span>
+        } @else {
+        <button type="button"
+          class="h-10 inline-flex items-center gap-1.5 px-3 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 active:bg-gray-100 transition-colors touch-manipulation"
+          (click)="openColumnFilters()" aria-label="Open column filters">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="font-medium">Filters</span>
+        </button>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Scrollable content area -->
+  <div #scrollContainer
+    class="flex-1 overflow-y-auto overflow-x-hidden md:overflow-visible touch-pan-y overscroll-contain"
+    (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd($event)">
+
+    <!-- Pull to refresh indicator -->
+    <div class="md:hidden overflow-hidden transition-all duration-300 ease-out"
+      [style.height.px]="pullDistance() > 0 ? Math.min(pullDistance(), 80) : 0">
+      <div class="flex items-center justify-center h-20 text-primary-600">
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6 transition-transform duration-300" [class.rotate-180]="pullDistance() >= 80"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+          <span class="text-xs font-medium">
+            {{ pullDistance() >= 80 ? 'Release to refresh' : 'Pull to refresh' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- States & List -->
+    @if (hasError()) {
+    <div class="p-8 flex items-center justify-center">
+      <div class="text-center space-y-4">
+        <div class="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto shadow-md animate-pulse">
+          <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="font-semibold text-gray-900 text-base">{{ errorMessage() || 'Failed to load data' }}</div>
+        <button type="button"
+          class="px-6 py-3 rounded-xl text-white bg-primary-600 hover:bg-primary-700 active:bg-primary-800 active:scale-95 transition-all shadow-md touch-manipulation font-medium"
+          (click)="onRetryLoad()">Try again</button>
+      </div>
+    </div>
+    } @else if (isLoading() && data().length === 0) {
+    <div class="p-12 flex items-center justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-primary-600"></div>
+    </div>
+    } @else if (data().length === 0) {
+    <div class="p-12 text-center">
+      <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+          </path>
+        </svg>
+      </div>
+      <p class="text-gray-500 font-medium">No data available</p>
+    </div>
+    } @else {
+    <!-- Cards list with modern design -->
+    <div class="px-0 md:p-2 space-y-0 md:space-y-2 bg-transparent max-w-full">
+      @for (item of data(); track $index; let i = $index) {
+      <div
+        class="relative bg-white rounded-none md:rounded-xl shadow-sm border-x-0 md:border-x border-y border-gray-200 overflow-hidden transition-all duration-200 ease-out touch-manipulation hover:shadow-md hover:border-gray-300"
+        (click)="onRowClicked(item)">
+
+        <div class="relative">
+          <!-- Card Header -->
+          <div class="flex items-start gap-3 px-3 py-2.5">
+            @if (enableRowSelection()) {
+            <div class="shrink-0 touch-manipulation pt-0.5">
+              <ui-checkbox-field [value]="isRowSelected(item)" (click)="$event.stopPropagation()"
+                (valueChange)="onRowSelectionChange($event, item)" />
+            </div>
+            }
+
+            <div class="flex-1 min-w-0">
+              @let primary = getPrimaryColumn();
+              @let summary = getMobileSummaryColumn();
+
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex-1 min-w-0 space-y-0.5">
+                  @if (primary) {
+                  <h3 class="text-sm font-semibold text-gray-900 leading-tight">
+                    <ui-table-cell-renderer [column]="primary" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                      (actionPerformed)="onActionPerformed($event)"></ui-table-cell-renderer>
+                  </h3>
+                  }
+                  @if (summary) {
+                  <p class="text-xs text-gray-500 leading-normal">
+                    <ui-table-cell-renderer [column]="summary" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                      (actionPerformed)="onActionPerformed($event)"></ui-table-cell-renderer>
+                  </p>
+                  }
+                </div>
+
+                @let actionCol = getActionColumn();
+                @if (actionCol) {
+                <div class="shrink-0 touch-manipulation flex items-start">
+                  <ui-table-cell-renderer [column]="actionCol" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                    (actionPerformed)="onActionPerformed($event)"></ui-table-cell-renderer>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Expandable Details Section -->
+          @if (hasDetailsToExpand()) {
+          <div class="border-t border-gray-200">
+            <!-- Expand/Collapse Button -->
+            <button type="button"
+              class="w-full px-3 py-2 flex items-center justify-between hover:bg-gray-50/80 active:bg-gray-100 transition-all duration-200 touch-manipulation group"
+              aria-label="Toggle details" (click)="$event.stopPropagation(); toggleExpand(i)">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-600 group-hover:text-gray-800">
+                {{ expandedRowIndex === i ? 'Hide Details' : 'Show Details' }}
+              </span>
+              <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-all duration-300 ease-out"
+                [class.rotate-180]="expandedRowIndex === i" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+                  clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            <!-- Expanded Content -->
+            @if (expandedRowIndex === i) {
+            <div class="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white animate-fadeIn">
+              @let details = getExpandableDetailColumns();
+              @if (details.length > 0) {
+              <div class="px-3 py-2 space-y-1">
+                @for (col of details; track col.key || $index) {
+                <div class="flex items-start justify-between gap-2 py-0.5">
+                  <dt class="text-xs font-medium text-gray-500 shrink-0 w-24">
+                    {{ col.title }}
+                  </dt>
+                  <dd class="text-xs text-gray-900 font-medium text-right flex-1">
+                    <ui-table-cell-renderer [column]="col" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                      (actionPerformed)="onActionPerformed($event)"></ui-table-cell-renderer>
+                  </dd>
+                </div>
+                }
+              </div>
+              }
+
+              @if (expandableComponent()) {
+              <div class="px-3 pb-2">
+                <div class="rounded-lg border border-gray-200 p-2 bg-white shadow-sm">
+                  <ui-dynamic-renderer [component]="expandableComponent()" [rowData]="item"
+                    (actionPerformed)="onActionPerformed({ actionKey: 'expand', item })"></ui-dynamic-renderer>
+                </div>
+              </div>
+              }
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Bottom pagination (mobile only, fixed at bottom of component) -->
+  @if (enablePagination() || alwaysShowPagination()) {
+  <div class="md:hidden shrink-0 border-t border-gray-200 bg-white/95 backdrop-blur px-4 py-3 shadow-2xl">
+    <ui-pagination [(pageNumber)]="pageNumber" [isSimple]="false" [(pageSize)]="pageSize" [totalItems]="totalCount()"
+      (pageChange)="onPageChange($event)"></ui-pagination>
+  </div>
+  }
+
+  <!-- Footer: footer component and pagination (desktop only) -->
+  <div class="border-t border-gray-200 bg-white px-4 py-3 hidden md:block shrink-0">
+    @if (footerComponent()) {
+    <ui-dynamic-renderer [component]="footerComponent()" [data]="data()"
+      (actionPerformed)="footerAction.emit($event)"></ui-dynamic-renderer>
+    }
+    @if (enablePagination()) {
+    <ui-pagination [(pageNumber)]="pageNumber" [(pageSize)]="pageSize" [totalItems]="totalCount()"
+      (pageChange)="onPageChange($event)"></ui-pagination>
+    }
+  </div>
+</div>
+
+<!-- FAB Actions Portal (renders at body level to avoid overflow clipping) -->
+<ng-template cdkPortal>
+  @if (visibleTableActions().length > 0) {
+  <div class="md:hidden fixed bottom-30 right-2 z-40 flex flex-col-reverse items-end gap-3 max-w-[calc(100vw-1rem)]">
+    <!-- Expanded Conditional Actions (shown above when expanded) -->
+    @if (isActionsExpanded() && conditionalTableActions().length > 0) {
+    <div class="flex flex-col-reverse items-end gap-2 animate-slideUp">
+      @for (action of conditionalTableActions(); track action.actionKey) {
+      <button
+        class="flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-all duration-200 active:scale-95"
+        [class]="action.type === 'danger' ? 'bg-red-600 text-white' : (action.type === 'outline' ? 'bg-white text-primary-600 border border-primary-600' : 'bg-primary-600 text-white')"
+        [disabled]="isActionDisabled(action)" [class.opacity-50]="isActionDisabled(action)"
+        (click)="onTableActionClicked(action)">
+        @if (action.icon) {
+        <img [src]="'icons/' + action.icon + '.svg'" class="w-5 h-5" [class.invert]="action.type !== 'outline'" alt="">
+        }
+        <span class="text-sm font-medium whitespace-nowrap">{{ action.label }}</span>
+      </button>
+      }
+    </div>
+    }
+
+    <!-- Main FAB Row: Expand button (if conditional) + Default actions -->
+    <div class="flex items-center gap-2">
+      <!-- Expand/Collapse Button (only if conditional actions exist) -->
+      @if (conditionalTableActions().length > 0) {
+      <button
+        class="w-12 h-12 rounded-full bg-gray-700 text-white shadow-lg flex items-center justify-center transition-all duration-200 active:scale-95"
+        [class.rotate-180]="isActionsExpanded()" (click)="toggleActionsExpanded()">
+        <svg class="w-5 h-5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
+      }
+
+      <!-- Default Actions (always visible) -->
+      @for (action of defaultTableActions(); track action.actionKey) {
+      <button
+        class="flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-all duration-200 active:scale-95"
+        [class]="action.type === 'danger' ? 'bg-red-600 text-white' : (action.type === 'outline' ? 'bg-white text-primary-600 border border-primary-600' : 'bg-primary-600 text-white')"
+        [disabled]="isActionDisabled(action)" [class.opacity-50]="isActionDisabled(action)"
+        (click)="onTableActionClicked(action)">
+        @if (action.icon) {
+        <img [src]="'icons/' + action.icon + '.svg'" class="w-5 h-5" [class.invert]="action.type !== 'outline'" alt="">
+        }
+        <span class="text-sm font-medium whitespace-nowrap">{{ action.label }}</span>
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Backdrop when expanded -->
+  @if (isActionsExpanded()) {
+  <div class="fixed inset-0 bg-black/30 z-30" (click)="toggleActionsExpanded()"></div>
+  }
+  }
+</ng-template>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.2s ease-out;
+  }
+
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+</style>

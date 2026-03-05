@@ -1,0 +1,64 @@
+<div class="min-h-screen flex flex-col overflow-x-hidden max-w-full">
+  <!-- Top Navigation -->
+  <ui-top-nav class="w-full fixed top-0 left-0 z-50 h-16" [logoutMenu]="logoutMenu()" [isMobile]="isMobile()"
+    [isExpanded]="isExpanded()" [breakpoint]="breakpoint()" [theme]="theme()" (logoutClick)="onLogoutClick()"
+    (toggleSideNav)="toggleSidebar()">
+    <div logo>
+      <ng-content select="[logo]"></ng-content>
+    </div>
+    <div actions>
+      <ng-content select="[top-actions]"></ng-content>
+    </div>
+  </ui-top-nav>
+
+  <!-- Main Layout Container -->
+  <div class="flex-1 flex flex-col pt-16 min-h-0 overflow-x-hidden">
+    <!-- Sidebar and Content Row -->
+    <div class="flex flex-1 relative min-h-0 overflow-x-hidden">
+
+      <!-- Mobile Backdrop -->
+      @if (isMobile() && isExpanded()) {
+      <div class="fixed inset-0 bg-primary-900/20 z-45 transition-opacity duration-300" (click)="toggleSidebar()"></div>
+      }
+
+      <!-- Sidebar -->
+      <nav class="flex shadow-sm transition-all duration-300 ease-in-out overflow-hidden overflow-x-hidden z-50"
+        [ngClass]="sidebarClasses()" (click)="onSidebarClick($event)">
+        <div class="flex flex-col w-full h-full pt-2">
+
+          <!-- Navigation Menu -->
+          <div class="flex-1 overflow-y-auto overflow-x-hidden px-0 space-y-0 min-h-0">
+            @for (menu of menus(); track menu.id) {
+            @if (menu.isEnabled) {
+            <ui-side-nav-menu [menuItem]="menu" [isExpanded]="isExpanded()" [isMobile]="isMobile()" [theme]="theme()"
+              (menuClick)="onMenuClick($event)" />
+            }
+            }
+          </div>
+
+          <!-- Settings Menu -->
+          @if (settingsMenu() && settingsMenu()!.isEnabled) {
+          <div class="p-2 flex-shrink-0">
+            <ui-side-nav-menu #settingsMenuRef [menuItem]="settingsMenu()!" [isExpanded]="isExpanded()"
+              [isMobile]="isMobile()" [theme]="theme()" (menuClick)="onMenuClick($event)" />
+          </div>
+          }
+
+
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main
+        class="flex-1 flex flex-col px-0 sm:px-6 mt-0 sm:mt-2 sm:p-6 bg-gray-50 transition-all duration-300 overflow-x-hidden overflow-y-auto md:overflow-y-auto w-full max-w-full"
+        [ngClass]="mainContentClasses()">
+        <ng-content></ng-content>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-2 mt-auto">
+      <ng-content select="[footer]"></ng-content>
+    </footer>
+  </div>
+</div>

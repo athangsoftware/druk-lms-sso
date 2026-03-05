@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@environments/*": ["./src/environments/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@projects/shared-lib": [
+        "../../projects/shared/src/public-api"
+      ]
+    }
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ]
+}

@@ -1,0 +1,27 @@
+<ui-base-input #inputElement [title]="label()" [width]="width()" [isRequiredField]="hasRequiredValidator()">
+
+  <!-- Input Slot -->
+  <div input class="flex gap-2">
+    @for (index of digitIndices(); track index) {
+    <input #otpInput
+      class="otp-input text-center border bg-white border-primary-400 rounded-md outline-none transition-all ring-1 ring-primary-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-neutral-100 disabled:text-neutral-400"
+      [ngClass]="sizeClasses()" [class.border-red-500]="hasErrors()" [class.ring-red-500]="hasErrors()"
+      [class.focus-within:ring-red-500]="hasErrors()" [class.focus-within:border-red-500]="hasErrors()"
+      [class.opacity-60]="isDisabled()" type="text" inputmode="text" maxlength="1" autocomplete="one-time-code"
+      [value]="digits()[index] || ''" (input)="onDigitInput($event, index)" (keydown)="onKeyDown($event, index)"
+      (paste)="onPaste($event, index)" (focus)="onFocus()" (blur)="onBlur()" [disabled]="isDisabled()"
+      style="outline: none !important; box-shadow: none !important;" />
+    }
+  </div>
+
+  <!-- Error Slot -->
+  @if (hasErrors()) {
+  <div error class="ml-2 text-left">
+    <span class="text-xs text-error-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

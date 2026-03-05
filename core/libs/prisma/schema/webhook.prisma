@@ -1,0 +1,17 @@
+// Webhook logging model for NDI integration
+
+model WebhookLog {
+  id             String   @id @default(uuid())
+  proofRequestId String   @unique @map("proof_request_id")
+  payload        String   @db.LongText
+  processedAt    DateTime @default(now()) @map("processed_at")
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("wbh_webhook_logs")
+}

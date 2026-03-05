@@ -1,0 +1,94 @@
+<ui-base-input [title]="label()" [width]="width()">
+  <!-- Input Slot -->
+  <div input
+    class="relative flex items-center w-full bg-white border border-gray-300 rounded-md shadow-sm ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-400 focus-within:border-primary-400 transition-all"
+    [class.border-red-500]="hasErrors()" [class.ring-red-500]="hasErrors()"
+    [class.focus-within:ring-red-500]="hasErrors()" [class.focus-within:border-red-500]="hasErrors()"
+    [class.opacity-60]="isDisabled()">
+    <!-- Dropdown Button -->
+    <div #dropdownButton class="relative w-full min-w-[13rem]">
+      <button (click)="onToggleDropdown()" (keydown)="handleKeydown($event)" type="button" tabindex="0"
+        [attr.aria-expanded]="isDropdownOpen()" [attr.disabled]="isDisabled() ? true : null"
+        class="dropdown-button w-full flex items-center justify-between px-4 py-2 font-medium text-gray-700 bg-transparent border-none outline-none focus:ring-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        [ngClass]="sizeClasses()" [class.text-black]="selectedOption()" [class.text-gray-400]="!selectedOption()">
+        <span class="text-sm truncate flex-1 text-left">
+          {{ selectedOption() ? getDisplayText(selectedOption()) : placeholder() }}
+        </span>
+        <div class="flex items-center">
+          <svg class="h-5 w-5 text-gray-500 transition-transform duration-200"
+            [ngClass]="{ 'rotate-180': isDropdownOpen() }" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6-6-6 1.41-1.42z" fill="currentColor" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dropdown Menu -->
+  <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownButton"
+    [cdkConnectedOverlayOpen]="isDropdownOpen()" [cdkConnectedOverlayHasBackdrop]="true"
+    [cdkConnectedOverlayBackdropClass]="['custom-backdrop']" (overlayOutsideClick)="onClickOutside()"
+    [cdkConnectedOverlayPositions]="[
+      { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
+      { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' }
+    ]" [cdkConnectedOverlayScrollStrategy]="scrollStrategy" [cdkConnectedOverlayOffsetY]="4">
+    <div #dropdownListContainer
+      class="dropdown-container bg-white rounded-md shadow-lg ring-1 ring-neutral-200 max-h-[300px] overflow-hidden z-50"
+      [style.width.px]="dropdownWidth()">
+      <!-- Search Bar -->
+      @if (enableSearch()) {
+      <div class="relative flex items-center border-b border-neutral-200 px-3 py-2">
+        <svg class="absolute h-5 w-5 text-neutral-400 ml-2" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M9.5 3a6.5 6.5 0 100 13 6.5 6.5 0 000-13zm0 11a4.5 4.5 0 110-9 4.5 4.5 0 010 9zm5.79 1.21L20 20l-1.41 1.41-4.79-4.79 1.41-1.41z"
+            fill="currentColor" />
+        </svg>
+        <input #searchField (input)="onSearchInput($event)" (keydown)="handleKeydown($event)"
+          class="w-full pl-10 pr-10 py-2 text-sm text-black placeholder-neutral-400 border-none focus:ring-0 focus:outline-none"
+          placeholder="Search..." type="text" />
+        @if (searchField?.value) {
+        <button (click)="onClearSearch()" class="absolute right-2 p-1 hover:bg-neutral-100 rounded-full"
+          aria-label="Clear search" type="button">
+          <svg class="h-4 w-4 text-neutral-400" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2a10 10 0 110 20 10 10 0 010-20zm3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41 15.59 7z"
+              fill="currentColor" />
+          </svg>
+        </button>
+        }
+      </div>
+      }
+
+      <!-- Dropdown Items -->
+      <div #dropdownList
+        class="dropdown-list overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-400 scrollbar-track-neutral-100"
+        role="listbox" aria-labelledby="options-menu" [style.maxHeight.px]="300">
+        @for (item of filteredOptions(); track item; let i = $index) {
+        <div (click)="onItemSelect(item)" (keydown)="handleKeydown($event)"
+          class="flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-100 cursor-pointer transition-colors focus:outline-none focus:bg-neutral-100"
+          [ngClass]="{
+              'bg-neutral-100': highlightedIndex() === i,
+              'bg-primary-50 bg-opacity-50': isOptionSelected(item)
+            }" role="option" [attr.aria-selected]="isOptionSelected(item)" tabindex="0">
+          <span class="text-sm text-gray-700 truncate flex-1">{{ getDisplayText(item) }}</span>
+        </div>
+        } @empty {
+        <div class="block px-4 py-3 text-sm text-gray-400 select-none text-center" role="option">
+          {{ noDataMessage() }}
+        </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Error Slot -->
+  @if (hasErrors()) {
+  <div error class="ml-2 text-left">
+    <span class="text-xs text-error-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

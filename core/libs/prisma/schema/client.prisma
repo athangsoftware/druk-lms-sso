@@ -1,0 +1,91 @@
+// OAuth/OIDC client and authorization related models
+
+enum ClientType {
+  PUBLIC       // Mobile apps, SPAs - use PKCE
+  CONFIDENTIAL // Backend services - use client_secret
+}
+
+model Client {
+  id           String     @id @default(uuid())
+  name         String
+  clientId     String     @unique
+  clientSecret String?
+  clientType                ClientType @default(PUBLIC) @map("client_type")
+  disableStrictUrlValidation Boolean    @default(false) @map("disable_strict_url_validation")
+
+  refreshTokens          RefreshToken[]
+  authorizationCodes     AuthorizationCode[]
+  redirectUrls           RedirectURL[]
+  postLogoutRedirectUrls PostLogoutRedirectURL[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([clientId, clientSecret])
+  @@map("cli_clients")
+}
+
+model AuthorizationCode {
+  id                  String   @id @default(uuid())
+  code                String   @unique
+  clientId            String
+  userId              String?
+  redirectUri         String   @map("redirect_uri")
+  codeChallenge       String?  @map("code_challenge")
+  codeChallengeMethod String?  @map("code_challenge_method")
+  state               String?
+  expiresAt           DateTime @map("expires_at")
+  isUsed              Boolean  @default(false) @map("is_used")
+
+  client Client @relation(fields: [clientId], references: [id])
+  user   User?  @relation(fields: [userId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_authorization_codes")
+}
+
+model RedirectURL {
+  id       String @id @default(uuid())
+  url      String
+  clientId String
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_redirect_urls")
+}
+
+/// OIDC RP-Initiated Logout: RFC 8904
+/// Post-logout redirect URIs that are pre-registered for each client
+model PostLogoutRedirectURL {
+  id       String @id @default(uuid())
+  url      String
+  clientId String @map("client_id")
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_post_logout_redirect_urls")
+}

@@ -1,0 +1,44 @@
+/* Import shared library styles (contains @theme definitions) */
+@import "../../shared/src/styles.css";
+
+@import "tailwindcss";
+
+@layer utilities {
+  .app-container {
+    @apply w-full p-4 mx-auto flex flex-col h-full;
+  }
+
+  .app-container-padding {
+    @apply p-4;
+  }
+
+  .app-header {
+    @apply flex justify-between items-center gap-5 p-4 bg-white;
+  }
+
+  .line {
+    @apply h-[1px] bg-neutral-300 w-full;
+  }
+
+  .line-light {
+    @apply h-[1px] bg-neutral-100 w-full;
+  }
+
+  .shadow-1 {
+    box-shadow: var(--shadow-1);
+  }
+
+  .bg-primary-500 {
+    background-color: var(--color-primary-500);
+  }
+
+  .text-primary-500 {
+    color: var(--color-primary-500);
+  }
+}
+
+.cdk-overlay-container:focus,
+.cdk-overlay-pane:focus,
+.cdk-overlay-container *:focus {
+  outline: none !important;
+}

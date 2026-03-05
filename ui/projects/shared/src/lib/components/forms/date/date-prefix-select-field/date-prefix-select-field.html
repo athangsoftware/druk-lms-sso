@@ -1,0 +1,65 @@
+<ui-base-input [title]="label()" [width]="width()" [isRequiredField]="false">
+    <!-- Input Slot -->
+    <div input
+        class="relative flex items-center w-full bg-white border border-gray-300 rounded-md shadow-sm ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-400 focus-within:border-primary-400 transition-all overflow-hidden"
+        [class.border-red-500]="hasErrors()" [class.ring-red-500]="hasErrors()"
+        [class.focus-within:ring-red-500]="hasErrors()" [class.focus-within:border-red-500]="hasErrors()"
+        [class.ring-green-500]="isPrefixDropdownOpen() && !hasErrors()"
+        [class.border-green-500]="isPrefixDropdownOpen() && !hasErrors()" [class.opacity-60]="isDisabled()">
+        <!-- Prefix Select -->
+        @if (hasPrefixSelect()) {
+        <div class="relative">
+            <button #prefixButton type="button" (click)="onTogglePrefixDropdown()"
+                class="pl-3 pr-6 bg-transparent border-0 text-primary-800 focus:outline-none cursor-pointer font-medium"
+                [ngClass]="sizeClasses()" [attr.aria-label]="'Prefix selection for ' + (label() || 'date input')"
+                [disabled]="isDisabled()">
+                {{ selectedPrefixIcon() }}
+            </button>
+            <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                <svg class="w-3 h-3 text-primary-800 transition-transform duration-200"
+                    [ngClass]="{ 'rotate-180': isPrefixDropdownOpen() }" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+
+            <!-- Prefix Dropdown Overlay -->
+
+        </div>
+        <div class="h-4 w-px bg-gray-300 mx-1"></div>
+        }
+
+        <!-- Date Picker Field(s) -->
+        <div class="relative flex items-center flex-1">
+            @if (isRange()) {
+            <!-- Date Range Picker -->
+            <ui-date-range-picker [field]="childField()" [iconSrc]="iconSrc()"
+                [showDatePickerIcon]="showDatePickerIcon()" [size]="size()" [inputDateFormat]="inputDateFormat()"
+                [minDate]="minDate()" [maxDate]="maxDate()" [allowOnlyPast]="allowOnlyPast()"
+                [allowOnlyFuture]="allowOnlyFuture()" [showErrorSpace]="false" width="full" (focus)="onFocus()"
+                (blur)="onBlur()" class="w-full" [borderless]="true">
+            </ui-date-range-picker>
+            } @else {
+            <!-- Single Date Picker -->
+            <ui-date-picker [field]="childField()" [iconSrc]="iconSrc()" [showDatePickerIcon]="showDatePickerIcon()"
+                [size]="size()" [inputDateFormat]="inputDateFormat()" [minDate]="minDate()" [maxDate]="maxDate()"
+                [allowOnlyPast]="allowOnlyPast()" [allowOnlyFuture]="allowOnlyFuture()" [showErrorSpace]="false"
+                width="full" (focus)="onFocus()" (blur)="onBlur()" class="w-full min-w-[130px]" [borderless]="true">
+            </ui-date-picker>
+            }
+        </div>
+    </div>
+
+    <!-- Error Slot -->
+    @if (hasErrors()) {
+    <div error class="mt-1">
+        <span class="text-caption text-red-500">
+            {{ errorMessage() }}
+        </span>
+    </div>
+    } @else if (showErrorSpace()) {
+    <div error class="mt-1">
+        <span class="text-caption text-transparent">.</span>
+    </div>
+    }
+</ui-base-input>

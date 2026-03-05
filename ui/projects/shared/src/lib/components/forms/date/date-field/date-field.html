@@ -1,0 +1,31 @@
+<ui-base-input #inputElement [width]="width()" [title]="label()" [isRequiredField]="hasRequiredValidator()">
+  <!-- Input Slot -->
+  <div input
+    class="relative flex items-center w-full bg-white border border-gray-300 rounded-md shadow-sm ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-400 focus-within:border-primary-400 transition-all"
+    [class.border-red-500]="hasErrors()" [class.ring-red-500]="hasErrors()"
+    [class.focus-within:ring-red-500]="hasErrors()" [class.focus-within:border-red-500]="hasErrors()"
+    [class.opacity-60]="isDisabled()">
+    @if (iconSrc()) {
+    <ui-svg-icon [size]="18" [src]="iconSrc()!"
+      class="absolute pointer-events-none ml-3 text-neutral-400"></ui-svg-icon>
+    }
+
+    <input [mask]="placeHolder" [placeholder]="displayPlaceholder"
+      class="w-full placeholder-neutral-400 text-black rounded-md border-none outline-none focus:ring-0"
+      [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+      [class.text-neutral-400]="isDisabled()" [value]="textInputValue() || ''" [disabled]="isDisabled()"
+      (focus)="onFocus()" (blur)="onBlur()" (input)="onInputChanged($event)"
+      style="outline: none !important; box-shadow: none !important;">
+  </div>
+
+  <!-- Error Slot -->
+  @if (hasErrors()) {
+  <div error class="ml-2 text-left">
+    <span class="text-xs text-error-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

@@ -1,0 +1,81 @@
+<div class="flex flex-col h-full w-full max-w-full bg-white overflow-hidden">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
+        <h2 class="text-lg font-semibold text-gray-900">Column Filters</h2>
+        <button type="button" (click)="onClose()" class="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Close">
+            <svg class="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto overflow-x-hidden px-4 py-4 w-full max-w-full">
+        @if (filterableColumns().length === 0) {
+        <div class="text-center py-8 text-gray-500">
+            <p>No filterable columns available</p>
+        </div>
+        } @else {
+        <div class="space-y-6 w-full max-w-full">
+            @for (column of filterableColumns(); track column.key || $index) {
+            <div class="space-y-2 w-full max-w-full">
+                <!-- Column Label -->
+                <label class="block text-sm font-medium text-gray-700">
+                    {{ column.title }}
+                </label>
+
+                <!-- Filter Controls Based on Type -->
+                @switch (column.filterConfig?.type) {
+                @case ('text') {
+                <ui-text-prefix-select-field [placeholder]="column.filterConfig?.placeholder || 'Filter...'"
+                    [value]="getFilterValue(column, 'value')" (valueChange)="onFilterValueChange($event, column)"
+                    [width]="'full'" [hasPrefixSelect]="true" (prefixChange)="onOperationChange($event, column)"
+                    [prefixOptions]="getFilterOperations(column.filterConfig?.type)"
+                    [defaultPrefixValue]="getCurrentOperation(column)">
+                </ui-text-prefix-select-field>
+                }
+                @case ('number') {
+                <ui-number-prefix-select-field [placeholder]="column.filterConfig?.placeholder || 'Filter...'"
+                    [value]="getFilterValue(column, 'value')" (valueChange)="onFilterValueChange($event, column)"
+                    [width]="'full'" [hasPrefixSelect]="true" (prefixChange)="onOperationChange($event, column)"
+                    [prefixOptions]="getFilterOperations(column.filterConfig?.type)"
+                    [defaultPrefixValue]="getCurrentOperation(column)">
+                </ui-number-prefix-select-field>
+                }
+                @case ('date') {
+                <ui-date-prefix-select-field [placeholder]="column.filterConfig?.placeholder || 'Filter...'"
+                    [value]="getFilterValue(column, 'value')" (valueChange)="onFilterValueChange($event, column)"
+                    [width]="'full'" [hasPrefixSelect]="true" (prefixChange)="onOperationChange($event, column)"
+                    [prefixOptions]="getFilterOperations(column.filterConfig?.type)"
+                    [defaultPrefixValue]="getCurrentOperation(column)">
+                </ui-date-prefix-select-field>
+                }
+                @case ('select') {
+                <ui-multi-select-dropdown [options]="column.filterConfig?.options || []" [enableSearch]="true"
+                    [placeholder]="column.filterConfig?.placeholder || 'Select...'" [displayProperty]="'label'"
+                    [valueProperty]="'value'" identifier="value" [value]="getFilterValue(column, 'value')"
+                    (valueChange)="onFilterValueChange($event, column)" [width]="'full'">
+                </ui-multi-select-dropdown>
+                }
+                }
+            </div>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Sticky Footer -->
+    <div class="flex items-center gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+        <button type="button" (click)="onClearAll()"
+            class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors"
+            [disabled]="!hasActiveFilters()">
+            Clear All
+        </button>
+        <button type="button" (click)="onApply()"
+            class="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 active:bg-primary-800 transition-colors">
+            Apply
+        </button>
+    </div>
+</div>

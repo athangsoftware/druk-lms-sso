@@ -1,0 +1,94 @@
+<ui-base-input #inputElement [title]="label()" [width]="width()" [isRequiredField]="hasRequiredValidator()"
+  [compact]="!showErrorSpace()">
+  <!-- Input Slot -->
+  <div input
+    class="relative flex items-center w-full bg-white border border-gray-300 rounded-md shadow-sm ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-primary-400 focus-within:border-primary-400 transition-all"
+    [class.border-red-500]="hasErrors()"
+    [class.ring-red-500]="hasErrors()"
+    [class.focus-within:ring-red-500]="hasErrors()"
+    [class.focus-within:border-red-500]="hasErrors()"
+    [class.opacity-60]="isDisabled()">
+    <!-- Input Field -->
+    <div class="relative flex items-center flex-1">
+      @if (iconSrc()) {
+      <ui-svg-icon [size]="18" [src]="iconSrc()!" class="absolute ml-3 text-gray-400 pointer-events-none"></ui-svg-icon>
+      }
+
+      @if (type() === 'text') {
+        <input [formField]="field()" uiAutofocus
+          class="flex-1 bg-transparent border-none outline-none placeholder-gray-400 text-gray-600 focus:ring-0"
+          [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+          [class.text-gray-400]="isDisabled()" 
+          type="text"
+          [placeholder]="placeholder()"
+          [class.hide-time-picker]="type() === 'time'" 
+          (focus)="onFocus()" 
+          (blur)="onBlur()"
+          style="outline: none !important; box-shadow: none !important;" />
+      }
+      @if (type() === 'email') {
+        <input [formField]="field()" uiAutofocus
+          class="flex-1 bg-transparent border-none outline-none placeholder-gray-400 text-gray-600 focus:ring-0"
+          [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+          [class.text-gray-400]="isDisabled()" 
+          type="email"
+          [placeholder]="placeholder()"
+          (focus)="onFocus()" 
+          (blur)="onBlur()"
+          style="outline: none !important; box-shadow: none !important;" />
+      }
+      @if (type() === 'tel') {
+        <input [formField]="field()" uiAutofocus
+          class="flex-1 bg-transparent border-none outline-none placeholder-gray-400 text-gray-600 focus:ring-0"
+          [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+          [class.text-gray-400]="isDisabled()" 
+          type="tel"
+          [placeholder]="placeholder()"
+          (focus)="onFocus()" 
+          (blur)="onBlur()"
+          style="outline: none !important; box-shadow: none !important;" />
+      }
+      @if (type() === 'url') {
+        <input [formField]="field()" uiAutofocus
+          class="flex-1 bg-transparent border-none outline-none placeholder-gray-400 text-gray-600 focus:ring-0"
+          [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+          [class.text-gray-400]="isDisabled()" 
+          type="url"
+          [placeholder]="placeholder()"
+          (focus)="onFocus()" 
+          (blur)="onBlur()"
+          style="outline: none !important; box-shadow: none !important;" />
+      }
+      @if (type() === 'time') {
+        <input [formField]="field()" uiAutofocus
+          class="flex-1 bg-transparent border-none outline-none placeholder-gray-400 text-gray-600 focus:ring-0 hide-time-picker"
+          [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+          [class.text-gray-400]="isDisabled()" 
+          type="time"
+          [placeholder]="placeholder()"
+          (focus)="onFocus()" 
+          (blur)="onBlur()"
+          style="outline: none !important; box-shadow: none !important;" />
+      }
+
+      @if (actionIcon()) {
+      <div (click)="onActionClick()"
+        class="absolute right-2 p-2 flex justify-center items-center hover:bg-gray-100 rounded-full cursor-pointer transition-colors">
+        <ui-svg-icon [size]="18" [src]="actionIcon()!"
+          class="text-gray-400 hover:text-primary-500 transition-colors"></ui-svg-icon>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Error Slot -->
+  @if (hasErrors()) {
+  <div error class="ml-2 text-left">
+    <span class="text-xs text-red-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

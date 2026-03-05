@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/sso/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "webpackConfigPath": "webpack.config.js",
+    "tsConfigPath": "apps/sso/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/sso",
+  "projects": {
+    "sso": {
+      "type": "application",
+      "root": "apps/sso",
+      "entryFile": "main",
+      "sourceRoot": "apps/sso/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sso/tsconfig.app.json"
+      }
+    },
+    "prisma": {
+      "type": "library",
+      "root": "libs/prisma",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    }
+  }
+}

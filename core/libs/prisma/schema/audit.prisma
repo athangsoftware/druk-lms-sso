@@ -1,0 +1,26 @@
+// Audit log model for tracking all data changes
+
+model AuditLog {
+  id        String    @id @default(uuid())
+  action    String?
+  operation String?
+  tableName String?   @map("table_name")
+  recordId  String?   @map("record_id")
+  oldValue  Json?     @map("old_value")
+  newValue  Json?     @map("new_value")
+  createdBy String?   @map("created_by")
+  createdAt DateTime? @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+
+  @@map("_audit_logs")
+}
+
+// Metadata model for system configuration
+model MetaData {
+  id   String  @id
+  name String
+  desc String?
+  type String
+
+  @@map("pub_meta_data")
+}

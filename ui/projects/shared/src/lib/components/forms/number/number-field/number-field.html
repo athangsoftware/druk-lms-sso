@@ -1,0 +1,42 @@
+<ui-base-input #inputElement [title]="label()" [width]="width()" [isRequiredField]="hasRequiredValidator()">
+  <!-- Input Slot -->
+  <div input
+    class="relative flex items-center w-full bg-white border border-primary-400 rounded-md shadow-sm ring-1 ring-primary-400 focus-within:ring-2 transition-all"
+    [ngClass]="{
+         'border-error-600 ring-error-600 focus-within:ring-2': hasErrors(),
+        '!border-gray-500 !ring-0 focus-within:!ring-2 focus-within:!ring-primary-500 focus-within:!border-primary-500': !hasErrors(),
+         'bg-neutral-100 cursor-not-allowed': isDisabled(),
+       }">
+    <!-- Input Field -->
+    <div class="relative flex items-center flex-1">
+      @if (iconSrc()) {
+      <ui-svg-icon [size]="18" [src]="iconSrc()!"
+        class="absolute ml-3 text-neutral-400 pointer-events-none"></ui-svg-icon>
+      }
+      <input (input)="onInput($any($event.target)?.value)" (keydown)="onKeyDown($event)"
+        class="flex-1 bg-transparent border-none outline-none placeholder-neutral-400 text-black focus:ring-0"
+        [ngClass]="sizeClasses()" [class.pl-10]="iconSrc()" [class.pl-3]="!iconSrc()"
+        [class.text-neutral-400]="isDisabled()" [value]="displayValue() ?? ''" [disabled]="isDisabled()" type="number"
+        [placeholder]="placeholder()" [attr.min]="min()" [attr.max]="max()" [attr.step]="step()" (focus)="onFocus()"
+        (blur)="onBlur()" style="outline: none !important; box-shadow: none !important;">
+      @if (actionIcon()) {
+      <div (click)="onActionClick()"
+        class="absolute right-2 p-2 flex justify-center items-center hover:bg-neutral-100 rounded-full cursor-pointer transition-colors">
+        <ui-svg-icon [size]="18" [src]="actionIcon()!"
+          class="text-neutral-400 hover:text-primary-500 transition-colors"></ui-svg-icon>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Error Slot - Fixed condition -->
+  @if (hasErrors()) {
+  <div error class="ml-2 text-left">
+    <span class="text-xs text-error-500">{{ errorMessage() }}</span>
+  </div>
+  } @else if (showErrorSpace()) {
+  <div error class="text-left">
+    <span class="text-xs text-transparent">.</span>
+  </div>
+  }
+</ui-base-input>

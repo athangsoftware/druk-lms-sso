@@ -1,0 +1,27 @@
+<!-- Backdrop -->
+<div [ngClass]="backdropClass()" (click)="onBackdropClick()" aria-hidden="true">
+</div>
+
+<!-- Menu Items -->
+<div [ngClass]="menuContainerClass()">
+    @for (item of menuItems(); track item.label) {
+    <button type="button" [ngClass]="getMenuItemClass(item)" [disabled]="item.disabled"
+        (click)="onMenuItemClick(item, $event)" [attr.aria-label]="item.label">
+
+        <ui-svg-icon [src]="item.iconSrc" [size]="menuItemIconSize()" class="text-neutral-700">
+        </ui-svg-icon>
+
+        <span class="text-body2 text-neutral-900 whitespace-nowrap">{{ item.label }}</span>
+    </button>
+    }
+</div>
+
+<!-- Main FAB Button -->
+<button type="button" [ngClass]="mainButtonClass()" (click)="toggle()" [attr.aria-label]="ariaLabel()"
+    [attr.aria-expanded]="isExpanded()">
+
+    <ui-svg-icon [src]="currentIconSrc()" [size]="iconSize()" class="text-white transition-transform duration-200"
+        [ngClass]="isExpanded() ? 'rotate-90' : 'rotate-0'">
+    </ui-svg-icon>
+
+</button>

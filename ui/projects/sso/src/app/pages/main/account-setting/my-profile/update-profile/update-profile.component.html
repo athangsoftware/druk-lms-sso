@@ -1,0 +1,21 @@
+<ui-base-overlay [title]="'Update Profile'">
+  <div body>
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5" (submit)="onSubmit()">
+      <div>
+        <app-text-input [label]="'First Name'" [fullWidth]="true" [placeholder]="'First Name'" [formField]="profileForm.firstName"></app-text-input>
+      </div>
+      <div>
+        <app-text-input [label]="'Last Name'" [fullWidth]="true" [placeholder]="'Last Name'" [formField]="profileForm.lastName"></app-text-input>
+      </div>
+      <div>
+        <app-text-input type="email" [label]="'Email'" [fullWidth]="true" [placeholder]="'Email'" [formField]="profileForm.email"></app-text-input>
+      </div>
+      <div>
+        <app-text-input [label]="'Phone Number'" [fullWidth]="true" [placeholder]="'Phone Number'" [formField]="profileForm.phoneNumber"></app-text-input>
+      </div>
+      <div class="md:col-span-2 flex justify-center pt-2">
+        <ui-button [loading]="updateProfileMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

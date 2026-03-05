@@ -1,0 +1,20 @@
+{
+  "name": "vanilla-sso",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:all": "sh start-all.sh",
+    "start:core": "npm run start:dev:sso --prefix core",
+    "start:ui": "npm run start:sso --prefix ui",
+    "debug:core": "npm run start:debug:sso --prefix core",
+    "build:core": "npm run build:sso --prefix core",
+    "build:ui": "npm run build:sso --prefix ui",
+    "build:all": "npm run build:core && npm run build:ui",
+    "install:all": "npm install && cd core && npm install && cd ../ui && npm install",
+    "lint:core": "npm run lint --prefix core",
+    "format:core": "npm run format --prefix core",
+    "prisma:generate": "npm run prisma:generate --prefix core",
+    "prisma:studio": "npm run prisma:studio --prefix core",
+    "prisma:migrate:dev": "npm run prisma:migrate:dev --prefix core"
+  }
+}

@@ -1,0 +1,448 @@
+<div class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-200"
+  [style.height]="containerHeight() ? containerHeight() : (enableSearch() ? 'calc(100vh - 160px)' : 'calc(100vh - 136px)')">
+  <!-- container start -->
+
+  <!-- Search Bar & Actions -->
+  <div
+    class="flex flex-row px-3 py-2 border-b border-gray-200 bg-white flex-shrink-0 gap-4 items-center justify-between">
+
+    <!-- Search (Left) -->
+    <div class="flex-1 min-w-0 flex items-center">
+      @if (enableSearch()) {
+      <ui-search-field placeholder="Search..." type="search" [width]="'md'" [showErrorSpace]="false"
+        (valueChange)="onSearchTextChanged($event)" iconSrc="edit.svg">
+      </ui-search-field>
+      }
+    </div>
+
+    <!-- Actions (Right) -->
+    @if (visibleTableActions().length > 0) {
+    <div class="flex items-center flex-shrink-0">
+      <!-- Conditional Actions -->
+      @if (conditionalTableActions().length > 0) {
+      <div class="flex items-center gap-2">
+        @for (action of conditionalTableActions(); track action.actionKey) {
+        <ui-button [appearance]="action.type === 'ghost' ? 'text' : (action.type === 'outline' ? 'outline' : 'primary')"
+          [buttonColor]="action.type === 'danger' ? 'bg-red-600' : 'bg-primary-600'"
+          [outlineColor]="action.type === 'danger' ? 'border-red-600' : 'border-primary-600'"
+          [textButtonColor]="action.type === 'danger' ? 'text-red-600' : 'text-primary-600'" [size]="'sm'"
+          [iconSrc]="action.icon || null" [disabled]="isActionDisabled(action)" (click)="onTableActionClicked(action)">
+          {{ action.label }}
+        </ui-button>
+        }
+      </div>
+      }
+      <!-- Divider between conditional and default actions -->
+      @if (conditionalTableActions().length > 0 && defaultTableActions().length > 0) {
+      <div class="w-px h-6 bg-gray-300 mx-3"></div>
+      }
+      <!-- Default Actions -->
+      @if (defaultTableActions().length > 0) {
+      <div class="flex items-center gap-2">
+        @for (action of defaultTableActions(); track action.actionKey) {
+        <ui-button [appearance]="action.type === 'ghost' ? 'text' : (action.type === 'outline' ? 'outline' : 'primary')"
+          [buttonColor]="action.type === 'danger' ? 'bg-red-600' : 'bg-primary-600'"
+          [outlineColor]="action.type === 'danger' ? 'border-red-600' : 'border-primary-600'"
+          [textButtonColor]="action.type === 'danger' ? 'text-red-600' : 'text-primary-600'" [size]="'sm'"
+          [iconSrc]="action.icon || null" [disabled]="isActionDisabled(action)" (click)="onTableActionClicked(action)">
+          {{ action.label }}
+        </ui-button>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- container start -->
+
+  <!-- Table Container -->
+  <div class="flex-1 overflow-auto relative h-full" style="will-change: transform;" [class.overflow-x-auto]="enableHorizontallyScrollable()">
+    <div class="h-full flex flex-col">
+      <table #table class="w-full border-separate min-w-[1400px]" style="border-spacing: 0; table-layout: auto;">
+
+        <!-- Sticky Table Header -->
+        <thead
+          class="sticky top-0 z-[80] flex-shrink-0 bg-gray-100 shadow-sm border-b border-gray-200">
+          @for (level of getHeaderLevels(); track level) {
+          <tr sortableTable [sortKey]="sortBy()" [sortDirection]="sortDirection()" (sortChange)="onSortChanged($event)"
+            class="text-xs font-semibold text-gray-700 uppercase tracking-wide"
+            [class.opacity-50]="getState() === 'initializing'"
+            [class.pointer-events-none]="getState() === 'initializing'">
+
+            <!-- Expandable Column Header -->
+            @if (expandableComponent() && level === 0) {
+            <th [attr.rowspan]="getHeaderRowSpan()"
+              class="sticky left-0 z-[100] bg-gray-100 w-12 px-2 py-2.5 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]">
+            </th>
+            }
+
+            <!-- Checkbox Column Header -->
+            @if (enableRowSelection() && level === 0) {
+            <th [attr.rowspan]="getHeaderRowSpan()"
+              class="sticky z-[100] bg-gray-100 w-12 px-2 py-2.5 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]"
+              [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }">
+              @if (getState() !== 'initializing') {
+              <ui-checkbox-field [value]="isAllSelected()" [indeterminate]="isSelectAllIndeterminate()"
+                (click)="$event.stopPropagation()" (valueChange)="onSelectAllRows($event)" />
+              }
+            </th>
+            }
+
+            @for (cell of getHeaderCellsAtLevel(level); track $index; let colIndex = $index) {
+            <th [attr.colspan]="cell.colspan" [attr.rowspan]="cell.rowspan" [attr.data-sortable-key]="cell.sortKey"
+              [attr.aria-sort]="getAriaSort(cell.sortKey)"
+              class="relative cursor-pointer px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide hover:bg-gray-200 bg-gray-100 border-r border-gray-200 transition-colors duration-200 align-middle"
+              [ngClass]="getHeaderThClass(cell)" [class.opacity-50]="getState() === 'initializing'"
+              [class.pointer-events-none]="getState() === 'initializing'">
+              <div class="flex items-center gap-1.5" [ngClass]="getHeaderAlignmentClass(cell.node)">
+                <span class="whitespace-normal break-words leading-tight">{{ cell.title }}</span>
+              </div>
+            </th>
+            }
+          </tr>
+          }
+
+          <!-- Filter Row - FIXED STICKY POSITION -->
+          @if (hasFilterConfig()) {
+          <tr class="bg-gray-50 z-[90] border-b border-gray-200">
+            @if (expandableComponent()) {
+            <th
+              class="sticky left-0 z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-2 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle">
+            </th>
+            }
+            @if (enableRowSelection()) {
+            <th
+              class="sticky z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-2 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle"
+              [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }">
+            </th>
+            }
+
+            @for (column of allLeafColumns(); track column; let colIndex = $index) {
+            <th class="px-4 py-2 border-r border-gray-200 bg-gray-50 align-middle"
+              [ngClass]="getFilterCellClass(column)">
+              <div class="w-full filter-wrapper" [ngClass]="getFilterContentAlignmentClass(column)">
+                @if (column.filterConfig) {
+                @switch (column.filterConfig.type) {
+                @case ('text') {
+                <ui-text-prefix-select-field [placeholder]="column.filterConfig.placeholder || 'Filter...'"
+                  [value]="getFilterValue(column, 'value')" (valueChange)="onFilterChanged($event, null, null, column)"
+                  [width]="'sm'" [hasPrefixSelect]="true" (prefixChange)="onFilterOperationChanged($event, column)"
+                  [prefixOptions]="getFilterOperations(column.filterConfig.type)" [defaultPrefixValue]="'contains'">
+                </ui-text-prefix-select-field>
+                }
+                @case ('date') {
+                <ui-date-prefix-select-field [placeholder]="column.filterConfig.placeholder || 'Filter...'"
+                  [value]="getFilterValue(column, 'value')" (valueChange)="onFilterChanged($event, null, null, column)"
+                  [width]="'sm'" [hasPrefixSelect]="true" (prefixChange)="onFilterOperationChanged($event, column)"
+                  [prefixOptions]="getFilterOperations(column.filterConfig.type)"
+                  [defaultPrefixValue]="columnFilters[getFilterKey(column)]?.operation || getDefaultOperation(column.filterConfig.type)">
+                </ui-date-prefix-select-field>
+                }
+                @case ('select') {
+                <ui-multi-select-dropdown [options]="column.filterConfig.options || []" [enableSearch]="true"
+                  [placeholder]="column.filterConfig.placeholder || 'Select...'" [displayProperty]="'label'"
+                  [valueProperty]="'value'" identifier="value" [value]="getFilterValue(column, 'value')"
+                  (valueChange)="onFilterChanged($event, null, null, column)" [width]="'sm'">
+                </ui-multi-select-dropdown>
+                }
+                @case ('number') {
+                <ui-number-prefix-select-field [placeholder]="column.filterConfig.placeholder || 'Filter...'"
+                  [value]="getFilterValue(column, 'value')" (valueChange)="onFilterChanged($event, null, null, column)"
+                  [width]="'sm'" [hasPrefixSelect]="true" (prefixChange)="onFilterOperationChanged($event, column)"
+                  [prefixOptions]="getFilterOperations(column.filterConfig.type)"
+                  [defaultPrefixValue]="columnFilters[getFilterKey(column)]?.operation || getDefaultOperation(column.filterConfig.type)">
+                </ui-number-prefix-select-field>
+                }
+                }
+                } @else {
+                <!-- Empty space for non-filter columns -->
+                <div class="h-10 opacity-0">&nbsp;</div>
+                }
+              </div>
+            </th>
+            }
+          </tr>
+          }
+        </thead>
+
+        <!-- State-Based Content Rendering -->
+        @switch (getState()) {
+        @case ('initializing') {
+        <tbody class="relative z-0">
+          <tr class="h-full">
+            <td [attr.colspan]="getTotalColspan()" class="h-full px-6 py-0 align-middle">
+              <div class="h-full flex items-center justify-center min-h-[400px]">
+                <div class="flex flex-col items-center space-y-6 max-w-md mx-auto">
+                  <div class="flex items-center justify-center w-20 h-20 rounded-full bg-primary-100">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                  </div>
+                  <div class="text-center space-y-3">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight">Loading...</h3>
+                    <p class="text-sm md:text-base text-gray-500 leading-relaxed">Fetching your records</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+
+        @case ('loading') {
+        @if (data().length > 0) {
+        <!-- Show existing data during subsequent loads -->
+        <tbody class="relative z-0">
+          @for (item of data(); track getItemId(item); let i = $index) {
+          <tr (click)="onRowClicked(item)"
+            class="hover:bg-blue-50 odd:bg-white even:bg-gray-100/60 border-b border-gray-200 group h-12"
+            [class.cursor-pointer]="enableClickableRows()" [class.bg-blue-100]="isRowSelected(item)"
+            [class.hover:bg-blue-200]="isRowSelected(item)">
+
+            <!-- Expandable Column -->
+            @if (expandableComponent()) {
+            <td
+              class="sticky left-0 z-[70] w-12 px-2 py-0 h-12 align-middle text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.05)]"
+              [class.bg-white]="!isRowSelected(item)" [class.bg-blue-100]="isRowSelected(item)"
+              [class.group-hover:bg-blue-50]="!isRowSelected(item)"
+              [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <div (click)="onRowExpandedClicked(i); $event.stopPropagation()"
+                class="mx-auto flex items-center justify-center h-[30px] w-[30px] rounded-full bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                <svg class="h-[16px] w-[16px] text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="none">
+                  <path d="M7.41 8.58L12 13.17L16.59 8.58L18 10L12 16L6 10L7.41 8.58Z" fill="currentColor" />
+                </svg>
+              </div>
+            </td>
+            }
+
+            <!-- Checkbox Column -->
+            @if (enableRowSelection()) {
+            <td
+              class="sticky z-[70] w-12 px-2 py-0 h-12 align-middle text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.05)]"
+              [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }"
+              [class.bg-white]="!isRowSelected(item)" [class.bg-blue-100]="isRowSelected(item)"
+              [class.group-hover:bg-blue-50]="!isRowSelected(item)"
+              [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <ui-checkbox-field [value]="isRowSelected(item)" (click)="$event.stopPropagation()"
+                (valueChange)="onRowSelectionChange($event, item)" />
+            </td>
+            }
+
+            <!-- Data Columns -->
+            @for (column of allLeafColumns(); track column.key || $index) {
+            <td
+              class="px-4 py-0 h-12 align-middle relative text-base text-gray-900 border-r border-gray-200 group-hover:bg-blue-50"
+              [ngClass]="[getCellClass(column), getColumnAlignmentClass(column)]"
+              [class.bg-blue-100]="isRowSelected(item)" [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <div class="h-12 w-full flex items-center truncate" [ngClass]="getHeaderAlignmentClass(column)">
+                <ui-table-cell-renderer [column]="column" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                  (actionPerformed)="onActionPerformed($event)">
+                </ui-table-cell-renderer>
+              </div>
+            </td>
+            }
+          </tr>
+
+          <!-- Expanded Row -->
+          @if (expandableComponent() && i === expandedRowIndex()) {
+          <tr class="transition-all duration-700">
+            <td [attr.colspan]="getTotalColspan()">
+              <div class="mx-4 my-4 p-4 bg-gray-50 rounded-lg">
+                <ui-dynamic-renderer [component]="expandableComponent()" [rowData]="item"
+                  (actionPerformed)="onActionPerformed({ actionKey: 'expand', item })">
+                </ui-dynamic-renderer>
+              </div>
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+        } @else {
+        <tbody class="relative z-0">
+          <tr class="h-full">
+            <td [attr.colspan]="getTotalColspan()" class="h-full px-6 py-0 bg-gray-50 align-middle">
+              <div class="h-full flex items-center justify-center min-h-[400px]">
+                <div class="flex flex-col items-center space-y-6 max-w-md mx-auto">
+                  <div class="flex items-center justify-center w-20 h-20 rounded-full bg-primary-100">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                  </div>
+                  <div class="text-center space-y-3">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight">Refreshing...</h3>
+                    <p class="text-sm md:text-base text-gray-500 leading-relaxed">Updating your records</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+        }
+
+        @case ('error') {
+        <tbody class="relative z-0">
+          <tr class="h-full">
+            <td [attr.colspan]="getTotalColspan()" class="h-full px-6 py-0 bg-gray-50 align-middle">
+              <div class="h-full flex items-center justify-center">
+                <div class="flex flex-col items-center space-y-6 max-w-md mx-auto">
+                  <div class="flex items-center justify-center w-20 h-20 rounded-full bg-red-100">
+                    <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-center space-y-3">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight">Failed to load data</h3>
+                    <p class="text-sm md:text-base text-gray-500 leading-relaxed">{{ getErrorMessage() || 'Something
+                      went wrong while loading your data.' }}</p>
+                    <div class="pt-2">
+                      <button type="button"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200"
+                        (click)="onRetryLoad()">
+                        Try Again
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+
+        @case ('success') {
+        @if (data().length > 0) {
+        <!-- Success with Data -->
+        <tbody class="relative z-0">
+          @for (item of data(); track getItemId(item); let i = $index) {
+          <tr (click)="onRowClicked(item)"
+            class="hover:bg-blue-50 odd:bg-white even:bg-gray-100/60 border-b border-gray-200 group h-12"
+            [class.cursor-pointer]="enableClickableRows()" [class.bg-blue-100]="isRowSelected(item)"
+            [class.hover:bg-blue-200]="isRowSelected(item)">
+
+            @if (expandableComponent()) {
+            <td
+              class="sticky left-0 z-[70] w-12 px-2 py-0 h-12 align-middle text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.05)]"
+              [class.bg-white]="!isRowSelected(item)" [class.bg-blue-100]="isRowSelected(item)"
+              [class.group-hover:bg-blue-50]="!isRowSelected(item)"
+              [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <div (click)="onRowExpandedClicked(i); $event.stopPropagation()"
+                class="mx-auto flex items-center justify-center h-[30px] w-[30px] rounded-full bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                <svg class="h-[16px] w-[16px] text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="none">
+                  <path d="M7.41 8.58L12 13.17L16.59 8.58L18 10L12 16L6 10L7.41 8.58Z" fill="currentColor" />
+                </svg>
+              </div>
+            </td>
+            }
+
+            @if (enableRowSelection()) {
+            <td
+              class="sticky z-[70] w-12 px-2 py-0 h-12 align-middle text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.05)]"
+              [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }"
+              [class.bg-white]="!isRowSelected(item)" [class.bg-blue-100]="isRowSelected(item)"
+              [class.group-hover:bg-blue-50]="!isRowSelected(item)"
+              [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <ui-checkbox-field [value]="isRowSelected(item)" (click)="$event.stopPropagation()"
+                (valueChange)="onRowSelectionChange($event, item)" />
+            </td>
+            }
+
+            @for (column of allLeafColumns(); track column.key || $index) {
+            <td
+              class="px-4 py-0 h-12 align-middle relative text-base text-gray-900 border-r border-gray-200 group-hover:bg-blue-50"
+              [ngClass]="[getCellClass(column), getColumnAlignmentClass(column)]"
+              [class.bg-blue-100]="isRowSelected(item)" [class.group-hover:bg-blue-200]="isRowSelected(item)">
+              <div class="h-12 w-full flex items-center truncate" [ngClass]="getHeaderAlignmentClass(column)">
+                <ui-table-cell-renderer [column]="column" [rowData]="item" [rowIndex]="i + 1" [isLastRow]="$last"
+                  (actionPerformed)="onActionPerformed($event)">
+                </ui-table-cell-renderer>
+              </div>
+            </td>
+            }
+          </tr>
+
+          @if (expandableComponent() && i === expandedRowIndex()) {
+          <tr class="transition-all duration-700">
+            <td [attr.colspan]="getTotalColspan()">
+              <div class="mx-4 my-4 p-4 bg-gray-50 rounded-lg">
+                <ui-dynamic-renderer [component]="expandableComponent()" [rowData]="item"
+                  (actionPerformed)="onActionPerformed({ actionKey: 'expand', item })">
+                </ui-dynamic-renderer>
+              </div>
+            </td>
+          </tr>
+          }
+          }
+        </tbody>
+        } @else {
+        <tbody class="relative z-0">
+          <tr class="h-full">
+            <td [attr.colspan]="getTotalColspan()" class="h-full px-6 py-8 bg-gray-50 align-middle">
+              <div class="h-full flex items-center justify-center min-h-[400px]">
+                <div class="flex flex-col items-center space-y-6 max-w-lg mx-auto text-center">
+                  <div
+                    class="flex items-center justify-center w-24 h-24 rounded-full bg-white shadow-lg border border-gray-200">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                      </path>
+                    </svg>
+                  </div>
+                  <div class="space-y-4">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">No data available</h3>
+                    <p class="text-base md:text-lg text-gray-500 leading-relaxed max-w-md mx-auto">No records match your
+                      current criteria. Try adjusting your search or filters.</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+        }
+
+        @case ('empty') {
+        <tbody class="relative z-0">
+          <tr class="h-full">
+            <td [attr.colspan]="getTotalColspan()" class="h-full px-6 py-8  align-middle">
+              <div class="h-full flex items-center justify-center min-h-[400px]">
+                <div class="flex flex-col items-center space-y-6 max-w-lg mx-auto text-center">
+                  <div
+                    class="flex items-center justify-center w-24 h-24 rounded-full bg-white shadow-lg border border-gray-200">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                      </path>
+                    </svg>
+                  </div>
+                  <div class="space-y-4">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">No data available</h3>
+                    <p class="text-base md:text-lg text-gray-500 leading-relaxed max-w-md mx-auto">This table is ready
+                      to display data. Configure your data source to get started.</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        }
+        }
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="border-t-2 border-gray-300 bg-white px-4 py-2 flex-shrink-0">
+    @if (footerComponent()) {
+    <ui-dynamic-renderer [component]="footerComponent()" [data]="data()"
+      (actionPerformed)="onFooterActionPerformed($event)">
+    </ui-dynamic-renderer>
+    }
+
+    @if (enablePagination()) {
+    <ui-pagination [(pageNumber)]="pageNumber" [(pageSize)]="pageSize" [totalItems]="totalCount()"
+      (pageChange)="onPageChange($event)">
+    </ui-pagination>
+    }
+  </div>
+</div>

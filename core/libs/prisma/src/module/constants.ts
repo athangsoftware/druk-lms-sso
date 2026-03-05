@@ -1,0 +1,2 @@
+export const PRISMA_CONFIG = 'PRISMA_CONFIG';
+export const TENANT_CONTEXT = 'TENANT_CONTEXT';
