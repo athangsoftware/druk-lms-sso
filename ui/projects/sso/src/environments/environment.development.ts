@@ -2,14 +2,14 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'https://api.sso.one.athang.com',
+  apiUrl: 'https://druk-lms-sso-api.mythimphu.com',
   oidc: {
-    issuer: 'https://api.sso.one.athang.com',
+    issuer: 'https://druk-lms-sso-api.mythimphu.com',
     clientId: 'iam',
-    redirectUri: 'https://sso.one.athang.com/callback',
-    logoutUri: 'https://sso.one.athang.com',
-    validIssuers: ['https://sso.one.athang.com', 'https://api.sso.one.athang.com'],
-    logoutEndpoint: 'https://api.sso.one.athang.com/protocol/openid-connect/logout',
-    postLogoutRedirectUri: 'https://admin.one.athang.com',
+    redirectUri: 'https://druk-lms-sso.mythimphu.com/callback',
+    logoutUri: 'https://druk-lms-sso.mythimphu.com',
+    validIssuers: ['https://druk-lms-sso.mythimphu.com', 'https://druk-lms-sso-api.mythimphu.com'],
+    logoutEndpoint: 'https://druk-lms-sso-api.mythimphu.com/protocol/openid-connect/logout',
+    postLogoutRedirectUri: 'https://druk-lms-sso.mythimphu.com',
   },
 };
