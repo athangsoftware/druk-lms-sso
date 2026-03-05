@@ -28,7 +28,7 @@ COPY libs ./libs
 RUN npx prisma generate --schema=libs/prisma/schema
 
 # Build the application
-RUN npm run build:scan
+RUN npm run build:sso
 
 # Production stage
 FROM node:22-slim AS production
