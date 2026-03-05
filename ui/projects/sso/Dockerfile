@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-# Stage 1: Build the Angular SSR application
+# Stage 1: Build the Angular application
 FROM node:22 AS build
 
 ARG NPM_TOKEN
@@ -22,30 +22,26 @@ RUN --mount=type=secret,id=npm_token \
 # Copy the entire ui folder
 COPY . .
 
-# Build the sso project with SSR
+# Build the sso project
 # (shared-lib is compiled from source via tsconfig paths)
 RUN npm run build -- @projects/sso-app --configuration=production
 
-# Stage 2: Run the SSR server
-FROM node:22-alpine AS production
+# Stage 2: Serve with nginx
+FROM nginx:alpine AS production
 
-WORKDIR /app
+# Copy the built browser bundle
+COPY --from=build /app/dist/@projects/sso-app/browser /usr/share/nginx/html
 
-# Copy the built application (browser and server bundles)
-COPY --from=build /app/dist/@projects/sso-app ./dist/sso
+# nginx config for SPA — redirect all routes to index.html
+RUN printf 'server {\n\
+    listen 4000;\n\
+    root /usr/share/nginx/html;\n\
+    index index.html;\n\
+    location / {\n\
+        try_files $uri $uri/ /index.html;\n\
+    }\n\
+}\n' > /etc/nginx/conf.d/default.conf
 
-# Copy package.json for any runtime dependencies
-COPY --from=build /app/package.json ./
-
-# Copy node_modules for server runtime
-COPY --from=build /app/node_modules ./node_modules
-
-# Expose the SSR server port
 EXPOSE 4000
 
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=4000
-
-# Start the SSR server
-CMD ["node", "dist/sso/server/server.mjs"]
+CMD ["nginx", "-g", "daemon off;"]
