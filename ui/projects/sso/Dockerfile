@@ -24,7 +24,7 @@ COPY . .
 
 # Build the sso project with SSR
 # (shared-lib is compiled from source via tsconfig paths)
-RUN npm run build -- @projects/sso --configuration=production
+RUN npm run build -- @projects/sso-app --configuration=production
 
 # Stage 2: Run the SSR server
 FROM node:22-alpine AS production
@@ -32,7 +32,7 @@ FROM node:22-alpine AS production
 WORKDIR /app
 
 # Copy the built application (browser and server bundles)
-COPY --from=build /app/dist/@projects/sso ./dist/sso
+COPY --from=build /app/dist/@projects/sso-app ./dist/sso
 
 # Copy package.json for any runtime dependencies
 COPY --from=build /app/package.json ./
