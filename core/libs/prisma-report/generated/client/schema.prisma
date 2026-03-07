@@ -29,6 +29,7 @@ model MetaData {
 
 enum DbType {
   MYSQL
+  MONGODB
 }
 
 enum ChartType {

@@ -1,6 +1,6 @@
 // ─── Enums ────────────────────────────────────────────────────────
 
-export type DbType = 'MYSQL';
+export type DbType = 'MYSQL' | 'MONGODB';
 
 export type ChartType = 'BAR' | 'LINE' | 'PIE' | 'DOUGHNUT' | 'SCATTER' | 'AREA' | 'TABLE';
 

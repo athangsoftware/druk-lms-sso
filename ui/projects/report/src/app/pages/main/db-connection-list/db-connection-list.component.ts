@@ -40,6 +40,10 @@ import {
           <h2 class="font-medium text-neutral-800">{{ editingId ? 'Edit Connection' : 'New Connection' }}</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input [(ngModel)]="form.name" placeholder="Name *" class="input-field" />
+            <select [(ngModel)]="form.dbType" (ngModelChange)="onDbTypeChange($event)" class="input-field">
+              <option value="MYSQL">MySQL</option>
+              <option value="MONGODB">MongoDB</option>
+            </select>
             <input [(ngModel)]="form.host" placeholder="Host *" class="input-field" />
             <input [(ngModel)]="form.port" placeholder="Port *" type="number" class="input-field" />
             <input [(ngModel)]="form.databaseName" placeholder="Database Name *" class="input-field" />
@@ -216,6 +220,14 @@ export class DbConnectionListComponent {
 
   submitForm() {
     this.saveMutation.trigger();
+  }
+
+  onDbTypeChange(dbType: DbType) {
+    if (dbType === 'MONGODB' && this.form.port === 3306) {
+      this.form.port = 27017;
+    } else if (dbType === 'MYSQL' && this.form.port === 27017) {
+      this.form.port = 3306;
+    }
   }
 
   private emptyForm() {

@@ -400,7 +400,8 @@ exports.Prisma.GlobalFilterOverrideOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 exports.DbType = exports.$Enums.DbType = {
-  MYSQL: 'MYSQL'
+  MYSQL: 'MYSQL',
+  MONGODB: 'MONGODB'
 };
 
 exports.ChartType = exports.$Enums.ChartType = {

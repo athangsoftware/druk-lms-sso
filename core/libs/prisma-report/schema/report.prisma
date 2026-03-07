@@ -2,6 +2,7 @@
 
 enum DbType {
   MYSQL
+  MONGODB
 }
 
 enum ChartType {

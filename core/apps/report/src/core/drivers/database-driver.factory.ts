@@ -1,6 +1,7 @@
 import { DbConnection } from '@app/prisma-report';
 import { DatabaseDriver } from './database-driver.interface';
 import { MySqlDriver } from './mysql.driver';
+import { MongoDbDriver } from './mongodb.driver';
 
 export function createDatabaseDriver(
   connection: DbConnection,
@@ -9,6 +10,14 @@ export function createDatabaseDriver(
   switch (connection.dbType) {
     case 'MYSQL':
       return new MySqlDriver({
+        host: connection.host,
+        port: connection.port,
+        databaseName: connection.databaseName,
+        username: connection.username,
+        password: decryptedPassword,
+      });
+    case 'MONGODB':
+      return new MongoDbDriver({
         host: connection.host,
         port: connection.port,
         databaseName: connection.databaseName,

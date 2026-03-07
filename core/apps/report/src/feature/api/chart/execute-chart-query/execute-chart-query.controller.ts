@@ -59,6 +59,7 @@ export class ExecuteChartQueryController {
 
     // Build filter SQL fragment if dashboard filters are supplied
     let querySql = chart.sqlQuery;
+    const isSqlBased = chart.connection.dbType !== 'MONGODB';
 
     const appConfig = this.configService.get<AppConfig>('app')!;
     const password = decrypt(
@@ -67,13 +68,13 @@ export class ExecuteChartQueryController {
     );
     const driver = createDatabaseDriver(chart.connection, password);
 
-    // --- Global filters ---
+    // --- Global filters (SQL-based connections only) ---
     const globalFilters = await this.prismaService.client(
       async ({ dbContext }) => dbContext.globalFilter.findMany({ where: { isEnabled: true }, orderBy: { order: 'asc' } }),
       { isTransaction: false },
     );
 
-    if (globalFilters.length) {
+    if (isSqlBased && globalFilters.length) {
       const overridesMap = new Map<string, { globalFilterId: string; isDisabled: boolean; columnValue: string | null; missingColumnBehavior: any }>(); 
       if (body?.dashboardId) {
         const overrides = await this.prismaService.client(
@@ -102,8 +103,8 @@ export class ExecuteChartQueryController {
       }
     }
 
-    // --- Dashboard filters ---
-    if (body?.dashboardId && body?.filterValues && Object.keys(body.filterValues).length) {
+    // --- Dashboard filters (SQL-based connections only) ---
+    if (isSqlBased && body?.dashboardId && body?.filterValues && Object.keys(body.filterValues).length) {
       const filters = await this.prismaService.client(
         async ({ dbContext }) => {
           return dbContext.dashboardFilter.findMany({
@@ -129,14 +130,14 @@ export class ExecuteChartQueryController {
     }
 
     try {
-      validateQuery(querySql);
+      validateQuery(querySql, chart.connection.dbType);
     } catch (error: any) {
       throw new BadRequestException(
-        `Chart SQL query is invalid: ${error.message}`,
+        `Chart query is invalid: ${error.message}`,
       );
     }
 
-    const sql = injectLimit(querySql, MAX_ROWS);
+    const sql = injectLimit(querySql, MAX_ROWS, chart.connection.dbType);
     const result = await driver.runQuery(sql, MAX_ROWS, TIMEOUT_MS);
 
     // Audit the query execution

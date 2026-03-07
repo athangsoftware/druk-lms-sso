@@ -69,7 +69,8 @@ export type GlobalFilterOverride = $Result.DefaultSelection<Prisma.$GlobalFilter
  */
 export namespace $Enums {
   export const DbType: {
-  MYSQL: 'MYSQL'
+  MYSQL: 'MYSQL',
+  MONGODB: 'MONGODB'
 };
 
 export type DbType = (typeof DbType)[keyof typeof DbType]
