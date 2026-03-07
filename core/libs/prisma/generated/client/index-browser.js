@@ -273,6 +273,24 @@ exports.Prisma.DashboardChartScalarFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.DashboardFilterScalarFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  name: 'name',
+  filterType: 'filterType',
+  connectionId: 'connectionId',
+  targetColumn: 'targetColumn',
+  sourceQuery: 'sourceQuery',
+  defaultValue: 'defaultValue',
+  order: 'order',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -483,6 +501,20 @@ exports.Prisma.DashboardChartOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.DashboardFilterOrderByRelevanceFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  name: 'name',
+  connectionId: 'connectionId',
+  targetColumn: 'targetColumn',
+  sourceQuery: 'sourceQuery',
+  defaultValue: 'defaultValue',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -547,6 +579,14 @@ exports.ChartType = exports.$Enums.ChartType = {
   TABLE: 'TABLE'
 };
 
+exports.FilterType = exports.$Enums.FilterType = {
+  MULTI_SELECT: 'MULTI_SELECT',
+  SINGLE_SELECT: 'SINGLE_SELECT',
+  DATE_RANGE: 'DATE_RANGE',
+  TEXT: 'TEXT',
+  NUMBER: 'NUMBER'
+};
+
 exports.Role = exports.$Enums.Role = {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -566,6 +606,7 @@ exports.Prisma.ModelName = {
   Chart: 'Chart',
   Dashboard: 'Dashboard',
   DashboardChart: 'DashboardChart',
+  DashboardFilter: 'DashboardFilter',
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   RefreshToken: 'RefreshToken',

@@ -265,3 +265,70 @@ export interface UpdateChartLayoutRequest {
 export interface UpdateChartLayoutResponse {
   successMessage: string;
 }
+
+// ─── Dashboard Filter ─────────────────────────────────────────────
+
+export type FilterType = 'MULTI_SELECT' | 'SINGLE_SELECT' | 'DATE_RANGE' | 'TEXT' | 'NUMBER';
+
+export interface DashboardFilterItem {
+  id: string;
+  dashboardId: string;
+  name: string;
+  filterType: FilterType;
+  connectionId: string | null;
+  targetColumn: string;
+  sourceQuery: string | null;
+  defaultValue: string | null;
+  order: number;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
+export interface GetDashboardFiltersResponse {
+  successMessage: string;
+  data: DashboardFilterItem[];
+}
+
+export interface CreateDashboardFilterRequest {
+  name: string;
+  filterType: FilterType;
+  connectionId?: string;
+  targetColumn: string;
+  sourceQuery?: string;
+  defaultValue?: string;
+  order?: number;
+}
+
+export interface CreateDashboardFilterResponse {
+  successMessage: string;
+  data: DashboardFilterItem;
+}
+
+export interface UpdateDashboardFilterRequest {
+  name?: string;
+  filterType?: FilterType;
+  connectionId?: string | null;
+  targetColumn?: string;
+  sourceQuery?: string | null;
+  defaultValue?: string | null;
+  order?: number;
+}
+
+export interface UpdateDashboardFilterResponse {
+  successMessage: string;
+}
+
+export interface DeleteDashboardFilterResponse {
+  successMessage: string;
+}
+
+export interface GetFilterOptionsResponse {
+  successMessage: string;
+  options: string[];
+}
+
+export interface FilterValueItem {
+  filterId: string;
+  value: unknown;
+}
+

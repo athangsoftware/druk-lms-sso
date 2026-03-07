@@ -2,8 +2,8 @@
 export * from './types';
 
 // Re-export Prisma Client and types for convenience
-export { PrismaClient, Prisma, Role, DbType, ChartType } from '../generated/client/client';
-export type { DbConnection, AiProvider, Chart, Dashboard, DashboardChart } from '../generated/client/client';
+export { PrismaClient, Prisma, Role, DbType, ChartType, FilterType } from '../generated/client/client';
+export type { DbConnection, AiProvider, Chart, Dashboard, DashboardChart, DashboardFilter } from '../generated/client/client';
 
 // Client factory
 export { createPrismaClient, createTenantPrismaClient } from './client/prisma-client.factory';
