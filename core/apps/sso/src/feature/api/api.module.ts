@@ -1,6 +1,13 @@
 import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 
+// Client
+import { GetClientListController } from './client/get-client-list/get-client-list.controller';
+import { GetClientController } from './client/get-client/get-client.controller';
+import { CreateClientController } from './client/create-client/create-client.controller';
+import { UpdateClientController } from './client/update-client/update-client.controller';
+import { DeleteClientController } from './client/delete-client/delete-client.controller';
+
 // Auth
 import { BhutanNdiController } from './auth/bhutan-ndi.controller';
 import { BhutanNdiSignInController } from './auth/bhutan-ndi-sign-in/bhutan-ndi-sign-in.controller';
@@ -37,12 +44,21 @@ import { SetPasswordController } from './user/set-password/set-password.controll
 import { UpdateUserSelfController } from './user/update-user-self/update-user-self.controller';
 import { UpdateUserController } from './user/update-user/update-user.controller';
 
+// Dashboard
+import { DashboardController } from './dashboard/dashboard.controller';
+
 // Services
 import { OAuthService } from './auth.service';
 import { BhutanNdiService } from './bhutan-ndi.service';
 import { LogoutService } from './oidc/logout/logout.service';
 
 const CONTROLLERS = [
+  // Client
+  GetClientListController,
+  GetClientController,
+  CreateClientController,
+  UpdateClientController,
+  DeleteClientController,
   // Auth
   BhutanNdiController,
   BhutanNdiSignInController,
@@ -75,6 +91,8 @@ const CONTROLLERS = [
   SetPasswordController,
   UpdateUserSelfController,
   UpdateUserController,
+  // Dashboard
+  DashboardController,
 ];
 
 const SERVICES = [OAuthService, BhutanNdiService, LogoutService];

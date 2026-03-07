@@ -1,0 +1,59 @@
+<ui-base-overlay [title]="'Update Client'">
+  <div body>
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5" (submit)="onSubmit()">
+      <div>
+        <app-text-input
+          [label]="'Application Name'"
+          [fullWidth]="true"
+          [placeholder]="'e.g. My Learning App'"
+          [formField]="clientForm.name"
+        ></app-text-input>
+      </div>
+
+      <div>
+        <app-single-selection-field
+          [title]="'Client Type'"
+          [items]="clientTypeOptions"
+          [display]="'name'"
+          [value]="'id'"
+          [formField]="clientForm.clientType"
+        ></app-single-selection-field>
+      </div>
+
+      <div class="md:col-span-2">
+        <app-text-input
+          [label]="'Redirect URLs'"
+          [fullWidth]="true"
+          [placeholder]="'One URL per line'"
+          [formField]="clientForm.redirectUrls"
+        ></app-text-input>
+        <p class="mt-1 text-xs text-neutral-500">Enter one redirect URL per line.</p>
+      </div>
+
+      <div class="md:col-span-2">
+        <app-text-input
+          [label]="'Post-Logout Redirect URLs'"
+          [fullWidth]="true"
+          [placeholder]="'One URL per line'"
+          [formField]="clientForm.postLogoutRedirectUrls"
+        ></app-text-input>
+        <p class="mt-1 text-xs text-neutral-500">Enter one post-logout redirect URL per line.</p>
+      </div>
+
+      <div class="md:col-span-2 flex items-center gap-3 py-1">
+        <ui-checkbox-field
+          [label]="'Disable Strict URL Validation'"
+          [value]="clientModel().disableStrictUrlValidation"
+          (valueChange)="clientModel.update(m => ({ ...m, disableStrictUrlValidation: $event }))"
+        ></ui-checkbox-field>
+        <p class="text-xs text-neutral-500">
+          When enabled, redirect URL matching is relaxed (useful for development).
+        </p>
+      </div>
+
+      <div class="md:col-span-2 flex justify-center pt-2">
+        <ui-button [loading]="updateClientMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

@@ -27,6 +27,15 @@ import type {
   UpdateUserSelfRequest,
   UpdateUserSelfResponse,
   GetNdiStatusParams,
+  CreateClientRequest,
+  CreateClientResponse,
+  UpdateClientRequest,
+  UpdateClientResponse,
+  DeleteClientResponse,
+  GetClientListParams,
+  GetClientListResponse,
+  GetClientResponse,
+  DashboardStatsResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -127,5 +136,35 @@ export class ApiService {
       `${this.apiUrl}/external/generate-set-password-link`,
       request,
     );
+  }
+
+  // ─── Client ────────────────────────────────────────────────────
+
+  getClientList(params?: GetClientListParams): Observable<GetClientListResponse> {
+    return this.http.get<GetClientListResponse>(`${this.apiUrl}/clients`, {
+      params: params as Record<string, string>,
+    });
+  }
+
+  createClient(request: CreateClientRequest): Observable<CreateClientResponse> {
+    return this.http.post<CreateClientResponse>(`${this.apiUrl}/clients`, request);
+  }
+
+  getClient(id: string): Observable<GetClientResponse> {
+    return this.http.get<GetClientResponse>(`${this.apiUrl}/clients/${id}`);
+  }
+
+  updateClient(id: string, request: UpdateClientRequest): Observable<UpdateClientResponse> {
+    return this.http.put<UpdateClientResponse>(`${this.apiUrl}/clients/${id}`, request);
+  }
+
+  deleteClient(id: string): Observable<DeleteClientResponse> {
+    return this.http.delete<DeleteClientResponse>(`${this.apiUrl}/clients/${id}`);
+  }
+
+  // ─── Dashboard ─────────────────────────────────────────────────
+
+  getDashboardStats(): Observable<DashboardStatsResponse> {
+    return this.http.get<DashboardStatsResponse>(`${this.apiUrl}/dashboard/stats`);
   }
 }

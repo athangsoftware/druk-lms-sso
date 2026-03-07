@@ -298,6 +298,96 @@ export interface CreateUserExternalResponse {
   };
 }
 
+// ─── Client ───────────────────────────────────────────────────────
+
+export type ClientType = 'PUBLIC' | 'CONFIDENTIAL';
+
+export interface CreateClientRequest {
+  name: string;
+  clientId?: string;
+  clientType?: ClientType;
+  disableStrictUrlValidation?: boolean;
+  redirectUrls?: string[];
+  postLogoutRedirectUrls?: string[];
+}
+
+export interface CreateClientResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    clientId: string;
+    clientSecret: string | null;
+    clientType: string;
+  };
+}
+
+export interface UpdateClientRequest {
+  name?: string;
+  clientType?: ClientType;
+  disableStrictUrlValidation?: boolean;
+  redirectUrls?: string[];
+  postLogoutRedirectUrls?: string[];
+}
+
+export interface UpdateClientResponse {
+  successMessage: string;
+}
+
+export interface DeleteClientResponse {
+  successMessage: string;
+}
+
+export interface GetClientListParams {
+  pageNumber?: number;
+  pageSize?: number;
+  sortingDirection?: string;
+  orderByPropertyName?: string;
+  search?: string;
+  nameValue?: string;
+  nameOperation?: string;
+  clientIdValue?: string;
+  clientIdOperation?: string;
+  clientTypeValue?: string;
+}
+
+export interface GetClientListItem {
+  id: string;
+  name: string;
+  clientId: string;
+  clientType: string;
+  disableStrictUrlValidation: boolean;
+  redirectUrls: string[];
+  postLogoutRedirectUrls: string[];
+  createdAt: string;
+}
+
+export interface GetClientListResponse {
+  successMessage: string;
+  pageSize: number;
+  pageNumber: number;
+  totalCount: number;
+  orderByPropertyName: string;
+  sortingDirection: string;
+  data: GetClientListItem[];
+}
+
+export interface GetClientResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    clientId: string;
+    clientSecret: string | null;
+    clientType: string;
+    disableStrictUrlValidation: boolean;
+    redirectUrls: string[];
+    postLogoutRedirectUrls: string[];
+    createdAt: string;
+  };
+}
+
+
 export interface GenerateSetPasswordLinkRequest {
   email: string;
   redirectUrl: string;
@@ -305,6 +395,44 @@ export interface GenerateSetPasswordLinkRequest {
 
 export interface GenerateSetPasswordLinkResponse {
   successMessage: string;
+}
+
+// ─── Dashboard ────────────────────────────────────────────────────
+
+export interface DashboardUsersByRoleItem {
+  role: string;
+  count: number;
+}
+
+export interface DashboardLoginActivityItem {
+  date: string;
+  count: number;
+}
+
+export interface DashboardRecentUserItem {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  isActive: boolean;
+  isVerified: boolean;
+  createdAt: string;
+}
+
+export interface DashboardStatsResponse {
+  successMessage: string;
+  totalUsers: number;
+  activeUsers: number;
+  inactiveUsers: number;
+  verifiedUsers: number;
+  totalClients: number;
+  publicClients: number;
+  confidentialClients: number;
+  activeSessions: number;
+  usersByRole: DashboardUsersByRoleItem[];
+  loginActivityLast7Days: DashboardLoginActivityItem[];
+  recentUsers: DashboardRecentUserItem[];
 }
 
 // ─── Google ───────────────────────────────────────────────────────

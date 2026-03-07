@@ -21,8 +21,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'my-profile',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./pages/main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'users',
@@ -39,6 +44,13 @@ export const routes: Routes = [
           ),
         canActivate: [roleGuard],
         data: { roles: ['member', 'modrator'] },
+      },
+      {
+        path: 'clients',
+        loadComponent: () =>
+          import('./pages/main/clients/clients.component').then((m) => m.ClientsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
       },
     ],
   },
