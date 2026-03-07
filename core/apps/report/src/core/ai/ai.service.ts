@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@app/prisma';
 import { AppConfig } from '../../config';
-import { AiProviderBase, AiChartResult } from './ai-provider.interface';
+import { AiProviderBase, AiChartResult, AiFilterResult } from './ai-provider.interface';
 import { OpenAiProvider } from './openai.provider';
 import { decrypt } from '../utils/encryption.util';
 import { SchemaMetadata } from '../drivers/database-driver.interface';
@@ -52,5 +52,13 @@ export class AiService {
   ): Promise<AiChartResult> {
     const provider = await this.getProvider();
     return provider.modifyChart(prompt, existingConfig, schema);
+  }
+
+  async generateFilter(
+    prompt: string,
+    schema: SchemaMetadata,
+  ): Promise<AiFilterResult> {
+    const provider = await this.getProvider();
+    return provider.generateFilter(prompt, schema);
   }
 }

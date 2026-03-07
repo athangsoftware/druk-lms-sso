@@ -4,6 +4,8 @@ export type DbType = 'MYSQL';
 
 export type ChartType = 'BAR' | 'LINE' | 'PIE' | 'DOUGHNUT' | 'SCATTER' | 'AREA' | 'TABLE';
 
+export type FilterType = 'MULTI_SELECT' | 'SINGLE_SELECT' | 'DATE_RANGE' | 'TEXT' | 'NUMBER';
+
 // ─── Common ───────────────────────────────────────────────────────
 
 export interface PaginatedResponse<T> {
@@ -77,6 +79,22 @@ export interface DeleteDbConnectionResponse {
 export interface TestDbConnectionResponse {
   successMessage: string;
   data: { isConnected: boolean };
+}
+
+export interface SchemaColumnInfo {
+  columnName: string;
+  dataType: string;
+  isNullable: boolean;
+}
+
+export interface SchemaTableInfo {
+  tableName: string;
+  columns: SchemaColumnInfo[];
+}
+
+export interface GetConnectionSchemaResponse {
+  successMessage: string;
+  data: SchemaTableInfo[];
 }
 
 // ─── AI Provider ──────────────────────────────────────────────────
@@ -211,6 +229,7 @@ export interface DashboardItem {
 
 export interface DashboardDetail extends DashboardItem {
   charts: DashboardChartItem[];
+  filters: DashboardFilterItem[];
 }
 
 export type GetDashboardListResponse = PaginatedResponse<DashboardItem>;
@@ -264,4 +283,89 @@ export interface UpdateChartLayoutRequest {
 
 export interface UpdateChartLayoutResponse {
   successMessage: string;
+}
+
+// ─── Dashboard Filters ────────────────────────────────────────────
+
+export interface DashboardFilterItem {
+  id: string;
+  dashboardId?: string;
+  name: string;
+  filterType: FilterType;
+  connectionId: string;
+  targetColumn: string;
+  sourceQuery?: string | null;
+  defaultValue?: string | null;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CreateDashboardFilterRequest {
+  name: string;
+  filterType: FilterType;
+  connectionId: string;
+  targetColumn: string;
+  sourceQuery?: string;
+  defaultValue?: string;
+  order?: number;
+}
+
+export interface CreateDashboardFilterResponse {
+  successMessage: string;
+  data: DashboardFilterItem;
+}
+
+export interface UpdateDashboardFilterRequest {
+  name?: string;
+  filterType?: FilterType;
+  connectionId?: string;
+  targetColumn?: string;
+  sourceQuery?: string;
+  defaultValue?: string;
+  order?: number;
+}
+
+export interface UpdateDashboardFilterResponse {
+  successMessage: string;
+}
+
+export interface DeleteDashboardFilterResponse {
+  successMessage: string;
+}
+
+export interface ListDashboardFiltersResponse {
+  successMessage: string;
+  data: DashboardFilterItem[];
+}
+
+export interface GetFilterOptionsResponse {
+  successMessage: string;
+  options: string[];
+}
+
+export interface GenerateDashboardFilterRequest {
+  connectionId: string;
+  prompt: string;
+}
+
+// mirror backend's AI result structure
+export interface AiFilterResult {
+  name: string;
+  filterType: string;
+  targetColumn: string;
+  sourceQuery?: string;
+  defaultValue?: string;
+}
+
+export interface GenerateDashboardFilterResponse {
+  successMessage: string;
+  data: AiFilterResult;
+  warnings?: string[];
+  suggestions?: string[];
+}
+
+export interface ExecuteChartQueryRequest {
+  dashboardId?: string;
+  filterValues?: Record<string, unknown>;
 }

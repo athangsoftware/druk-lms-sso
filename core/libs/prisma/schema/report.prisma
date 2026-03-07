@@ -14,6 +14,14 @@ enum ChartType {
   TABLE
 }
 
+enum FilterType {
+  MULTI_SELECT
+  SINGLE_SELECT
+  DATE_RANGE
+  TEXT
+  NUMBER
+}
+
 model DbConnection {
   id                String  @id @default(uuid())
   name              String
@@ -25,6 +33,7 @@ model DbConnection {
   encryptedPassword String  @map("encrypted_password") @db.LongText
 
   charts Chart[]
+  dashboardFilters DashboardFilter[]
 
   createdBy String?   @map("created_by")
   createdAt DateTime  @default(now()) @map("created_at")
@@ -79,7 +88,8 @@ model Dashboard {
   name        String
   description String? @db.Text
 
-  dashboardCharts DashboardChart[]
+  dashboardCharts  DashboardChart[]
+  dashboardFilters DashboardFilter[]
 
   createdBy String?   @map("created_by")
   createdAt DateTime  @default(now()) @map("created_at")
@@ -113,4 +123,28 @@ model DashboardChart {
 
   @@unique([dashboardId, chartId])
   @@map("rpt_dashboard_charts")
+}
+
+model DashboardFilter {
+  id           String     @id @default(uuid())
+  dashboardId  String     @map("dashboard_id")
+  name         String
+  filterType   FilterType @map("filter_type")
+  connectionId String     @map("connection_id")
+  targetColumn String     @map("target_column")
+  sourceQuery  String?    @map("source_query") @db.LongText
+  defaultValue String?    @map("default_value") @db.Text
+  order        Int        @default(0)
+
+  dashboard  Dashboard    @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  connection DbConnection @relation(fields: [connectionId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_dashboard_filters")
 }

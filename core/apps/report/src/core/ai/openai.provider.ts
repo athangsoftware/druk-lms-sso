@@ -1,4 +1,4 @@
-import { AiProviderBase, AiChartResult } from './ai-provider.interface';
+import { AiProviderBase, AiChartResult, AiFilterResult } from './ai-provider.interface';
 import { SchemaMetadata } from '../drivers/database-driver.interface';
 
 interface OpenAiMessage {
@@ -26,10 +26,34 @@ Rules:
 - For proportional data, use "pie" or "doughnut".
 - Keep SQL efficient and readable.`;
 
+const FILTER_SYSTEM_PROMPT = `You are an expert data analyst assistant. Your task is to design dashboard-level filters based on user requests and database schemas.
+
+IMPORTANT RULES:
+- You MUST only reference columns that exist in the provided database schema.
+- targetColumn MUST be in the format "table_name.column_name" using exact names from the schema.
+- sourceQuery MUST only reference tables and columns that exist in the schema.
+- NEVER invent or guess column names. If unsure, pick the closest matching column from the schema.
+- filterType must be one of: MULTI_SELECT, SINGLE_SELECT, DATE_RANGE, TEXT, NUMBER.
+- sourceQuery (when provided) should be a SELECT query returning a single column of possible values.
+- Do not include INSERT, UPDATE, DELETE, DROP, or other destructive operations.
+- Provide a clear human-readable name.
+
+Always respond with valid JSON matching this exact structure:
+{
+  "name": "Filter name",
+  "filterType": "MULTI_SELECT|SINGLE_SELECT|DATE_RANGE|TEXT|NUMBER",
+  "targetColumn": "table_name.column_name",
+  "sourceQuery": "SELECT DISTINCT table.column FROM table ORDER BY table.column",
+  "defaultValue": "..."
+}`;
+
 function buildSchemaDescription(schema: SchemaMetadata): string {
-  const lines: string[] = [`Database: ${schema.databaseName}`, 'Tables:'];
+  const lines: string[] = [`Database: ${schema.databaseName}`, '', 'Available tables and columns (use ONLY these exact names):'];
   for (const table of schema.tables) {
-    lines.push(`  ${table.tableName} (${table.columns.map((c) => `${c.columnName}: ${c.dataType}`).join(', ')})`);
+    lines.push(`  Table "${table.tableName}":`);
+    for (const col of table.columns) {
+      lines.push(`    - ${table.tableName}.${col.columnName} (${col.dataType}${col.isNullable ? ', nullable' : ''})`);
+    }
   }
   return lines.join('\n');
 }
@@ -43,6 +67,17 @@ export class OpenAiProvider extends AiProviderBase {
   }
 
   private async callApi(messages: OpenAiMessage[]): Promise<AiChartResult> {
+    const content = await this.callRaw(messages);
+    const parsed = JSON.parse(content) as AiChartResult;
+
+    if (!parsed.sql || !parsed.chartType || !parsed.chartConfig) {
+      throw new Error('AI response is missing required fields (sql, chartType, chartConfig).');
+    }
+
+    return parsed;
+  }
+
+  private async callRaw(messages: OpenAiMessage[]): Promise<string> {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -72,13 +107,7 @@ export class OpenAiProvider extends AiProviderBase {
       throw new Error('OpenAI returned an empty response.');
     }
 
-    const parsed = JSON.parse(content) as AiChartResult;
-
-    if (!parsed.sql || !parsed.chartType || !parsed.chartConfig) {
-      throw new Error('AI response is missing required fields (sql, chartType, chartConfig).');
-    }
-
-    return parsed;
+    return content;
   }
 
   async generateChart(
@@ -110,5 +139,27 @@ export class OpenAiProvider extends AiProviderBase {
         content: `Database Schema:\n${schemaDescription}\n\nExisting Chart Configuration:\n${JSON.stringify(existingConfig, null, 2)}\n\nModification Request: ${prompt}`,
       },
     ]);
+  }
+
+  async generateFilter(
+    prompt: string,
+    schema: SchemaMetadata,
+  ): Promise<AiFilterResult> {
+    const schemaDescription = buildSchemaDescription(schema);
+
+    const content = await this.callRaw([
+      { role: 'system', content: FILTER_SYSTEM_PROMPT },
+      {
+        role: 'user',
+        content: `Database Schema:\n${schemaDescription}\n\nFilter Request: ${prompt}`,
+      },
+    ]);
+
+    const parsed = JSON.parse(content) as AiFilterResult;
+    if (!parsed.name || !parsed.filterType || !parsed.targetColumn) {
+      throw new Error('AI response is missing required filter fields (name, filterType, targetColumn).');
+    }
+
+    return parsed;
   }
 }

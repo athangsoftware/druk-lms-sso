@@ -34,6 +34,9 @@ export class GetDashboardController {
               include: { chart: { include: { connection: true } } },
               orderBy: { order: 'asc' },
             },
+            dashboardFilters: {
+              orderBy: { order: 'asc' },
+            },
           },
         });
 
@@ -63,6 +66,16 @@ export class GetDashboardController {
               width: dc.width,
               height: dc.height,
               order: dc.order,
+            })),
+            filters: dashboard.dashboardFilters.map((f) => ({
+              id: f.id,
+              name: f.name,
+              filterType: f.filterType,
+              connectionId: f.connectionId,
+              targetColumn: f.targetColumn,
+              sourceQuery: f.sourceQuery,
+              defaultValue: f.defaultValue,
+              order: f.order,
             })),
           },
         };

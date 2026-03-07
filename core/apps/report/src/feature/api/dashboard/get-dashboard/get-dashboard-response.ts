@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ChartType } from '@app/prisma';
+import { ChartType, FilterType } from '@app/prisma';
 
 export class DashboardChartItem {
   @ApiProperty() dashboardChartId: string;
@@ -17,6 +17,17 @@ export class DashboardChartItem {
   @ApiProperty() order: number;
 }
 
+export class DashboardFilterItem {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+  @ApiProperty({ enum: FilterType }) filterType: FilterType;
+  @ApiProperty() connectionId: string;
+  @ApiProperty() targetColumn: string;
+  @ApiProperty({ required: false }) sourceQuery?: string | null;
+  @ApiProperty({ required: false }) defaultValue?: string | null;
+  @ApiProperty() order: number;
+}
+
 export class DashboardDetailData {
   @ApiProperty() id: string;
   @ApiProperty() name: string;
@@ -24,6 +35,7 @@ export class DashboardDetailData {
   @ApiProperty() createdAt: Date;
   @ApiProperty() updatedAt: Date | null;
   @ApiProperty({ type: [DashboardChartItem] }) charts: DashboardChartItem[];
+  @ApiProperty({ type: [DashboardFilterItem] }) filters: DashboardFilterItem[];
 }
 
 export class GetDashboardResponse {

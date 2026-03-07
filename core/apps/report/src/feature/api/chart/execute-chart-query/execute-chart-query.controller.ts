@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Body,
   NotFoundException,
   BadRequestException,
   Inject,
@@ -14,10 +15,12 @@ import { PrismaService } from '@app/prisma';
 import { Role } from '@app/prisma';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
+import { ExecuteChartQueryRequest } from './execute-chart-query-request';
 import { ExecuteChartQueryResponse } from './execute-chart-query-response';
 import { decrypt } from '../../../../core/utils/encryption.util';
 import { createDatabaseDriver } from '../../../../core/drivers/database-driver.factory';
 import { validateQuery, injectLimit } from '../../../../core/utils/query-validator.util';
+import { buildFilterSql, injectFilters } from '../../../../core/utils/filter.util';
 
 const MAX_ROWS = 1000;
 const TIMEOUT_MS = 30_000;
@@ -36,7 +39,10 @@ export class ExecuteChartQueryController {
   @ApiOperation({ operationId: 'executeChartQuery' })
   @ApiResponse({ status: HttpStatus.OK, type: ExecuteChartQueryResponse })
   @Authorize(Role.MEMBER)
-  async execute(@Param('id') id: string): Promise<ExecuteChartQueryResponse> {
+  async execute(
+    @Param('id') id: string,
+    @Body() body: ExecuteChartQueryRequest,
+  ): Promise<ExecuteChartQueryResponse> {
     const chart = await this.prismaService.client(
       async ({ dbContext }) => {
         const c = await dbContext.chart.findUnique({
@@ -51,8 +57,35 @@ export class ExecuteChartQueryController {
       { isTransaction: false },
     );
 
+    // Build filter SQL fragment if dashboard filters are supplied
+    let querySql = chart.sqlQuery;
+    if (body?.dashboardId && body?.filterValues && Object.keys(body.filterValues).length) {
+      const filters = await this.prismaService.client(
+        async ({ dbContext }) => {
+          return dbContext.dashboardFilter.findMany({
+            where: { dashboardId: body.dashboardId },
+          });
+        },
+        { isTransaction: false },
+      );
+
+      if (filters.length) {
+        const filterFragment = buildFilterSql(
+          filters.map((f) => ({
+            id: f.id,
+            filterType: f.filterType,
+            targetColumn: f.targetColumn,
+          })),
+          body.filterValues,
+        );
+        if (filterFragment) {
+          querySql = injectFilters(querySql, filterFragment);
+        }
+      }
+    }
+
     try {
-      validateQuery(chart.sqlQuery);
+      validateQuery(querySql);
     } catch (error: any) {
       throw new BadRequestException(
         `Chart SQL query is invalid: ${error.message}`,
@@ -66,7 +99,7 @@ export class ExecuteChartQueryController {
     );
 
     const driver = createDatabaseDriver(chart.connection, password);
-    const sql = injectLimit(chart.sqlQuery, MAX_ROWS);
+    const sql = injectLimit(querySql, MAX_ROWS);
     const result = await driver.runQuery(sql, MAX_ROWS, TIMEOUT_MS);
 
     // Audit the query execution

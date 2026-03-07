@@ -25,8 +25,9 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
-import type { DashboardDetail, DashboardChartItem, ChartItem, GetChartListResponse } from '@core/api/model';
+import type { DashboardDetail, DashboardChartItem, DashboardFilterItem, ChartItem, GetChartListResponse } from '@core/api/model';
 import { ChartRendererComponent, ChartQueryResult } from '@app/shared/chart-renderer/chart-renderer.component';
+import { DashboardFilterBarComponent } from '@app/shared/dashboard-filter-bar/dashboard-filter-bar.component';
 import { Button, OverlayStore, httpQuery, httpMutation } from '@projects/shared-lib';
 
 interface CardLayout {
@@ -42,7 +43,7 @@ const NUM_COLS = 3;
   selector: 'app-dashboard-view',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, Button, ChartRendererComponent, CdkDrag, CdkDropList, CdkDragHandle, CdkDragPlaceholder],
+  imports: [FormsModule, Button, ChartRendererComponent, DashboardFilterBarComponent, CdkDrag, CdkDropList, CdkDragHandle, CdkDragPlaceholder],
   template: `
 <div class="w-full p-4 flex flex-col gap-4">
 
@@ -81,6 +82,15 @@ const NUM_COLS = 3;
   }
   @if (dashboardQuery.error()) {
     <div class="text-red-600 text-sm">Failed to load dashboard.</div>
+  }
+
+  <!-- ── Filter Bar ──────────────────────────────────────────────── -->
+  @if (dashboardFilters().length) {
+    <app-dashboard-filter-bar
+      [dashboardId]="dashboardId()"
+      [filters]="dashboardFilters()"
+      (filterApplied)="onFilterApplied($event)"
+    />
   }
 
   <!-- ── Add Chart Panel ────────────────────────────────────────── -->
@@ -333,6 +343,9 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
   fullscreenItem = signal<DashboardChartItem | null>(null);
   refreshing = signal<Record<string, boolean>>({});
 
+  dashboardFilters = signal<DashboardFilterItem[]>([]);
+  filterValues = signal<Record<string, unknown>>({});
+
   private _layouts = signal<Record<string, CardLayout>>({});
   private _orderedChartIds = signal<string[]>([]);
   private removeTargetChartId = signal<string>('');
@@ -413,7 +426,8 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
       const d = this.dashboard();
       if (d) {
         untracked(() => {
-          this.loadChartData(d);
+          this.dashboardFilters.set(d.filters ?? []);
+          this.loadChartData(d, this.filterValues());
           this.loadLayoutFromStorage();
         });
       }
@@ -423,6 +437,16 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.dashboardId.set(id);
+  }
+
+  onFilterApplied(newValues: Record<string, unknown>) {
+    this.filterValues.set(newValues);
+    // clear existing data so next effect reloads or manually reload now
+    this.chartData.set({});
+    const d = this.dashboard();
+    if (d) {
+      this.loadChartData(d, newValues);
+    }
   }
 
   ngOnDestroy() {
@@ -521,7 +545,10 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
 
   refreshChart(chartId: string) {
     this.refreshing.update(r => ({ ...r, [chartId]: true }));
-    this.api.executeChartQuery(chartId).subscribe({
+    this.api.executeChartQuery(chartId, {
+      dashboardId: this.dashboardId(),
+      filterValues: this.filterValues(),
+    }).subscribe({
       next: (res) => {
         this.chartData.update(d => ({ ...d, [chartId]: res }));
         this.refreshing.update(r => ({ ...r, [chartId]: false }));
@@ -559,10 +586,13 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
 
   // ── Chart data ───────────────────────────────────────────────────
 
-  private loadChartData(dashboard: DashboardDetail) {
+  private loadChartData(dashboard: DashboardDetail, filters: Record<string, unknown>) {
     dashboard.charts?.forEach((dc) => {
       if (!this.chartData()[dc.chartId]) {
-        this.api.executeChartQuery(dc.chartId).subscribe({
+        this.api.executeChartQuery(dc.chartId, {
+          dashboardId: dashboard.id,
+          filterValues: filters,
+        }).subscribe({
           next: (res) => {
             this.chartData.update(data => ({ ...data, [dc.chartId]: res }));
           },

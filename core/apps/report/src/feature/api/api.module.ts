@@ -8,6 +8,7 @@ import { DeleteDbConnectionController } from './db-connection/delete-db-connecti
 import { GetDbConnectionController } from './db-connection/get-db-connection/get-db-connection.controller';
 import { GetDbConnectionListController } from './db-connection/get-db-connection-list/get-db-connection-list.controller';
 import { TestDbConnectionController } from './db-connection/test-db-connection/test-db-connection.controller';
+import { GetDbConnectionSchemaController } from './db-connection/get-db-connection-schema/get-db-connection-schema.controller';
 
 // AI Provider Controllers
 import { CreateAiProviderController } from './ai-provider/create-ai-provider/create-ai-provider.controller';
@@ -33,6 +34,14 @@ import { AddChartToDashboardController } from './dashboard/add-chart-to-dashboar
 import { RemoveChartFromDashboardController } from './dashboard/remove-chart-from-dashboard/remove-chart-from-dashboard.controller';
 import { UpdateChartLayoutController } from './dashboard/update-chart-layout/update-chart-layout.controller';
 
+// Dashboard Filter Controllers
+import { CreateDashboardFilterController } from './dashboard/filter/create-dashboard-filter/create-dashboard-filter.controller';
+import { UpdateDashboardFilterController } from './dashboard/filter/update-dashboard-filter/update-dashboard-filter.controller';
+import { DeleteDashboardFilterController } from './dashboard/filter/delete-dashboard-filter/delete-dashboard-filter.controller';
+import { ListDashboardFiltersController } from './dashboard/filter/list-dashboard-filters/list-dashboard-filters.controller';
+import { GetFilterOptionsController } from './dashboard/filter/get-filter-options/get-filter-options.controller';
+import { GenerateDashboardFilterController } from './dashboard/filter/generate-dashboard-filter/generate-dashboard-filter.controller';
+
 const DB_CONNECTION_CONTROLLERS = [
   CreateDbConnectionController,
   UpdateDbConnectionController,
@@ -40,6 +49,7 @@ const DB_CONNECTION_CONTROLLERS = [
   GetDbConnectionController,
   GetDbConnectionListController,
   TestDbConnectionController,
+  GetDbConnectionSchemaController,
 ];
 
 const AI_PROVIDER_CONTROLLERS = [
@@ -69,6 +79,15 @@ const DASHBOARD_CONTROLLERS = [
   UpdateChartLayoutController,
 ];
 
+const DASHBOARD_FILTER_CONTROLLERS = [
+  CreateDashboardFilterController,
+  UpdateDashboardFilterController,
+  DeleteDashboardFilterController,
+  ListDashboardFiltersController,
+  GetFilterOptionsController,
+  GenerateDashboardFilterController,
+];
+
 @Module({
   imports: [],
   controllers: [
@@ -76,6 +95,7 @@ const DASHBOARD_CONTROLLERS = [
     ...AI_PROVIDER_CONTROLLERS,
     ...CHART_CONTROLLERS,
     ...DASHBOARD_CONTROLLERS,
+    ...DASHBOARD_FILTER_CONTROLLERS,
   ],
   providers: [AiService],
 })

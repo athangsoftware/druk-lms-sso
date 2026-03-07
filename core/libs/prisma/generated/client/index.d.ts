@@ -70,6 +70,11 @@ export type Dashboard = $Result.DefaultSelection<Prisma.$DashboardPayload>
  */
 export type DashboardChart = $Result.DefaultSelection<Prisma.$DashboardChartPayload>
 /**
+ * Model DashboardFilter
+ * 
+ */
+export type DashboardFilter = $Result.DefaultSelection<Prisma.$DashboardFilterPayload>
+/**
  * Model User
  * 
  */
@@ -122,6 +127,17 @@ export const ChartType: {
 export type ChartType = (typeof ChartType)[keyof typeof ChartType]
 
 
+export const FilterType: {
+  MULTI_SELECT: 'MULTI_SELECT',
+  SINGLE_SELECT: 'SINGLE_SELECT',
+  DATE_RANGE: 'DATE_RANGE',
+  TEXT: 'TEXT',
+  NUMBER: 'NUMBER'
+};
+
+export type FilterType = (typeof FilterType)[keyof typeof FilterType]
+
+
 export const Role: {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -144,6 +160,10 @@ export const DbType: typeof $Enums.DbType
 export type ChartType = $Enums.ChartType
 
 export const ChartType: typeof $Enums.ChartType
+
+export type FilterType = $Enums.FilterType
+
+export const FilterType: typeof $Enums.FilterType
 
 export type Role = $Enums.Role
 
@@ -379,6 +399,16 @@ export class PrismaClient<
     * ```
     */
   get dashboardChart(): Prisma.DashboardChartDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dashboardFilter`: Exposes CRUD operations for the **DashboardFilter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DashboardFilters
+    * const dashboardFilters = await prisma.dashboardFilter.findMany()
+    * ```
+    */
+  get dashboardFilter(): Prisma.DashboardFilterDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -864,6 +894,7 @@ export namespace Prisma {
     Chart: 'Chart',
     Dashboard: 'Dashboard',
     DashboardChart: 'DashboardChart',
+    DashboardFilter: 'DashboardFilter',
     User: 'User',
     PasswordResetToken: 'PasswordResetToken',
     RefreshToken: 'RefreshToken',
@@ -883,7 +914,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "auditLog" | "metaData" | "client" | "authorizationCode" | "redirectURL" | "postLogoutRedirectURL" | "dbConnection" | "aiProvider" | "chart" | "dashboard" | "dashboardChart" | "user" | "passwordResetToken" | "refreshToken" | "webhookLog"
+      modelProps: "auditLog" | "metaData" | "client" | "authorizationCode" | "redirectURL" | "postLogoutRedirectURL" | "dbConnection" | "aiProvider" | "chart" | "dashboard" | "dashboardChart" | "dashboardFilter" | "user" | "passwordResetToken" | "refreshToken" | "webhookLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1613,6 +1644,72 @@ export namespace Prisma {
           }
         }
       }
+      DashboardFilter: {
+        payload: Prisma.$DashboardFilterPayload<ExtArgs>
+        fields: Prisma.DashboardFilterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DashboardFilterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DashboardFilterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          findFirst: {
+            args: Prisma.DashboardFilterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DashboardFilterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          findMany: {
+            args: Prisma.DashboardFilterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>[]
+          }
+          create: {
+            args: Prisma.DashboardFilterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          createMany: {
+            args: Prisma.DashboardFilterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.DashboardFilterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          update: {
+            args: Prisma.DashboardFilterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          deleteMany: {
+            args: Prisma.DashboardFilterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DashboardFilterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.DashboardFilterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DashboardFilterPayload>
+          }
+          aggregate: {
+            args: Prisma.DashboardFilterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDashboardFilter>
+          }
+          groupBy: {
+            args: Prisma.DashboardFilterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DashboardFilterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DashboardFilterCountArgs<ExtArgs>
+            result: $Utils.Optional<DashboardFilterCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1996,6 +2093,7 @@ export namespace Prisma {
     chart?: ChartOmit
     dashboard?: DashboardOmit
     dashboardChart?: DashboardChartOmit
+    dashboardFilter?: DashboardFilterOmit
     user?: UserOmit
     passwordResetToken?: PasswordResetTokenOmit
     refreshToken?: RefreshTokenOmit
@@ -2139,10 +2237,12 @@ export namespace Prisma {
 
   export type DbConnectionCountOutputType = {
     charts: number
+    dashboardFilters: number
   }
 
   export type DbConnectionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     charts?: boolean | DbConnectionCountOutputTypeCountChartsArgs
+    dashboardFilters?: boolean | DbConnectionCountOutputTypeCountDashboardFiltersArgs
   }
 
   // Custom InputTypes
@@ -2161,6 +2261,13 @@ export namespace Prisma {
    */
   export type DbConnectionCountOutputTypeCountChartsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChartWhereInput
+  }
+
+  /**
+   * DbConnectionCountOutputType without action
+   */
+  export type DbConnectionCountOutputTypeCountDashboardFiltersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DashboardFilterWhereInput
   }
 
 
@@ -2201,10 +2308,12 @@ export namespace Prisma {
 
   export type DashboardCountOutputType = {
     dashboardCharts: number
+    dashboardFilters: number
   }
 
   export type DashboardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dashboardCharts?: boolean | DashboardCountOutputTypeCountDashboardChartsArgs
+    dashboardFilters?: boolean | DashboardCountOutputTypeCountDashboardFiltersArgs
   }
 
   // Custom InputTypes
@@ -2223,6 +2332,13 @@ export namespace Prisma {
    */
   export type DashboardCountOutputTypeCountDashboardChartsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DashboardChartWhereInput
+  }
+
+  /**
+   * DashboardCountOutputType without action
+   */
+  export type DashboardCountOutputTypeCountDashboardFiltersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DashboardFilterWhereInput
   }
 
 
@@ -8485,6 +8601,7 @@ export namespace Prisma {
     updatedAt?: boolean
     updatedIp?: boolean
     charts?: boolean | DbConnection$chartsArgs<ExtArgs>
+    dashboardFilters?: boolean | DbConnection$dashboardFiltersArgs<ExtArgs>
     _count?: boolean | DbConnectionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dbConnection"]>
 
@@ -8510,6 +8627,7 @@ export namespace Prisma {
   export type DbConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "dbType" | "host" | "port" | "databaseName" | "username" | "encryptedPassword" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["dbConnection"]>
   export type DbConnectionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     charts?: boolean | DbConnection$chartsArgs<ExtArgs>
+    dashboardFilters?: boolean | DbConnection$dashboardFiltersArgs<ExtArgs>
     _count?: boolean | DbConnectionCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -8517,6 +8635,7 @@ export namespace Prisma {
     name: "DbConnection"
     objects: {
       charts: Prisma.$ChartPayload<ExtArgs>[]
+      dashboardFilters: Prisma.$DashboardFilterPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8874,6 +8993,7 @@ export namespace Prisma {
   export interface Prisma__DbConnectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     charts<T extends DbConnection$chartsArgs<ExtArgs> = {}>(args?: Subset<T, DbConnection$chartsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dashboardFilters<T extends DbConnection$dashboardFiltersArgs<ExtArgs> = {}>(args?: Subset<T, DbConnection$dashboardFiltersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9281,6 +9401,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChartScalarFieldEnum | ChartScalarFieldEnum[]
+  }
+
+  /**
+   * DbConnection.dashboardFilters
+   */
+  export type DbConnection$dashboardFiltersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    where?: DashboardFilterWhereInput
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    cursor?: DashboardFilterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
   }
 
   /**
@@ -11479,6 +11623,7 @@ export namespace Prisma {
     updatedAt?: boolean
     updatedIp?: boolean
     dashboardCharts?: boolean | Dashboard$dashboardChartsArgs<ExtArgs>
+    dashboardFilters?: boolean | Dashboard$dashboardFiltersArgs<ExtArgs>
     _count?: boolean | DashboardCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dashboard"]>
 
@@ -11499,6 +11644,7 @@ export namespace Prisma {
   export type DashboardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["dashboard"]>
   export type DashboardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dashboardCharts?: boolean | Dashboard$dashboardChartsArgs<ExtArgs>
+    dashboardFilters?: boolean | Dashboard$dashboardFiltersArgs<ExtArgs>
     _count?: boolean | DashboardCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -11506,6 +11652,7 @@ export namespace Prisma {
     name: "Dashboard"
     objects: {
       dashboardCharts: Prisma.$DashboardChartPayload<ExtArgs>[]
+      dashboardFilters: Prisma.$DashboardFilterPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11858,6 +12005,7 @@ export namespace Prisma {
   export interface Prisma__DashboardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     dashboardCharts<T extends Dashboard$dashboardChartsArgs<ExtArgs> = {}>(args?: Subset<T, Dashboard$dashboardChartsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dashboardFilters<T extends Dashboard$dashboardFiltersArgs<ExtArgs> = {}>(args?: Subset<T, Dashboard$dashboardFiltersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12260,6 +12408,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DashboardChartScalarFieldEnum | DashboardChartScalarFieldEnum[]
+  }
+
+  /**
+   * Dashboard.dashboardFilters
+   */
+  export type Dashboard$dashboardFiltersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    where?: DashboardFilterWhereInput
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    cursor?: DashboardFilterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
   }
 
   /**
@@ -13360,6 +13532,1083 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DashboardChartInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DashboardFilter
+   */
+
+  export type AggregateDashboardFilter = {
+    _count: DashboardFilterCountAggregateOutputType | null
+    _avg: DashboardFilterAvgAggregateOutputType | null
+    _sum: DashboardFilterSumAggregateOutputType | null
+    _min: DashboardFilterMinAggregateOutputType | null
+    _max: DashboardFilterMaxAggregateOutputType | null
+  }
+
+  export type DashboardFilterAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type DashboardFilterSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type DashboardFilterMinAggregateOutputType = {
+    id: string | null
+    dashboardId: string | null
+    name: string | null
+    filterType: $Enums.FilterType | null
+    connectionId: string | null
+    targetColumn: string | null
+    sourceQuery: string | null
+    defaultValue: string | null
+    order: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type DashboardFilterMaxAggregateOutputType = {
+    id: string | null
+    dashboardId: string | null
+    name: string | null
+    filterType: $Enums.FilterType | null
+    connectionId: string | null
+    targetColumn: string | null
+    sourceQuery: string | null
+    defaultValue: string | null
+    order: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type DashboardFilterCountAggregateOutputType = {
+    id: number
+    dashboardId: number
+    name: number
+    filterType: number
+    connectionId: number
+    targetColumn: number
+    sourceQuery: number
+    defaultValue: number
+    order: number
+    createdBy: number
+    createdAt: number
+    createdIp: number
+    updatedBy: number
+    updatedAt: number
+    updatedIp: number
+    _all: number
+  }
+
+
+  export type DashboardFilterAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type DashboardFilterSumAggregateInputType = {
+    order?: true
+  }
+
+  export type DashboardFilterMinAggregateInputType = {
+    id?: true
+    dashboardId?: true
+    name?: true
+    filterType?: true
+    connectionId?: true
+    targetColumn?: true
+    sourceQuery?: true
+    defaultValue?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type DashboardFilterMaxAggregateInputType = {
+    id?: true
+    dashboardId?: true
+    name?: true
+    filterType?: true
+    connectionId?: true
+    targetColumn?: true
+    sourceQuery?: true
+    defaultValue?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type DashboardFilterCountAggregateInputType = {
+    id?: true
+    dashboardId?: true
+    name?: true
+    filterType?: true
+    connectionId?: true
+    targetColumn?: true
+    sourceQuery?: true
+    defaultValue?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+    _all?: true
+  }
+
+  export type DashboardFilterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DashboardFilter to aggregate.
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DashboardFilters to fetch.
+     */
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DashboardFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DashboardFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DashboardFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DashboardFilters
+    **/
+    _count?: true | DashboardFilterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DashboardFilterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DashboardFilterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DashboardFilterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DashboardFilterMaxAggregateInputType
+  }
+
+  export type GetDashboardFilterAggregateType<T extends DashboardFilterAggregateArgs> = {
+        [P in keyof T & keyof AggregateDashboardFilter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDashboardFilter[P]>
+      : GetScalarType<T[P], AggregateDashboardFilter[P]>
+  }
+
+
+
+
+  export type DashboardFilterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DashboardFilterWhereInput
+    orderBy?: DashboardFilterOrderByWithAggregationInput | DashboardFilterOrderByWithAggregationInput[]
+    by: DashboardFilterScalarFieldEnum[] | DashboardFilterScalarFieldEnum
+    having?: DashboardFilterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DashboardFilterCountAggregateInputType | true
+    _avg?: DashboardFilterAvgAggregateInputType
+    _sum?: DashboardFilterSumAggregateInputType
+    _min?: DashboardFilterMinAggregateInputType
+    _max?: DashboardFilterMaxAggregateInputType
+  }
+
+  export type DashboardFilterGroupByOutputType = {
+    id: string
+    dashboardId: string
+    name: string
+    filterType: $Enums.FilterType
+    connectionId: string
+    targetColumn: string
+    sourceQuery: string | null
+    defaultValue: string | null
+    order: number
+    createdBy: string | null
+    createdAt: Date
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+    _count: DashboardFilterCountAggregateOutputType | null
+    _avg: DashboardFilterAvgAggregateOutputType | null
+    _sum: DashboardFilterSumAggregateOutputType | null
+    _min: DashboardFilterMinAggregateOutputType | null
+    _max: DashboardFilterMaxAggregateOutputType | null
+  }
+
+  type GetDashboardFilterGroupByPayload<T extends DashboardFilterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DashboardFilterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DashboardFilterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DashboardFilterGroupByOutputType[P]>
+            : GetScalarType<T[P], DashboardFilterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DashboardFilterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dashboardId?: boolean
+    name?: boolean
+    filterType?: boolean
+    connectionId?: boolean
+    targetColumn?: boolean
+    sourceQuery?: boolean
+    defaultValue?: boolean
+    order?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+    dashboard?: boolean | DashboardDefaultArgs<ExtArgs>
+    connection?: boolean | DbConnectionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dashboardFilter"]>
+
+
+
+  export type DashboardFilterSelectScalar = {
+    id?: boolean
+    dashboardId?: boolean
+    name?: boolean
+    filterType?: boolean
+    connectionId?: boolean
+    targetColumn?: boolean
+    sourceQuery?: boolean
+    defaultValue?: boolean
+    order?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+  }
+
+  export type DashboardFilterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dashboardId" | "name" | "filterType" | "connectionId" | "targetColumn" | "sourceQuery" | "defaultValue" | "order" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["dashboardFilter"]>
+  export type DashboardFilterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dashboard?: boolean | DashboardDefaultArgs<ExtArgs>
+    connection?: boolean | DbConnectionDefaultArgs<ExtArgs>
+  }
+
+  export type $DashboardFilterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DashboardFilter"
+    objects: {
+      dashboard: Prisma.$DashboardPayload<ExtArgs>
+      connection: Prisma.$DbConnectionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dashboardId: string
+      name: string
+      filterType: $Enums.FilterType
+      connectionId: string
+      targetColumn: string
+      sourceQuery: string | null
+      defaultValue: string | null
+      order: number
+      createdBy: string | null
+      createdAt: Date
+      createdIp: string | null
+      updatedBy: string | null
+      updatedAt: Date | null
+      updatedIp: string | null
+    }, ExtArgs["result"]["dashboardFilter"]>
+    composites: {}
+  }
+
+  type DashboardFilterGetPayload<S extends boolean | null | undefined | DashboardFilterDefaultArgs> = $Result.GetResult<Prisma.$DashboardFilterPayload, S>
+
+  type DashboardFilterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DashboardFilterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DashboardFilterCountAggregateInputType | true
+    }
+
+  export interface DashboardFilterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DashboardFilter'], meta: { name: 'DashboardFilter' } }
+    /**
+     * Find zero or one DashboardFilter that matches the filter.
+     * @param {DashboardFilterFindUniqueArgs} args - Arguments to find a DashboardFilter
+     * @example
+     * // Get one DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DashboardFilterFindUniqueArgs>(args: SelectSubset<T, DashboardFilterFindUniqueArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DashboardFilter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DashboardFilterFindUniqueOrThrowArgs} args - Arguments to find a DashboardFilter
+     * @example
+     * // Get one DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DashboardFilterFindUniqueOrThrowArgs>(args: SelectSubset<T, DashboardFilterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DashboardFilter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterFindFirstArgs} args - Arguments to find a DashboardFilter
+     * @example
+     * // Get one DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DashboardFilterFindFirstArgs>(args?: SelectSubset<T, DashboardFilterFindFirstArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DashboardFilter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterFindFirstOrThrowArgs} args - Arguments to find a DashboardFilter
+     * @example
+     * // Get one DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DashboardFilterFindFirstOrThrowArgs>(args?: SelectSubset<T, DashboardFilterFindFirstOrThrowArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DashboardFilters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DashboardFilters
+     * const dashboardFilters = await prisma.dashboardFilter.findMany()
+     * 
+     * // Get first 10 DashboardFilters
+     * const dashboardFilters = await prisma.dashboardFilter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dashboardFilterWithIdOnly = await prisma.dashboardFilter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DashboardFilterFindManyArgs>(args?: SelectSubset<T, DashboardFilterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DashboardFilter.
+     * @param {DashboardFilterCreateArgs} args - Arguments to create a DashboardFilter.
+     * @example
+     * // Create one DashboardFilter
+     * const DashboardFilter = await prisma.dashboardFilter.create({
+     *   data: {
+     *     // ... data to create a DashboardFilter
+     *   }
+     * })
+     * 
+     */
+    create<T extends DashboardFilterCreateArgs>(args: SelectSubset<T, DashboardFilterCreateArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DashboardFilters.
+     * @param {DashboardFilterCreateManyArgs} args - Arguments to create many DashboardFilters.
+     * @example
+     * // Create many DashboardFilters
+     * const dashboardFilter = await prisma.dashboardFilter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DashboardFilterCreateManyArgs>(args?: SelectSubset<T, DashboardFilterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a DashboardFilter.
+     * @param {DashboardFilterDeleteArgs} args - Arguments to delete one DashboardFilter.
+     * @example
+     * // Delete one DashboardFilter
+     * const DashboardFilter = await prisma.dashboardFilter.delete({
+     *   where: {
+     *     // ... filter to delete one DashboardFilter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DashboardFilterDeleteArgs>(args: SelectSubset<T, DashboardFilterDeleteArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DashboardFilter.
+     * @param {DashboardFilterUpdateArgs} args - Arguments to update one DashboardFilter.
+     * @example
+     * // Update one DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DashboardFilterUpdateArgs>(args: SelectSubset<T, DashboardFilterUpdateArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DashboardFilters.
+     * @param {DashboardFilterDeleteManyArgs} args - Arguments to filter DashboardFilters to delete.
+     * @example
+     * // Delete a few DashboardFilters
+     * const { count } = await prisma.dashboardFilter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DashboardFilterDeleteManyArgs>(args?: SelectSubset<T, DashboardFilterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DashboardFilters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DashboardFilters
+     * const dashboardFilter = await prisma.dashboardFilter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DashboardFilterUpdateManyArgs>(args: SelectSubset<T, DashboardFilterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DashboardFilter.
+     * @param {DashboardFilterUpsertArgs} args - Arguments to update or create a DashboardFilter.
+     * @example
+     * // Update or create a DashboardFilter
+     * const dashboardFilter = await prisma.dashboardFilter.upsert({
+     *   create: {
+     *     // ... data to create a DashboardFilter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DashboardFilter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DashboardFilterUpsertArgs>(args: SelectSubset<T, DashboardFilterUpsertArgs<ExtArgs>>): Prisma__DashboardFilterClient<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DashboardFilters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterCountArgs} args - Arguments to filter DashboardFilters to count.
+     * @example
+     * // Count the number of DashboardFilters
+     * const count = await prisma.dashboardFilter.count({
+     *   where: {
+     *     // ... the filter for the DashboardFilters we want to count
+     *   }
+     * })
+    **/
+    count<T extends DashboardFilterCountArgs>(
+      args?: Subset<T, DashboardFilterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DashboardFilterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DashboardFilter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DashboardFilterAggregateArgs>(args: Subset<T, DashboardFilterAggregateArgs>): Prisma.PrismaPromise<GetDashboardFilterAggregateType<T>>
+
+    /**
+     * Group by DashboardFilter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DashboardFilterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DashboardFilterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DashboardFilterGroupByArgs['orderBy'] }
+        : { orderBy?: DashboardFilterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DashboardFilterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDashboardFilterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DashboardFilter model
+   */
+  readonly fields: DashboardFilterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DashboardFilter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DashboardFilterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dashboard<T extends DashboardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DashboardDefaultArgs<ExtArgs>>): Prisma__DashboardClient<$Result.GetResult<Prisma.$DashboardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    connection<T extends DbConnectionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DbConnectionDefaultArgs<ExtArgs>>): Prisma__DbConnectionClient<$Result.GetResult<Prisma.$DbConnectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DashboardFilter model
+   */
+  interface DashboardFilterFieldRefs {
+    readonly id: FieldRef<"DashboardFilter", 'String'>
+    readonly dashboardId: FieldRef<"DashboardFilter", 'String'>
+    readonly name: FieldRef<"DashboardFilter", 'String'>
+    readonly filterType: FieldRef<"DashboardFilter", 'FilterType'>
+    readonly connectionId: FieldRef<"DashboardFilter", 'String'>
+    readonly targetColumn: FieldRef<"DashboardFilter", 'String'>
+    readonly sourceQuery: FieldRef<"DashboardFilter", 'String'>
+    readonly defaultValue: FieldRef<"DashboardFilter", 'String'>
+    readonly order: FieldRef<"DashboardFilter", 'Int'>
+    readonly createdBy: FieldRef<"DashboardFilter", 'String'>
+    readonly createdAt: FieldRef<"DashboardFilter", 'DateTime'>
+    readonly createdIp: FieldRef<"DashboardFilter", 'String'>
+    readonly updatedBy: FieldRef<"DashboardFilter", 'String'>
+    readonly updatedAt: FieldRef<"DashboardFilter", 'DateTime'>
+    readonly updatedIp: FieldRef<"DashboardFilter", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DashboardFilter findUnique
+   */
+  export type DashboardFilterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which DashboardFilter to fetch.
+     */
+    where: DashboardFilterWhereUniqueInput
+  }
+
+  /**
+   * DashboardFilter findUniqueOrThrow
+   */
+  export type DashboardFilterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which DashboardFilter to fetch.
+     */
+    where: DashboardFilterWhereUniqueInput
+  }
+
+  /**
+   * DashboardFilter findFirst
+   */
+  export type DashboardFilterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which DashboardFilter to fetch.
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DashboardFilters to fetch.
+     */
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DashboardFilters.
+     */
+    cursor?: DashboardFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DashboardFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DashboardFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DashboardFilters.
+     */
+    distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
+  }
+
+  /**
+   * DashboardFilter findFirstOrThrow
+   */
+  export type DashboardFilterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which DashboardFilter to fetch.
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DashboardFilters to fetch.
+     */
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DashboardFilters.
+     */
+    cursor?: DashboardFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DashboardFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DashboardFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DashboardFilters.
+     */
+    distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
+  }
+
+  /**
+   * DashboardFilter findMany
+   */
+  export type DashboardFilterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which DashboardFilters to fetch.
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DashboardFilters to fetch.
+     */
+    orderBy?: DashboardFilterOrderByWithRelationInput | DashboardFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DashboardFilters.
+     */
+    cursor?: DashboardFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DashboardFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DashboardFilters.
+     */
+    skip?: number
+    distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
+  }
+
+  /**
+   * DashboardFilter create
+   */
+  export type DashboardFilterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DashboardFilter.
+     */
+    data: XOR<DashboardFilterCreateInput, DashboardFilterUncheckedCreateInput>
+  }
+
+  /**
+   * DashboardFilter createMany
+   */
+  export type DashboardFilterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DashboardFilters.
+     */
+    data: DashboardFilterCreateManyInput | DashboardFilterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DashboardFilter update
+   */
+  export type DashboardFilterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DashboardFilter.
+     */
+    data: XOR<DashboardFilterUpdateInput, DashboardFilterUncheckedUpdateInput>
+    /**
+     * Choose, which DashboardFilter to update.
+     */
+    where: DashboardFilterWhereUniqueInput
+  }
+
+  /**
+   * DashboardFilter updateMany
+   */
+  export type DashboardFilterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DashboardFilters.
+     */
+    data: XOR<DashboardFilterUpdateManyMutationInput, DashboardFilterUncheckedUpdateManyInput>
+    /**
+     * Filter which DashboardFilters to update
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * Limit how many DashboardFilters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DashboardFilter upsert
+   */
+  export type DashboardFilterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DashboardFilter to update in case it exists.
+     */
+    where: DashboardFilterWhereUniqueInput
+    /**
+     * In case the DashboardFilter found by the `where` argument doesn't exist, create a new DashboardFilter with this data.
+     */
+    create: XOR<DashboardFilterCreateInput, DashboardFilterUncheckedCreateInput>
+    /**
+     * In case the DashboardFilter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DashboardFilterUpdateInput, DashboardFilterUncheckedUpdateInput>
+  }
+
+  /**
+   * DashboardFilter delete
+   */
+  export type DashboardFilterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
+    /**
+     * Filter which DashboardFilter to delete.
+     */
+    where: DashboardFilterWhereUniqueInput
+  }
+
+  /**
+   * DashboardFilter deleteMany
+   */
+  export type DashboardFilterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DashboardFilters to delete
+     */
+    where?: DashboardFilterWhereInput
+    /**
+     * Limit how many DashboardFilters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DashboardFilter without action
+   */
+  export type DashboardFilterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DashboardFilter
+     */
+    select?: DashboardFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DashboardFilter
+     */
+    omit?: DashboardFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DashboardFilterInclude<ExtArgs> | null
   }
 
 
@@ -17648,6 +18897,27 @@ export namespace Prisma {
   export type DashboardChartScalarFieldEnum = (typeof DashboardChartScalarFieldEnum)[keyof typeof DashboardChartScalarFieldEnum]
 
 
+  export const DashboardFilterScalarFieldEnum: {
+    id: 'id',
+    dashboardId: 'dashboardId',
+    name: 'name',
+    filterType: 'filterType',
+    connectionId: 'connectionId',
+    targetColumn: 'targetColumn',
+    sourceQuery: 'sourceQuery',
+    defaultValue: 'defaultValue',
+    order: 'order',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedAt: 'updatedAt',
+    updatedIp: 'updatedIp'
+  };
+
+  export type DashboardFilterScalarFieldEnum = (typeof DashboardFilterScalarFieldEnum)[keyof typeof DashboardFilterScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     firstName: 'firstName',
@@ -17921,6 +19191,23 @@ export namespace Prisma {
   export type DashboardChartOrderByRelevanceFieldEnum = (typeof DashboardChartOrderByRelevanceFieldEnum)[keyof typeof DashboardChartOrderByRelevanceFieldEnum]
 
 
+  export const DashboardFilterOrderByRelevanceFieldEnum: {
+    id: 'id',
+    dashboardId: 'dashboardId',
+    name: 'name',
+    connectionId: 'connectionId',
+    targetColumn: 'targetColumn',
+    sourceQuery: 'sourceQuery',
+    defaultValue: 'defaultValue',
+    createdBy: 'createdBy',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedIp: 'updatedIp'
+  };
+
+  export type DashboardFilterOrderByRelevanceFieldEnum = (typeof DashboardFilterOrderByRelevanceFieldEnum)[keyof typeof DashboardFilterOrderByRelevanceFieldEnum]
+
+
   export const UserOrderByRelevanceFieldEnum: {
     id: 'id',
     firstName: 'firstName',
@@ -18044,6 +19331,13 @@ export namespace Prisma {
    * Reference to a field of type 'ChartType'
    */
   export type EnumChartTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChartType'>
+    
+
+
+  /**
+   * Reference to a field of type 'FilterType'
+   */
+  export type EnumFilterTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FilterType'>
     
 
 
@@ -18576,6 +19870,7 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"DbConnection"> | Date | string | null
     updatedIp?: StringNullableFilter<"DbConnection"> | string | null
     charts?: ChartListRelationFilter
+    dashboardFilters?: DashboardFilterListRelationFilter
   }
 
   export type DbConnectionOrderByWithRelationInput = {
@@ -18594,6 +19889,7 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     updatedIp?: SortOrderInput | SortOrder
     charts?: ChartOrderByRelationAggregateInput
+    dashboardFilters?: DashboardFilterOrderByRelationAggregateInput
     _relevance?: DbConnectionOrderByRelevanceInput
   }
 
@@ -18616,6 +19912,7 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"DbConnection"> | Date | string | null
     updatedIp?: StringNullableFilter<"DbConnection"> | string | null
     charts?: ChartListRelationFilter
+    dashboardFilters?: DashboardFilterListRelationFilter
   }, "id">
 
   export type DbConnectionOrderByWithAggregationInput = {
@@ -18851,6 +20148,7 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"Dashboard"> | Date | string | null
     updatedIp?: StringNullableFilter<"Dashboard"> | string | null
     dashboardCharts?: DashboardChartListRelationFilter
+    dashboardFilters?: DashboardFilterListRelationFilter
   }
 
   export type DashboardOrderByWithRelationInput = {
@@ -18864,6 +20162,7 @@ export namespace Prisma {
     updatedAt?: SortOrderInput | SortOrder
     updatedIp?: SortOrderInput | SortOrder
     dashboardCharts?: DashboardChartOrderByRelationAggregateInput
+    dashboardFilters?: DashboardFilterOrderByRelationAggregateInput
     _relevance?: DashboardOrderByRelevanceInput
   }
 
@@ -18881,6 +20180,7 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableFilter<"Dashboard"> | Date | string | null
     updatedIp?: StringNullableFilter<"Dashboard"> | string | null
     dashboardCharts?: DashboardChartListRelationFilter
+    dashboardFilters?: DashboardFilterListRelationFilter
   }, "id">
 
   export type DashboardOrderByWithAggregationInput = {
@@ -19018,6 +20318,117 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"DashboardChart"> | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"DashboardChart"> | Date | string | null
     updatedIp?: StringNullableWithAggregatesFilter<"DashboardChart"> | string | null
+  }
+
+  export type DashboardFilterWhereInput = {
+    AND?: DashboardFilterWhereInput | DashboardFilterWhereInput[]
+    OR?: DashboardFilterWhereInput[]
+    NOT?: DashboardFilterWhereInput | DashboardFilterWhereInput[]
+    id?: StringFilter<"DashboardFilter"> | string
+    dashboardId?: StringFilter<"DashboardFilter"> | string
+    name?: StringFilter<"DashboardFilter"> | string
+    filterType?: EnumFilterTypeFilter<"DashboardFilter"> | $Enums.FilterType
+    connectionId?: StringFilter<"DashboardFilter"> | string
+    targetColumn?: StringFilter<"DashboardFilter"> | string
+    sourceQuery?: StringNullableFilter<"DashboardFilter"> | string | null
+    defaultValue?: StringNullableFilter<"DashboardFilter"> | string | null
+    order?: IntFilter<"DashboardFilter"> | number
+    createdBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    createdAt?: DateTimeFilter<"DashboardFilter"> | Date | string
+    createdIp?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedAt?: DateTimeNullableFilter<"DashboardFilter"> | Date | string | null
+    updatedIp?: StringNullableFilter<"DashboardFilter"> | string | null
+    dashboard?: XOR<DashboardScalarRelationFilter, DashboardWhereInput>
+    connection?: XOR<DbConnectionScalarRelationFilter, DbConnectionWhereInput>
+  }
+
+  export type DashboardFilterOrderByWithRelationInput = {
+    id?: SortOrder
+    dashboardId?: SortOrder
+    name?: SortOrder
+    filterType?: SortOrder
+    connectionId?: SortOrder
+    targetColumn?: SortOrder
+    sourceQuery?: SortOrderInput | SortOrder
+    defaultValue?: SortOrderInput | SortOrder
+    order?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    dashboard?: DashboardOrderByWithRelationInput
+    connection?: DbConnectionOrderByWithRelationInput
+    _relevance?: DashboardFilterOrderByRelevanceInput
+  }
+
+  export type DashboardFilterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DashboardFilterWhereInput | DashboardFilterWhereInput[]
+    OR?: DashboardFilterWhereInput[]
+    NOT?: DashboardFilterWhereInput | DashboardFilterWhereInput[]
+    dashboardId?: StringFilter<"DashboardFilter"> | string
+    name?: StringFilter<"DashboardFilter"> | string
+    filterType?: EnumFilterTypeFilter<"DashboardFilter"> | $Enums.FilterType
+    connectionId?: StringFilter<"DashboardFilter"> | string
+    targetColumn?: StringFilter<"DashboardFilter"> | string
+    sourceQuery?: StringNullableFilter<"DashboardFilter"> | string | null
+    defaultValue?: StringNullableFilter<"DashboardFilter"> | string | null
+    order?: IntFilter<"DashboardFilter"> | number
+    createdBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    createdAt?: DateTimeFilter<"DashboardFilter"> | Date | string
+    createdIp?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedAt?: DateTimeNullableFilter<"DashboardFilter"> | Date | string | null
+    updatedIp?: StringNullableFilter<"DashboardFilter"> | string | null
+    dashboard?: XOR<DashboardScalarRelationFilter, DashboardWhereInput>
+    connection?: XOR<DbConnectionScalarRelationFilter, DbConnectionWhereInput>
+  }, "id">
+
+  export type DashboardFilterOrderByWithAggregationInput = {
+    id?: SortOrder
+    dashboardId?: SortOrder
+    name?: SortOrder
+    filterType?: SortOrder
+    connectionId?: SortOrder
+    targetColumn?: SortOrder
+    sourceQuery?: SortOrderInput | SortOrder
+    defaultValue?: SortOrderInput | SortOrder
+    order?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    _count?: DashboardFilterCountOrderByAggregateInput
+    _avg?: DashboardFilterAvgOrderByAggregateInput
+    _max?: DashboardFilterMaxOrderByAggregateInput
+    _min?: DashboardFilterMinOrderByAggregateInput
+    _sum?: DashboardFilterSumOrderByAggregateInput
+  }
+
+  export type DashboardFilterScalarWhereWithAggregatesInput = {
+    AND?: DashboardFilterScalarWhereWithAggregatesInput | DashboardFilterScalarWhereWithAggregatesInput[]
+    OR?: DashboardFilterScalarWhereWithAggregatesInput[]
+    NOT?: DashboardFilterScalarWhereWithAggregatesInput | DashboardFilterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DashboardFilter"> | string
+    dashboardId?: StringWithAggregatesFilter<"DashboardFilter"> | string
+    name?: StringWithAggregatesFilter<"DashboardFilter"> | string
+    filterType?: EnumFilterTypeWithAggregatesFilter<"DashboardFilter"> | $Enums.FilterType
+    connectionId?: StringWithAggregatesFilter<"DashboardFilter"> | string
+    targetColumn?: StringWithAggregatesFilter<"DashboardFilter"> | string
+    sourceQuery?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+    defaultValue?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+    order?: IntWithAggregatesFilter<"DashboardFilter"> | number
+    createdBy?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DashboardFilter"> | Date | string
+    createdIp?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"DashboardFilter"> | Date | string | null
+    updatedIp?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
   }
 
   export type UserWhereInput = {
@@ -19974,6 +21385,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     charts?: ChartCreateNestedManyWithoutConnectionInput
+    dashboardFilters?: DashboardFilterCreateNestedManyWithoutConnectionInput
   }
 
   export type DbConnectionUncheckedCreateInput = {
@@ -19992,6 +21404,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     charts?: ChartUncheckedCreateNestedManyWithoutConnectionInput
+    dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutConnectionInput
   }
 
   export type DbConnectionUpdateInput = {
@@ -20010,6 +21423,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     charts?: ChartUpdateManyWithoutConnectionNestedInput
+    dashboardFilters?: DashboardFilterUpdateManyWithoutConnectionNestedInput
   }
 
   export type DbConnectionUncheckedUpdateInput = {
@@ -20028,6 +21442,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     charts?: ChartUncheckedUpdateManyWithoutConnectionNestedInput
+    dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutConnectionNestedInput
   }
 
   export type DbConnectionCreateManyInput = {
@@ -20298,6 +21713,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardCharts?: DashboardChartCreateNestedManyWithoutDashboardInput
+    dashboardFilters?: DashboardFilterCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUncheckedCreateInput = {
@@ -20311,6 +21727,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardCharts?: DashboardChartUncheckedCreateNestedManyWithoutDashboardInput
+    dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUpdateInput = {
@@ -20324,6 +21741,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUpdateManyWithoutDashboardNestedInput
+    dashboardFilters?: DashboardFilterUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardUncheckedUpdateInput = {
@@ -20337,6 +21755,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput
+    dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardCreateManyInput = {
@@ -20483,6 +21902,130 @@ export namespace Prisma {
     positionY?: IntFieldUpdateOperationsInput | number
     width?: IntFieldUpdateOperationsInput | number
     height?: IntFieldUpdateOperationsInput | number
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterCreateInput = {
+    id?: string
+    name: string
+    filterType: $Enums.FilterType
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboard: DashboardCreateNestedOneWithoutDashboardFiltersInput
+    connection: DbConnectionCreateNestedOneWithoutDashboardFiltersInput
+  }
+
+  export type DashboardFilterUncheckedCreateInput = {
+    id?: string
+    dashboardId: string
+    name: string
+    filterType: $Enums.FilterType
+    connectionId: string
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type DashboardFilterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboard?: DashboardUpdateOneRequiredWithoutDashboardFiltersNestedInput
+    connection?: DbConnectionUpdateOneRequiredWithoutDashboardFiltersNestedInput
+  }
+
+  export type DashboardFilterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    connectionId?: StringFieldUpdateOperationsInput | string
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterCreateManyInput = {
+    id?: string
+    dashboardId: string
+    name: string
+    filterType: $Enums.FilterType
+    connectionId: string
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type DashboardFilterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    connectionId?: StringFieldUpdateOperationsInput | string
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21480,7 +23023,17 @@ export namespace Prisma {
     none?: ChartWhereInput
   }
 
+  export type DashboardFilterListRelationFilter = {
+    every?: DashboardFilterWhereInput
+    some?: DashboardFilterWhereInput
+    none?: DashboardFilterWhereInput
+  }
+
   export type ChartOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DashboardFilterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21881,6 +23434,91 @@ export namespace Prisma {
     width?: SortOrder
     height?: SortOrder
     order?: SortOrder
+  }
+
+  export type EnumFilterTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FilterType | EnumFilterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FilterType[]
+    notIn?: $Enums.FilterType[]
+    not?: NestedEnumFilterTypeFilter<$PrismaModel> | $Enums.FilterType
+  }
+
+  export type DashboardFilterOrderByRelevanceInput = {
+    fields: DashboardFilterOrderByRelevanceFieldEnum | DashboardFilterOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type DashboardFilterCountOrderByAggregateInput = {
+    id?: SortOrder
+    dashboardId?: SortOrder
+    name?: SortOrder
+    filterType?: SortOrder
+    connectionId?: SortOrder
+    targetColumn?: SortOrder
+    sourceQuery?: SortOrder
+    defaultValue?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type DashboardFilterAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type DashboardFilterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dashboardId?: SortOrder
+    name?: SortOrder
+    filterType?: SortOrder
+    connectionId?: SortOrder
+    targetColumn?: SortOrder
+    sourceQuery?: SortOrder
+    defaultValue?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type DashboardFilterMinOrderByAggregateInput = {
+    id?: SortOrder
+    dashboardId?: SortOrder
+    name?: SortOrder
+    filterType?: SortOrder
+    connectionId?: SortOrder
+    targetColumn?: SortOrder
+    sourceQuery?: SortOrder
+    defaultValue?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type DashboardFilterSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type EnumFilterTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FilterType | EnumFilterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FilterType[]
+    notIn?: $Enums.FilterType[]
+    not?: NestedEnumFilterTypeWithAggregatesFilter<$PrismaModel> | $Enums.FilterType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFilterTypeFilter<$PrismaModel>
+    _max?: NestedEnumFilterTypeFilter<$PrismaModel>
   }
 
   export type EnumRoleFilter<$PrismaModel = never> = {
@@ -22382,11 +24020,25 @@ export namespace Prisma {
     connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
   }
 
+  export type DashboardFilterCreateNestedManyWithoutConnectionInput = {
+    create?: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput> | DashboardFilterCreateWithoutConnectionInput[] | DashboardFilterUncheckedCreateWithoutConnectionInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutConnectionInput | DashboardFilterCreateOrConnectWithoutConnectionInput[]
+    createMany?: DashboardFilterCreateManyConnectionInputEnvelope
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+  }
+
   export type ChartUncheckedCreateNestedManyWithoutConnectionInput = {
     create?: XOR<ChartCreateWithoutConnectionInput, ChartUncheckedCreateWithoutConnectionInput> | ChartCreateWithoutConnectionInput[] | ChartUncheckedCreateWithoutConnectionInput[]
     connectOrCreate?: ChartCreateOrConnectWithoutConnectionInput | ChartCreateOrConnectWithoutConnectionInput[]
     createMany?: ChartCreateManyConnectionInputEnvelope
     connect?: ChartWhereUniqueInput | ChartWhereUniqueInput[]
+  }
+
+  export type DashboardFilterUncheckedCreateNestedManyWithoutConnectionInput = {
+    create?: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput> | DashboardFilterCreateWithoutConnectionInput[] | DashboardFilterUncheckedCreateWithoutConnectionInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutConnectionInput | DashboardFilterCreateOrConnectWithoutConnectionInput[]
+    createMany?: DashboardFilterCreateManyConnectionInputEnvelope
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
   }
 
   export type EnumDbTypeFieldUpdateOperationsInput = {
@@ -22415,6 +24067,20 @@ export namespace Prisma {
     deleteMany?: ChartScalarWhereInput | ChartScalarWhereInput[]
   }
 
+  export type DashboardFilterUpdateManyWithoutConnectionNestedInput = {
+    create?: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput> | DashboardFilterCreateWithoutConnectionInput[] | DashboardFilterUncheckedCreateWithoutConnectionInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutConnectionInput | DashboardFilterCreateOrConnectWithoutConnectionInput[]
+    upsert?: DashboardFilterUpsertWithWhereUniqueWithoutConnectionInput | DashboardFilterUpsertWithWhereUniqueWithoutConnectionInput[]
+    createMany?: DashboardFilterCreateManyConnectionInputEnvelope
+    set?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    disconnect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    delete?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    update?: DashboardFilterUpdateWithWhereUniqueWithoutConnectionInput | DashboardFilterUpdateWithWhereUniqueWithoutConnectionInput[]
+    updateMany?: DashboardFilterUpdateManyWithWhereWithoutConnectionInput | DashboardFilterUpdateManyWithWhereWithoutConnectionInput[]
+    deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
+  }
+
   export type ChartUncheckedUpdateManyWithoutConnectionNestedInput = {
     create?: XOR<ChartCreateWithoutConnectionInput, ChartUncheckedCreateWithoutConnectionInput> | ChartCreateWithoutConnectionInput[] | ChartUncheckedCreateWithoutConnectionInput[]
     connectOrCreate?: ChartCreateOrConnectWithoutConnectionInput | ChartCreateOrConnectWithoutConnectionInput[]
@@ -22427,6 +24093,20 @@ export namespace Prisma {
     update?: ChartUpdateWithWhereUniqueWithoutConnectionInput | ChartUpdateWithWhereUniqueWithoutConnectionInput[]
     updateMany?: ChartUpdateManyWithWhereWithoutConnectionInput | ChartUpdateManyWithWhereWithoutConnectionInput[]
     deleteMany?: ChartScalarWhereInput | ChartScalarWhereInput[]
+  }
+
+  export type DashboardFilterUncheckedUpdateManyWithoutConnectionNestedInput = {
+    create?: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput> | DashboardFilterCreateWithoutConnectionInput[] | DashboardFilterUncheckedCreateWithoutConnectionInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutConnectionInput | DashboardFilterCreateOrConnectWithoutConnectionInput[]
+    upsert?: DashboardFilterUpsertWithWhereUniqueWithoutConnectionInput | DashboardFilterUpsertWithWhereUniqueWithoutConnectionInput[]
+    createMany?: DashboardFilterCreateManyConnectionInputEnvelope
+    set?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    disconnect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    delete?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    update?: DashboardFilterUpdateWithWhereUniqueWithoutConnectionInput | DashboardFilterUpdateWithWhereUniqueWithoutConnectionInput[]
+    updateMany?: DashboardFilterUpdateManyWithWhereWithoutConnectionInput | DashboardFilterUpdateManyWithWhereWithoutConnectionInput[]
+    deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
   }
 
   export type DbConnectionCreateNestedOneWithoutChartsInput = {
@@ -22496,11 +24176,25 @@ export namespace Prisma {
     connect?: DashboardChartWhereUniqueInput | DashboardChartWhereUniqueInput[]
   }
 
+  export type DashboardFilterCreateNestedManyWithoutDashboardInput = {
+    create?: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput> | DashboardFilterCreateWithoutDashboardInput[] | DashboardFilterUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutDashboardInput | DashboardFilterCreateOrConnectWithoutDashboardInput[]
+    createMany?: DashboardFilterCreateManyDashboardInputEnvelope
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+  }
+
   export type DashboardChartUncheckedCreateNestedManyWithoutDashboardInput = {
     create?: XOR<DashboardChartCreateWithoutDashboardInput, DashboardChartUncheckedCreateWithoutDashboardInput> | DashboardChartCreateWithoutDashboardInput[] | DashboardChartUncheckedCreateWithoutDashboardInput[]
     connectOrCreate?: DashboardChartCreateOrConnectWithoutDashboardInput | DashboardChartCreateOrConnectWithoutDashboardInput[]
     createMany?: DashboardChartCreateManyDashboardInputEnvelope
     connect?: DashboardChartWhereUniqueInput | DashboardChartWhereUniqueInput[]
+  }
+
+  export type DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput = {
+    create?: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput> | DashboardFilterCreateWithoutDashboardInput[] | DashboardFilterUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutDashboardInput | DashboardFilterCreateOrConnectWithoutDashboardInput[]
+    createMany?: DashboardFilterCreateManyDashboardInputEnvelope
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
   }
 
   export type DashboardChartUpdateManyWithoutDashboardNestedInput = {
@@ -22517,6 +24211,20 @@ export namespace Prisma {
     deleteMany?: DashboardChartScalarWhereInput | DashboardChartScalarWhereInput[]
   }
 
+  export type DashboardFilterUpdateManyWithoutDashboardNestedInput = {
+    create?: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput> | DashboardFilterCreateWithoutDashboardInput[] | DashboardFilterUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutDashboardInput | DashboardFilterCreateOrConnectWithoutDashboardInput[]
+    upsert?: DashboardFilterUpsertWithWhereUniqueWithoutDashboardInput | DashboardFilterUpsertWithWhereUniqueWithoutDashboardInput[]
+    createMany?: DashboardFilterCreateManyDashboardInputEnvelope
+    set?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    disconnect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    delete?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    update?: DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput | DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput[]
+    updateMany?: DashboardFilterUpdateManyWithWhereWithoutDashboardInput | DashboardFilterUpdateManyWithWhereWithoutDashboardInput[]
+    deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
+  }
+
   export type DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput = {
     create?: XOR<DashboardChartCreateWithoutDashboardInput, DashboardChartUncheckedCreateWithoutDashboardInput> | DashboardChartCreateWithoutDashboardInput[] | DashboardChartUncheckedCreateWithoutDashboardInput[]
     connectOrCreate?: DashboardChartCreateOrConnectWithoutDashboardInput | DashboardChartCreateOrConnectWithoutDashboardInput[]
@@ -22529,6 +24237,20 @@ export namespace Prisma {
     update?: DashboardChartUpdateWithWhereUniqueWithoutDashboardInput | DashboardChartUpdateWithWhereUniqueWithoutDashboardInput[]
     updateMany?: DashboardChartUpdateManyWithWhereWithoutDashboardInput | DashboardChartUpdateManyWithWhereWithoutDashboardInput[]
     deleteMany?: DashboardChartScalarWhereInput | DashboardChartScalarWhereInput[]
+  }
+
+  export type DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput = {
+    create?: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput> | DashboardFilterCreateWithoutDashboardInput[] | DashboardFilterUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: DashboardFilterCreateOrConnectWithoutDashboardInput | DashboardFilterCreateOrConnectWithoutDashboardInput[]
+    upsert?: DashboardFilterUpsertWithWhereUniqueWithoutDashboardInput | DashboardFilterUpsertWithWhereUniqueWithoutDashboardInput[]
+    createMany?: DashboardFilterCreateManyDashboardInputEnvelope
+    set?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    disconnect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    delete?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+    update?: DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput | DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput[]
+    updateMany?: DashboardFilterUpdateManyWithWhereWithoutDashboardInput | DashboardFilterUpdateManyWithWhereWithoutDashboardInput[]
+    deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
   }
 
   export type DashboardCreateNestedOneWithoutDashboardChartsInput = {
@@ -22557,6 +24279,38 @@ export namespace Prisma {
     upsert?: ChartUpsertWithoutDashboardChartsInput
     connect?: ChartWhereUniqueInput
     update?: XOR<XOR<ChartUpdateToOneWithWhereWithoutDashboardChartsInput, ChartUpdateWithoutDashboardChartsInput>, ChartUncheckedUpdateWithoutDashboardChartsInput>
+  }
+
+  export type DashboardCreateNestedOneWithoutDashboardFiltersInput = {
+    create?: XOR<DashboardCreateWithoutDashboardFiltersInput, DashboardUncheckedCreateWithoutDashboardFiltersInput>
+    connectOrCreate?: DashboardCreateOrConnectWithoutDashboardFiltersInput
+    connect?: DashboardWhereUniqueInput
+  }
+
+  export type DbConnectionCreateNestedOneWithoutDashboardFiltersInput = {
+    create?: XOR<DbConnectionCreateWithoutDashboardFiltersInput, DbConnectionUncheckedCreateWithoutDashboardFiltersInput>
+    connectOrCreate?: DbConnectionCreateOrConnectWithoutDashboardFiltersInput
+    connect?: DbConnectionWhereUniqueInput
+  }
+
+  export type EnumFilterTypeFieldUpdateOperationsInput = {
+    set?: $Enums.FilterType
+  }
+
+  export type DashboardUpdateOneRequiredWithoutDashboardFiltersNestedInput = {
+    create?: XOR<DashboardCreateWithoutDashboardFiltersInput, DashboardUncheckedCreateWithoutDashboardFiltersInput>
+    connectOrCreate?: DashboardCreateOrConnectWithoutDashboardFiltersInput
+    upsert?: DashboardUpsertWithoutDashboardFiltersInput
+    connect?: DashboardWhereUniqueInput
+    update?: XOR<XOR<DashboardUpdateToOneWithWhereWithoutDashboardFiltersInput, DashboardUpdateWithoutDashboardFiltersInput>, DashboardUncheckedUpdateWithoutDashboardFiltersInput>
+  }
+
+  export type DbConnectionUpdateOneRequiredWithoutDashboardFiltersNestedInput = {
+    create?: XOR<DbConnectionCreateWithoutDashboardFiltersInput, DbConnectionUncheckedCreateWithoutDashboardFiltersInput>
+    connectOrCreate?: DbConnectionCreateOrConnectWithoutDashboardFiltersInput
+    upsert?: DbConnectionUpsertWithoutDashboardFiltersInput
+    connect?: DbConnectionWhereUniqueInput
+    update?: XOR<XOR<DbConnectionUpdateToOneWithWhereWithoutDashboardFiltersInput, DbConnectionUpdateWithoutDashboardFiltersInput>, DbConnectionUncheckedUpdateWithoutDashboardFiltersInput>
   }
 
   export type RefreshTokenCreateNestedManyWithoutUserInput = {
@@ -23004,6 +24758,23 @@ export namespace Prisma {
     gt?: InputJsonValue
     gte?: InputJsonValue
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumFilterTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.FilterType | EnumFilterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FilterType[]
+    notIn?: $Enums.FilterType[]
+    not?: NestedEnumFilterTypeFilter<$PrismaModel> | $Enums.FilterType
+  }
+
+  export type NestedEnumFilterTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FilterType | EnumFilterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.FilterType[]
+    notIn?: $Enums.FilterType[]
+    not?: NestedEnumFilterTypeWithAggregatesFilter<$PrismaModel> | $Enums.FilterType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumFilterTypeFilter<$PrismaModel>
+    _max?: NestedEnumFilterTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
@@ -23713,6 +25484,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DashboardFilterCreateWithoutConnectionInput = {
+    id?: string
+    name: string
+    filterType: $Enums.FilterType
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboard: DashboardCreateNestedOneWithoutDashboardFiltersInput
+  }
+
+  export type DashboardFilterUncheckedCreateWithoutConnectionInput = {
+    id?: string
+    dashboardId: string
+    name: string
+    filterType: $Enums.FilterType
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type DashboardFilterCreateOrConnectWithoutConnectionInput = {
+    where: DashboardFilterWhereUniqueInput
+    create: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput>
+  }
+
+  export type DashboardFilterCreateManyConnectionInputEnvelope = {
+    data: DashboardFilterCreateManyConnectionInput | DashboardFilterCreateManyConnectionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ChartUpsertWithWhereUniqueWithoutConnectionInput = {
     where: ChartWhereUniqueInput
     update: XOR<ChartUpdateWithoutConnectionInput, ChartUncheckedUpdateWithoutConnectionInput>
@@ -23747,6 +25562,43 @@ export namespace Prisma {
     updatedIp?: StringNullableFilter<"Chart"> | string | null
   }
 
+  export type DashboardFilterUpsertWithWhereUniqueWithoutConnectionInput = {
+    where: DashboardFilterWhereUniqueInput
+    update: XOR<DashboardFilterUpdateWithoutConnectionInput, DashboardFilterUncheckedUpdateWithoutConnectionInput>
+    create: XOR<DashboardFilterCreateWithoutConnectionInput, DashboardFilterUncheckedCreateWithoutConnectionInput>
+  }
+
+  export type DashboardFilterUpdateWithWhereUniqueWithoutConnectionInput = {
+    where: DashboardFilterWhereUniqueInput
+    data: XOR<DashboardFilterUpdateWithoutConnectionInput, DashboardFilterUncheckedUpdateWithoutConnectionInput>
+  }
+
+  export type DashboardFilterUpdateManyWithWhereWithoutConnectionInput = {
+    where: DashboardFilterScalarWhereInput
+    data: XOR<DashboardFilterUpdateManyMutationInput, DashboardFilterUncheckedUpdateManyWithoutConnectionInput>
+  }
+
+  export type DashboardFilterScalarWhereInput = {
+    AND?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
+    OR?: DashboardFilterScalarWhereInput[]
+    NOT?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
+    id?: StringFilter<"DashboardFilter"> | string
+    dashboardId?: StringFilter<"DashboardFilter"> | string
+    name?: StringFilter<"DashboardFilter"> | string
+    filterType?: EnumFilterTypeFilter<"DashboardFilter"> | $Enums.FilterType
+    connectionId?: StringFilter<"DashboardFilter"> | string
+    targetColumn?: StringFilter<"DashboardFilter"> | string
+    sourceQuery?: StringNullableFilter<"DashboardFilter"> | string | null
+    defaultValue?: StringNullableFilter<"DashboardFilter"> | string | null
+    order?: IntFilter<"DashboardFilter"> | number
+    createdBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    createdAt?: DateTimeFilter<"DashboardFilter"> | Date | string
+    createdIp?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedBy?: StringNullableFilter<"DashboardFilter"> | string | null
+    updatedAt?: DateTimeNullableFilter<"DashboardFilter"> | Date | string | null
+    updatedIp?: StringNullableFilter<"DashboardFilter"> | string | null
+  }
+
   export type DbConnectionCreateWithoutChartsInput = {
     id?: string
     name: string
@@ -23762,6 +25614,7 @@ export namespace Prisma {
     updatedBy?: string | null
     updatedAt?: Date | string | null
     updatedIp?: string | null
+    dashboardFilters?: DashboardFilterCreateNestedManyWithoutConnectionInput
   }
 
   export type DbConnectionUncheckedCreateWithoutChartsInput = {
@@ -23779,6 +25632,7 @@ export namespace Prisma {
     updatedBy?: string | null
     updatedAt?: Date | string | null
     updatedIp?: string | null
+    dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutConnectionInput
   }
 
   export type DbConnectionCreateOrConnectWithoutChartsInput = {
@@ -23854,6 +25708,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardFilters?: DashboardFilterUpdateManyWithoutConnectionNestedInput
   }
 
   export type DbConnectionUncheckedUpdateWithoutChartsInput = {
@@ -23871,6 +25726,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutConnectionNestedInput
   }
 
   export type DashboardChartUpsertWithWhereUniqueWithoutChartInput = {
@@ -23951,6 +25807,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DashboardFilterCreateWithoutDashboardInput = {
+    id?: string
+    name: string
+    filterType: $Enums.FilterType
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    connection: DbConnectionCreateNestedOneWithoutDashboardFiltersInput
+  }
+
+  export type DashboardFilterUncheckedCreateWithoutDashboardInput = {
+    id?: string
+    name: string
+    filterType: $Enums.FilterType
+    connectionId: string
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type DashboardFilterCreateOrConnectWithoutDashboardInput = {
+    where: DashboardFilterWhereUniqueInput
+    create: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput>
+  }
+
+  export type DashboardFilterCreateManyDashboardInputEnvelope = {
+    data: DashboardFilterCreateManyDashboardInput | DashboardFilterCreateManyDashboardInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DashboardChartUpsertWithWhereUniqueWithoutDashboardInput = {
     where: DashboardChartWhereUniqueInput
     update: XOR<DashboardChartUpdateWithoutDashboardInput, DashboardChartUncheckedUpdateWithoutDashboardInput>
@@ -23967,6 +25867,22 @@ export namespace Prisma {
     data: XOR<DashboardChartUpdateManyMutationInput, DashboardChartUncheckedUpdateManyWithoutDashboardInput>
   }
 
+  export type DashboardFilterUpsertWithWhereUniqueWithoutDashboardInput = {
+    where: DashboardFilterWhereUniqueInput
+    update: XOR<DashboardFilterUpdateWithoutDashboardInput, DashboardFilterUncheckedUpdateWithoutDashboardInput>
+    create: XOR<DashboardFilterCreateWithoutDashboardInput, DashboardFilterUncheckedCreateWithoutDashboardInput>
+  }
+
+  export type DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput = {
+    where: DashboardFilterWhereUniqueInput
+    data: XOR<DashboardFilterUpdateWithoutDashboardInput, DashboardFilterUncheckedUpdateWithoutDashboardInput>
+  }
+
+  export type DashboardFilterUpdateManyWithWhereWithoutDashboardInput = {
+    where: DashboardFilterScalarWhereInput
+    data: XOR<DashboardFilterUpdateManyMutationInput, DashboardFilterUncheckedUpdateManyWithoutDashboardInput>
+  }
+
   export type DashboardCreateWithoutDashboardChartsInput = {
     id?: string
     name: string
@@ -23977,6 +25893,7 @@ export namespace Prisma {
     updatedBy?: string | null
     updatedAt?: Date | string | null
     updatedIp?: string | null
+    dashboardFilters?: DashboardFilterCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUncheckedCreateWithoutDashboardChartsInput = {
@@ -23989,6 +25906,7 @@ export namespace Prisma {
     updatedBy?: string | null
     updatedAt?: Date | string | null
     updatedIp?: string | null
+    dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardCreateOrConnectWithoutDashboardChartsInput = {
@@ -24052,6 +25970,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardFilters?: DashboardFilterUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardUncheckedUpdateWithoutDashboardChartsInput = {
@@ -24064,6 +25983,7 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type ChartUpsertWithoutDashboardChartsInput = {
@@ -24105,6 +26025,162 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardCreateWithoutDashboardFiltersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboardCharts?: DashboardChartCreateNestedManyWithoutDashboardInput
+  }
+
+  export type DashboardUncheckedCreateWithoutDashboardFiltersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboardCharts?: DashboardChartUncheckedCreateNestedManyWithoutDashboardInput
+  }
+
+  export type DashboardCreateOrConnectWithoutDashboardFiltersInput = {
+    where: DashboardWhereUniqueInput
+    create: XOR<DashboardCreateWithoutDashboardFiltersInput, DashboardUncheckedCreateWithoutDashboardFiltersInput>
+  }
+
+  export type DbConnectionCreateWithoutDashboardFiltersInput = {
+    id?: string
+    name: string
+    dbType: $Enums.DbType
+    host: string
+    port: number
+    databaseName: string
+    username: string
+    encryptedPassword: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    charts?: ChartCreateNestedManyWithoutConnectionInput
+  }
+
+  export type DbConnectionUncheckedCreateWithoutDashboardFiltersInput = {
+    id?: string
+    name: string
+    dbType: $Enums.DbType
+    host: string
+    port: number
+    databaseName: string
+    username: string
+    encryptedPassword: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    charts?: ChartUncheckedCreateNestedManyWithoutConnectionInput
+  }
+
+  export type DbConnectionCreateOrConnectWithoutDashboardFiltersInput = {
+    where: DbConnectionWhereUniqueInput
+    create: XOR<DbConnectionCreateWithoutDashboardFiltersInput, DbConnectionUncheckedCreateWithoutDashboardFiltersInput>
+  }
+
+  export type DashboardUpsertWithoutDashboardFiltersInput = {
+    update: XOR<DashboardUpdateWithoutDashboardFiltersInput, DashboardUncheckedUpdateWithoutDashboardFiltersInput>
+    create: XOR<DashboardCreateWithoutDashboardFiltersInput, DashboardUncheckedCreateWithoutDashboardFiltersInput>
+    where?: DashboardWhereInput
+  }
+
+  export type DashboardUpdateToOneWithWhereWithoutDashboardFiltersInput = {
+    where?: DashboardWhereInput
+    data: XOR<DashboardUpdateWithoutDashboardFiltersInput, DashboardUncheckedUpdateWithoutDashboardFiltersInput>
+  }
+
+  export type DashboardUpdateWithoutDashboardFiltersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardCharts?: DashboardChartUpdateManyWithoutDashboardNestedInput
+  }
+
+  export type DashboardUncheckedUpdateWithoutDashboardFiltersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardCharts?: DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput
+  }
+
+  export type DbConnectionUpsertWithoutDashboardFiltersInput = {
+    update: XOR<DbConnectionUpdateWithoutDashboardFiltersInput, DbConnectionUncheckedUpdateWithoutDashboardFiltersInput>
+    create: XOR<DbConnectionCreateWithoutDashboardFiltersInput, DbConnectionUncheckedCreateWithoutDashboardFiltersInput>
+    where?: DbConnectionWhereInput
+  }
+
+  export type DbConnectionUpdateToOneWithWhereWithoutDashboardFiltersInput = {
+    where?: DbConnectionWhereInput
+    data: XOR<DbConnectionUpdateWithoutDashboardFiltersInput, DbConnectionUncheckedUpdateWithoutDashboardFiltersInput>
+  }
+
+  export type DbConnectionUpdateWithoutDashboardFiltersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    dbType?: EnumDbTypeFieldUpdateOperationsInput | $Enums.DbType
+    host?: StringFieldUpdateOperationsInput | string
+    port?: IntFieldUpdateOperationsInput | number
+    databaseName?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    encryptedPassword?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    charts?: ChartUpdateManyWithoutConnectionNestedInput
+  }
+
+  export type DbConnectionUncheckedUpdateWithoutDashboardFiltersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    dbType?: EnumDbTypeFieldUpdateOperationsInput | $Enums.DbType
+    host?: StringFieldUpdateOperationsInput | string
+    port?: IntFieldUpdateOperationsInput | number
+    databaseName?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    encryptedPassword?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    charts?: ChartUncheckedUpdateManyWithoutConnectionNestedInput
   }
 
   export type RefreshTokenCreateWithoutUserInput = {
@@ -24818,6 +26894,23 @@ export namespace Prisma {
     updatedIp?: string | null
   }
 
+  export type DashboardFilterCreateManyConnectionInput = {
+    id?: string
+    dashboardId: string
+    name: string
+    filterType: $Enums.FilterType
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
   export type ChartUpdateWithoutConnectionInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -24854,6 +26947,57 @@ export namespace Prisma {
     sqlQuery?: StringFieldUpdateOperationsInput | string
     chartType?: EnumChartTypeFieldUpdateOperationsInput | $Enums.ChartType
     chartConfig?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterUpdateWithoutConnectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboard?: DashboardUpdateOneRequiredWithoutDashboardFiltersNestedInput
+  }
+
+  export type DashboardFilterUncheckedUpdateWithoutConnectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterUncheckedUpdateManyWithoutConnectionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdIp?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24942,6 +27086,23 @@ export namespace Prisma {
     updatedIp?: string | null
   }
 
+  export type DashboardFilterCreateManyDashboardInput = {
+    id?: string
+    name: string
+    filterType: $Enums.FilterType
+    connectionId: string
+    targetColumn: string
+    sourceQuery?: string | null
+    defaultValue?: string | null
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
   export type DashboardChartUpdateWithoutDashboardInput = {
     id?: StringFieldUpdateOperationsInput | string
     positionX?: IntFieldUpdateOperationsInput | number
@@ -24981,6 +27142,57 @@ export namespace Prisma {
     positionY?: IntFieldUpdateOperationsInput | number
     width?: IntFieldUpdateOperationsInput | number
     height?: IntFieldUpdateOperationsInput | number
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterUpdateWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    connection?: DbConnectionUpdateOneRequiredWithoutDashboardFiltersNestedInput
+  }
+
+  export type DashboardFilterUncheckedUpdateWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    connectionId?: StringFieldUpdateOperationsInput | string
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardFilterUncheckedUpdateManyWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    filterType?: EnumFilterTypeFieldUpdateOperationsInput | $Enums.FilterType
+    connectionId?: StringFieldUpdateOperationsInput | string
+    targetColumn?: StringFieldUpdateOperationsInput | string
+    sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

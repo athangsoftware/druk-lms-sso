@@ -11,6 +11,7 @@ import type {
   GetDbConnectionResponse,
   GetDbConnectionListResponse,
   TestDbConnectionResponse,
+  GetConnectionSchemaResponse,
   CreateAiProviderRequest,
   CreateAiProviderResponse,
   UpdateAiProviderRequest,
@@ -26,6 +27,7 @@ import type {
   GetChartResponse,
   GetChartListResponse,
   ExecuteChartQueryResponse,
+  ExecuteChartQueryRequest,
   GetChartListParams,
   CreateDashboardRequest,
   CreateDashboardResponse,
@@ -39,6 +41,15 @@ import type {
   RemoveChartFromDashboardResponse,
   UpdateChartLayoutRequest,
   UpdateChartLayoutResponse,
+  CreateDashboardFilterRequest,
+  CreateDashboardFilterResponse,
+  GenerateDashboardFilterRequest,
+  GenerateDashboardFilterResponse,
+  UpdateDashboardFilterRequest,
+  UpdateDashboardFilterResponse,
+  DeleteDashboardFilterResponse,
+  ListDashboardFiltersResponse,
+  GetFilterOptionsResponse,
   ListParams,
 } from './model';
 
@@ -73,6 +84,10 @@ export class ApiService {
 
   testDbConnection(id: string): Observable<TestDbConnectionResponse> {
     return this.http.post<TestDbConnectionResponse>(`${this.apiUrl}/db-connections/${id}/test`, {});
+  }
+
+  getConnectionSchema(id: string): Observable<GetConnectionSchemaResponse> {
+    return this.http.get<GetConnectionSchemaResponse>(`${this.apiUrl}/db-connections/${id}/schema`);
   }
 
   // ─── AI Provider ─────────────────────────────────────────────────
@@ -119,8 +134,8 @@ export class ApiService {
     return this.http.delete<DeleteChartResponse>(`${this.apiUrl}/charts/${id}`);
   }
 
-  executeChartQuery(id: string): Observable<ExecuteChartQueryResponse> {
-    return this.http.post<ExecuteChartQueryResponse>(`${this.apiUrl}/charts/${id}/execute`, {});
+  executeChartQuery(id: string, request?: ExecuteChartQueryRequest): Observable<ExecuteChartQueryResponse> {
+    return this.http.post<ExecuteChartQueryResponse>(`${this.apiUrl}/charts/${id}/execute`, request ?? {});
   }
 
   // ─── Dashboard ───────────────────────────────────────────────────
@@ -173,6 +188,63 @@ export class ApiService {
   ): Observable<UpdateChartLayoutResponse> {
     return this.http.put<UpdateChartLayoutResponse>(
       `${this.apiUrl}/dashboards/${dashboardId}/charts/${chartId}/layout`,
+      request,
+    );
+  }
+
+  // ─── Dashboard Filters ─────────────────────────────────────────────
+
+  listDashboardFilters(dashboardId: string): Observable<ListDashboardFiltersResponse> {
+    return this.http.get<ListDashboardFiltersResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters`,
+    );
+  }
+
+  createDashboardFilter(
+    dashboardId: string,
+    request: CreateDashboardFilterRequest,
+  ): Observable<CreateDashboardFilterResponse> {
+    return this.http.post<CreateDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters`,
+      request,
+    );
+  }
+
+  updateDashboardFilter(
+    dashboardId: string,
+    filterId: string,
+    request: UpdateDashboardFilterRequest,
+  ): Observable<UpdateDashboardFilterResponse> {
+    return this.http.put<UpdateDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}`,
+      request,
+    );
+  }
+
+  deleteDashboardFilter(
+    dashboardId: string,
+    filterId: string,
+  ): Observable<DeleteDashboardFilterResponse> {
+    return this.http.delete<DeleteDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}`,
+    );
+  }
+
+  getFilterOptions(
+    dashboardId: string,
+    filterId: string,
+  ): Observable<GetFilterOptionsResponse> {
+    return this.http.get<GetFilterOptionsResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}/options`,
+    );
+  }
+
+  generateDashboardFilter(
+    dashboardId: string,
+    request: GenerateDashboardFilterRequest,
+  ): Observable<GenerateDashboardFilterResponse> {
+    return this.http.post<GenerateDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/generate`,
       request,
     );
   }

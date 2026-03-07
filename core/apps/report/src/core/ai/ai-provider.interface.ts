@@ -7,6 +7,15 @@ export interface AiChartResult {
   chartConfig: Record<string, unknown>;
 }
 
+export interface AiFilterResult {
+  name: string;
+  filterType: string;
+  targetColumn: string;
+  sourceQuery?: string;
+  defaultValue?: string;
+  sql?: string;
+}
+
 export abstract class AiProviderBase {
   abstract generateChart(
     prompt: string,
@@ -18,4 +27,9 @@ export abstract class AiProviderBase {
     existingConfig: Record<string, unknown>,
     schema: SchemaMetadata,
   ): Promise<AiChartResult>;
+
+  abstract generateFilter(
+    prompt: string,
+    schema: SchemaMetadata,
+  ): Promise<AiFilterResult>;
 }
