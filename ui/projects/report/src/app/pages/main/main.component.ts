@@ -10,7 +10,7 @@ import { OAuthService } from '@core/oauth.service';
   template: `
     <ui-nav [menus]="navMenus" navMode="horizontal">
       <div logo>
-        <span class="text-white font-bold text-lg">Report</span>
+        <img src="logo/ra_logo.png" alt="GovTech" class="h-8 w-auto brightness-0 invert opacity-90" />
       </div>
       <div top-actions>
         <button
