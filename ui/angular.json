@@ -79,6 +79,100 @@
         }
       }
     },
+    "@projects/report-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/report",
+      "sourceRoot": "projects/report/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/report/src/main.ts",
+            "tsConfig": "projects/report/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/report/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/sso/public/icons",
+                "output": "icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/sso/public/logo",
+                "output": "logo"
+              }
+            ],
+            "styles": ["projects/report/src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/report/src/environments/environment.ts",
+                  "with": "projects/report/src/environments/environment.production.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/report/src/environments/environment.ts",
+                  "with": "projects/report/src/environments/environment.local.ts"
+                }
+              ]
+            },
+            "development-server": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/report/src/environments/environment.ts",
+                  "with": "projects/report/src/environments/environment.development.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "@projects/report-app:build:production"
+            },
+            "development": {
+              "buildTarget": "@projects/report-app:build:development"
+            },
+            "development-server": {
+              "buildTarget": "@projects/report-app:build:development-server"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
     "@projects/shared-lib": {
       "projectType": "library",
       "root": "projects/shared",

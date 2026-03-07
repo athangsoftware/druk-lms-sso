@@ -20,6 +20,15 @@
         "tsConfigPath": "apps/sso/tsconfig.app.json"
       }
     },
+    "report": {
+      "type": "application",
+      "root": "apps/report",
+      "entryFile": "main",
+      "sourceRoot": "apps/report/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/report/tsconfig.app.json"
+      }
+    },
     "prisma": {
       "type": "library",
       "root": "libs/prisma",

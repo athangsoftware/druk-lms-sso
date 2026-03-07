@@ -31,6 +31,12 @@
       "path": "./projects/sso/tsconfig.app.json"
     },
     {
+      "path": "./projects/report/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/report/tsconfig.spec.json"
+    },
+    {
       "path": "./projects/shared/tsconfig.lib.json"
     },
     {

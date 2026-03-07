@@ -23,4 +23,12 @@ export const clientSeeds: ClientSeed[] = [
     disableStrictUrlValidation: true,
 
   },
+  {
+    id: 'report',
+    name: 'Report Application',
+    clientId: 'report',
+    clientSecret: null,
+    clientType: 'PUBLIC',
+    disableStrictUrlValidation: true,
+  },
 ];

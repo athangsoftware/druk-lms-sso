@@ -48,11 +48,15 @@ echo ""
 # Kill existing processes on all ports
 echo -e "${YELLOW}Checking for existing processes...${NC}"
 kill_port 3000
+kill_port 3001
 kill_port 7001
+kill_port 7002
 
 # Wait for ports to be free
 wait_for_port 3000
+wait_for_port 3001
 wait_for_port 7001
+wait_for_port 7002
 echo ""
 
 # Store PIDs for cleanup
@@ -72,7 +76,9 @@ cleanup() {
     
     # Also kill any remaining processes on our ports
     kill_port 3000
+    kill_port 3001
     kill_port 7001
+    kill_port 7002
     
     exit 0
 }
@@ -88,6 +94,11 @@ echo -e "  ${GREEN}→${NC} SSO API (port 3000)"
 PIDS+=($!)
 sleep 3
 
+echo -e "  ${GREEN}→${NC} Report API (port 3001)"
+(cd "$CORE_DIR" && PORT=3001 npm run start:report) &
+PIDS+=($!)
+sleep 3
+
 # Start UI (Angular) apps
 echo -e "${BLUE}Starting UI applications...${NC}"
 
@@ -95,12 +106,18 @@ echo -e "  ${GREEN}→${NC} SSO UI (port 7001)"
 (cd "$UI_DIR" && npm run start:sso) &
 PIDS+=($!)
 
+echo -e "  ${GREEN}→${NC} Report UI (port 7002)"
+(cd "$UI_DIR" && npm run start:report) &
+PIDS+=($!)
+
 echo ""
 echo -e "${GREEN}All applications started!${NC}"
 echo ""
 echo -e "${YELLOW}Running services:${NC}"
-echo -e "  SSO API:  ${BLUE}http://localhost:3000${NC}"
-echo -e "  SSO UI:   ${BLUE}http://localhost:7001${NC}"
+echo -e "  SSO API:    ${BLUE}http://localhost:3000${NC}"
+echo -e "  SSO UI:     ${BLUE}http://localhost:7001${NC}"
+echo -e "  Report API: ${BLUE}http://localhost:3001${NC}"
+echo -e "  Report UI:  ${BLUE}http://localhost:7002${NC}"
 echo ""
 echo -e "${YELLOW}Press Ctrl+C to stop all services${NC}"
 

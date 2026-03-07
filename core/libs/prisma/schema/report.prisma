@@ -1,0 +1,116 @@
+// Report application models
+
+enum DbType {
+  MYSQL
+}
+
+enum ChartType {
+  BAR
+  LINE
+  PIE
+  DOUGHNUT
+  SCATTER
+  AREA
+  TABLE
+}
+
+model DbConnection {
+  id                String  @id @default(uuid())
+  name              String
+  dbType            DbType  @map("db_type")
+  host              String
+  port              Int
+  databaseName      String  @map("database_name")
+  username          String
+  encryptedPassword String  @map("encrypted_password") @db.LongText
+
+  charts Chart[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_db_connections")
+}
+
+model AiProvider {
+  id              String  @id @default(uuid())
+  name            String
+  model           String
+  encryptedApiKey String  @map("encrypted_api_key") @db.LongText
+  isEnabled       Boolean @default(false) @map("is_enabled")
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_ai_providers")
+}
+
+model Chart {
+  id           String    @id @default(uuid())
+  name         String
+  connectionId String    @map("connection_id")
+  sqlQuery     String    @map("sql_query") @db.LongText
+  chartType    ChartType @map("chart_type")
+  chartConfig  Json      @map("chart_config")
+
+  connection     DbConnection     @relation(fields: [connectionId], references: [id])
+  dashboardCharts DashboardChart[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_charts")
+}
+
+model Dashboard {
+  id          String  @id @default(uuid())
+  name        String
+  description String? @db.Text
+
+  dashboardCharts DashboardChart[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_dashboards")
+}
+
+model DashboardChart {
+  id          String @id @default(uuid())
+  dashboardId String @map("dashboard_id")
+  chartId     String @map("chart_id")
+  positionX   Int    @default(0) @map("position_x")
+  positionY   Int    @default(0) @map("position_y")
+  width       Int    @default(6) @map("width")
+  height      Int    @default(4) @map("height")
+  order       Int    @default(0)
+
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  chart     Chart     @relation(fields: [chartId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([dashboardId, chartId])
+  @@map("rpt_dashboard_charts")
+}

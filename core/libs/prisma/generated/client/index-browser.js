@@ -198,6 +198,81 @@ exports.Prisma.PostLogoutRedirectURLScalarFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.DbConnectionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  dbType: 'dbType',
+  host: 'host',
+  port: 'port',
+  databaseName: 'databaseName',
+  username: 'username',
+  encryptedPassword: 'encryptedPassword',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.AiProviderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  model: 'model',
+  encryptedApiKey: 'encryptedApiKey',
+  isEnabled: 'isEnabled',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.ChartScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  connectionId: 'connectionId',
+  sqlQuery: 'sqlQuery',
+  chartType: 'chartType',
+  chartConfig: 'chartConfig',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.DashboardScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.DashboardChartScalarFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  chartId: 'chartId',
+  positionX: 'positionX',
+  positionY: 'positionY',
+  width: 'width',
+  height: 'height',
+  order: 'order',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -267,6 +342,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -349,6 +428,61 @@ exports.Prisma.PostLogoutRedirectURLOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.DbConnectionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  host: 'host',
+  databaseName: 'databaseName',
+  username: 'username',
+  encryptedPassword: 'encryptedPassword',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.AiProviderOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  model: 'model',
+  encryptedApiKey: 'encryptedApiKey',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.ChartOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  connectionId: 'connectionId',
+  sqlQuery: 'sqlQuery',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.DashboardOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.DashboardChartOrderByRelevanceFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  chartId: 'chartId',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -399,6 +533,20 @@ exports.ClientType = exports.$Enums.ClientType = {
   CONFIDENTIAL: 'CONFIDENTIAL'
 };
 
+exports.DbType = exports.$Enums.DbType = {
+  MYSQL: 'MYSQL'
+};
+
+exports.ChartType = exports.$Enums.ChartType = {
+  BAR: 'BAR',
+  LINE: 'LINE',
+  PIE: 'PIE',
+  DOUGHNUT: 'DOUGHNUT',
+  SCATTER: 'SCATTER',
+  AREA: 'AREA',
+  TABLE: 'TABLE'
+};
+
 exports.Role = exports.$Enums.Role = {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -413,6 +561,11 @@ exports.Prisma.ModelName = {
   AuthorizationCode: 'AuthorizationCode',
   RedirectURL: 'RedirectURL',
   PostLogoutRedirectURL: 'PostLogoutRedirectURL',
+  DbConnection: 'DbConnection',
+  AiProvider: 'AiProvider',
+  Chart: 'Chart',
+  Dashboard: 'Dashboard',
+  DashboardChart: 'DashboardChart',
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   RefreshToken: 'RefreshToken',
