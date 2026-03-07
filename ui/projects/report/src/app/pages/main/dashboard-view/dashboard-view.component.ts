@@ -25,8 +25,16 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
-import type { DashboardDetail, DashboardChartItem, ChartItem, GetChartListResponse } from '@core/api/model';
+import type {
+  DashboardDetail,
+  DashboardChartItem,
+  ChartItem,
+  GetChartListResponse,
+  DashboardFilterItem,
+  FilterValueItem,
+} from '@core/api/model';
 import { ChartRendererComponent, ChartQueryResult } from '@app/shared/chart-renderer/chart-renderer.component';
+import { DashboardFiltersComponent } from '@app/shared/dashboard-filters/dashboard-filters.component';
 import { Button, OverlayStore, httpQuery, httpMutation } from '@projects/shared-lib';
 
 interface CardLayout {
@@ -42,7 +50,7 @@ const NUM_COLS = 3;
   selector: 'app-dashboard-view',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, Button, ChartRendererComponent, CdkDrag, CdkDropList, CdkDragHandle, CdkDragPlaceholder],
+  imports: [FormsModule, Button, ChartRendererComponent, DashboardFiltersComponent, CdkDrag, CdkDropList, CdkDragHandle, CdkDragPlaceholder],
   template: `
 <div class="w-full p-4 flex flex-col gap-4">
 
@@ -59,6 +67,7 @@ const NUM_COLS = 3;
       <ui-button type="button" (click)="toggleEditMode()">
         {{ editMode() ? '✓ Done Editing' : '⊞ Edit Layout' }}
       </ui-button>
+      <ui-button type="button" (click)="onManageFilters()">⚗ Filters{{ dashboardFilters().length ? ' (' + dashboardFilters().length + ')' : '' }}</ui-button>
       <ui-button type="button" (click)="onEdit()">Settings</ui-button>
     </div>
   </div>
@@ -73,6 +82,15 @@ const NUM_COLS = 3;
         class="shrink-0 underline underline-offset-2 hover:text-blue-900"
       >Reset layout</button>
     </div>
+  }
+
+  <!-- ── Dashboard Filters ──────────────────────────────────────── -->
+  @if (dashboardFilters().length) {
+    <app-dashboard-filters
+      [filters]="dashboardFilters()"
+      [dashboardId]="dashboardId()"
+      (filtersChanged)="onFiltersChanged($event)"
+    />
   }
 
   <!-- Loading / Error -->
@@ -310,6 +328,128 @@ const NUM_COLS = 3;
     </div>
   </div>
 }
+
+<!-- ── Manage Filters Modal ─────────────────────────────────────────── -->
+@if (showManageFilters()) {
+  <div
+    class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    (click)="showManageFilters.set(false)"
+  >
+    <div
+      class="bg-white rounded-xl shadow-2xl flex flex-col w-full max-w-lg max-h-[80vh]"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal header -->
+      <div class="flex items-center justify-between px-5 py-3 border-b border-neutral-200 shrink-0">
+        <h3 class="font-semibold text-neutral-800 text-base">Manage Filters</h3>
+        <button
+          type="button"
+          (click)="showManageFilters.set(false)"
+          class="p-1.5 rounded text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Filter list -->
+      <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+        @for (f of dashboardFilters(); track f.id) {
+          <div class="flex items-center justify-between gap-2 p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+            <div>
+              <div class="text-sm font-medium text-neutral-800">{{ f.name }}</div>
+              <div class="text-xs text-neutral-500 mt-0.5">{{ f.filterType }} · column: {{ f.targetColumn }}</div>
+            </div>
+            <button
+              type="button"
+              (click)="onDeleteFilter(f)"
+              class="p-1.5 rounded text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+              title="Remove filter"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+              </svg>
+            </button>
+          </div>
+        }
+        @if (!dashboardFilters().length) {
+          <div class="text-center text-neutral-400 text-sm py-6">No filters yet.</div>
+        }
+      </div>
+
+      <!-- Add filter form -->
+      <div class="border-t border-neutral-200 p-4 flex flex-col gap-3">
+        <h4 class="text-sm font-semibold text-neutral-700">Add Filter</h4>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-xs text-neutral-500 mb-1 block">Name</label>
+            <input
+              type="text"
+              [(ngModel)]="newFilter.name"
+              class="w-full border border-neutral-300 rounded-md px-2 py-1.5 text-sm"
+              placeholder="e.g. Country"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-neutral-500 mb-1 block">Type</label>
+            <select
+              [(ngModel)]="newFilter.filterType"
+              class="w-full border border-neutral-300 rounded-md px-2 py-1.5 text-sm bg-white"
+            >
+              <option value="MULTI_SELECT">Multi Select</option>
+              <option value="SINGLE_SELECT">Single Select</option>
+              <option value="DATE_RANGE">Date Range</option>
+              <option value="TEXT">Text</option>
+              <option value="NUMBER">Number</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs text-neutral-500 mb-1 block">Target Column</label>
+            <input
+              type="text"
+              [(ngModel)]="newFilter.targetColumn"
+              class="w-full border border-neutral-300 rounded-md px-2 py-1.5 text-sm"
+              placeholder="e.g. country"
+            />
+          </div>
+          @if (newFilter.filterType === 'MULTI_SELECT' || newFilter.filterType === 'SINGLE_SELECT') {
+            <div class="col-span-2">
+              <label class="text-xs text-neutral-500 mb-1 block">Source Query</label>
+              <input
+                type="text"
+                [(ngModel)]="newFilter.sourceQuery"
+                class="w-full border border-neutral-300 rounded-md px-2 py-1.5 text-sm font-mono"
+                placeholder="SELECT DISTINCT country FROM sales ORDER BY country"
+              />
+            </div>
+            <div class="col-span-2">
+              <label class="text-xs text-neutral-500 mb-1 block">DB Connection ID</label>
+              <input
+                type="text"
+                [(ngModel)]="newFilter.connectionId"
+                class="w-full border border-neutral-300 rounded-md px-2 py-1.5 text-sm"
+                placeholder="Connection UUID"
+              />
+            </div>
+          }
+        </div>
+        <button
+          type="button"
+          (click)="onSaveNewFilter()"
+          [disabled]="!newFilter.name || !newFilter.targetColumn || addFilterLoading()"
+          class="self-end px-4 py-1.5 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white text-sm font-medium rounded-md transition-colors"
+        >
+          {{ addFilterLoading() ? 'Saving…' : '+ Add Filter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
   `,
 })
 export class DashboardViewComponent implements OnInit, OnDestroy {
@@ -332,6 +472,19 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
   editMode = signal(false);
   fullscreenItem = signal<DashboardChartItem | null>(null);
   refreshing = signal<Record<string, boolean>>({});
+
+  // ── Filter state ─────────────────────────────────────────────────
+  dashboardFilters = signal<DashboardFilterItem[]>([]);
+  activeFilters = signal<FilterValueItem[]>([]);
+  showManageFilters = signal(false);
+  addFilterLoading = signal(false);
+  newFilter: {
+    name: string;
+    filterType: string;
+    targetColumn: string;
+    sourceQuery: string;
+    connectionId: string;
+  } = { name: '', filterType: 'MULTI_SELECT', targetColumn: '', sourceQuery: '', connectionId: '' };
 
   private _layouts = signal<Record<string, CardLayout>>({});
   private _orderedChartIds = signal<string[]>([]);
@@ -423,6 +576,7 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.dashboardId.set(id);
+    this.loadFilters(id);
   }
 
   ngOnDestroy() {
@@ -521,7 +675,7 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
 
   refreshChart(chartId: string) {
     this.refreshing.update(r => ({ ...r, [chartId]: true }));
-    this.api.executeChartQuery(chartId).subscribe({
+    this.api.executeChartQuery(chartId, this.activeFilters()).subscribe({
       next: (res) => {
         this.chartData.update(d => ({ ...d, [chartId]: res }));
         this.refreshing.update(r => ({ ...r, [chartId]: false }));
@@ -562,7 +716,7 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
   private loadChartData(dashboard: DashboardDetail) {
     dashboard.charts?.forEach((dc) => {
       if (!this.chartData()[dc.chartId]) {
-        this.api.executeChartQuery(dc.chartId).subscribe({
+        this.api.executeChartQuery(dc.chartId, this.activeFilters()).subscribe({
           next: (res) => {
             this.chartData.update(data => ({ ...data, [dc.chartId]: res }));
           },
@@ -607,6 +761,81 @@ export class DashboardViewComponent implements OnInit, OnDestroy {
 
   onEdit() {
     this.router.navigate(['/main/dashboards', this.dashboardId(), 'edit']);
+  }
+
+  // ── Dashboard Filters ────────────────────────────────────────────
+
+  private loadFilters(dashboardId: string) {
+    if (!dashboardId) return;
+    this.api.getDashboardFilters(dashboardId).subscribe({
+      next: (res) => this.dashboardFilters.set(res.data),
+      error: () => { /* non-blocking */ },
+    });
+  }
+
+  onFiltersChanged(filters: FilterValueItem[]) {
+    this.activeFilters.set(filters);
+    // Reload all chart data with the updated filters (preserve old data until new arrives)
+    const d = this.dashboard();
+    if (!d) return;
+    d.charts?.forEach((dc) => {
+      this.refreshing.update(r => ({ ...r, [dc.chartId]: true }));
+      this.api.executeChartQuery(dc.chartId, filters).subscribe({
+        next: (res) => {
+          this.chartData.update(data => ({ ...data, [dc.chartId]: res }));
+          this.refreshing.update(r => ({ ...r, [dc.chartId]: false }));
+        },
+        error: () => {
+          this.refreshing.update(r => ({ ...r, [dc.chartId]: false }));
+        },
+      });
+    });
+  }
+
+  onManageFilters() {
+    this.showManageFilters.set(true);
+  }
+
+  onDeleteFilter(filter: DashboardFilterItem) {
+    this.overlay.openAlert('Remove Filter', `Remove filter "${filter.name}"?`).then((ok) => {
+      if (!ok) return;
+      this.api.deleteDashboardFilter(this.dashboardId(), filter.id).subscribe({
+        next: () => {
+          this.dashboardFilters.update(fs => fs.filter(f => f.id !== filter.id));
+          // Clear active filter state for removed filter
+          this.activeFilters.update(af => af.filter(f => f.filterId !== filter.id));
+        },
+      });
+    });
+  }
+
+  onSaveNewFilter() {
+    const { name, filterType, targetColumn, sourceQuery, connectionId } = this.newFilter;
+    if (!name || !targetColumn) return;
+
+    this.addFilterLoading.set(true);
+    this.api
+      .createDashboardFilter(this.dashboardId(), {
+        name,
+        filterType: filterType as any,
+        targetColumn,
+        sourceQuery: sourceQuery || undefined,
+        connectionId: connectionId || undefined,
+      })
+      .subscribe({
+        next: (res) => {
+          this.dashboardFilters.update(fs => [...fs, res.data]);
+          this.newFilter = {
+            name: '',
+            filterType: 'MULTI_SELECT',
+            targetColumn: '',
+            sourceQuery: '',
+            connectionId: '',
+          };
+          this.addFilterLoading.set(false);
+        },
+        error: () => this.addFilterLoading.set(false),
+      });
   }
 }
 

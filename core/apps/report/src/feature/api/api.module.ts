@@ -33,6 +33,13 @@ import { AddChartToDashboardController } from './dashboard/add-chart-to-dashboar
 import { RemoveChartFromDashboardController } from './dashboard/remove-chart-from-dashboard/remove-chart-from-dashboard.controller';
 import { UpdateChartLayoutController } from './dashboard/update-chart-layout/update-chart-layout.controller';
 
+// Dashboard Filter Controllers
+import { CreateDashboardFilterController } from './dashboard/create-dashboard-filter/create-dashboard-filter.controller';
+import { GetDashboardFiltersController } from './dashboard/get-dashboard-filters/get-dashboard-filters.controller';
+import { UpdateDashboardFilterController } from './dashboard/update-dashboard-filter/update-dashboard-filter.controller';
+import { DeleteDashboardFilterController } from './dashboard/delete-dashboard-filter/delete-dashboard-filter.controller';
+import { GetFilterOptionsController } from './dashboard/get-filter-options/get-filter-options.controller';
+
 const DB_CONNECTION_CONTROLLERS = [
   CreateDbConnectionController,
   UpdateDbConnectionController,
@@ -69,6 +76,14 @@ const DASHBOARD_CONTROLLERS = [
   UpdateChartLayoutController,
 ];
 
+const DASHBOARD_FILTER_CONTROLLERS = [
+  CreateDashboardFilterController,
+  GetDashboardFiltersController,
+  UpdateDashboardFilterController,
+  DeleteDashboardFilterController,
+  GetFilterOptionsController,
+];
+
 @Module({
   imports: [],
   controllers: [
@@ -76,6 +91,7 @@ const DASHBOARD_CONTROLLERS = [
     ...AI_PROVIDER_CONTROLLERS,
     ...CHART_CONTROLLERS,
     ...DASHBOARD_CONTROLLERS,
+    ...DASHBOARD_FILTER_CONTROLLERS,
   ],
   providers: [AiService],
 })

@@ -40,6 +40,14 @@ import type {
   UpdateChartLayoutRequest,
   UpdateChartLayoutResponse,
   ListParams,
+  FilterValueItem,
+  GetDashboardFiltersResponse,
+  CreateDashboardFilterRequest,
+  CreateDashboardFilterResponse,
+  UpdateDashboardFilterRequest,
+  UpdateDashboardFilterResponse,
+  DeleteDashboardFilterResponse,
+  GetFilterOptionsResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -119,8 +127,13 @@ export class ApiService {
     return this.http.delete<DeleteChartResponse>(`${this.apiUrl}/charts/${id}`);
   }
 
-  executeChartQuery(id: string): Observable<ExecuteChartQueryResponse> {
-    return this.http.post<ExecuteChartQueryResponse>(`${this.apiUrl}/charts/${id}/execute`, {});
+  executeChartQuery(
+    id: string,
+    filters?: FilterValueItem[],
+  ): Observable<ExecuteChartQueryResponse> {
+    return this.http.post<ExecuteChartQueryResponse>(`${this.apiUrl}/charts/${id}/execute`, {
+      filters: filters ?? [],
+    });
   }
 
   // ─── Dashboard ───────────────────────────────────────────────────
@@ -174,6 +187,54 @@ export class ApiService {
     return this.http.put<UpdateChartLayoutResponse>(
       `${this.apiUrl}/dashboards/${dashboardId}/charts/${chartId}/layout`,
       request,
+    );
+  }
+
+  // ─── Dashboard Filters ───────────────────────────────────────────
+
+  getDashboardFilters(dashboardId: string): Observable<GetDashboardFiltersResponse> {
+    return this.http.get<GetDashboardFiltersResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters`,
+    );
+  }
+
+  createDashboardFilter(
+    dashboardId: string,
+    request: CreateDashboardFilterRequest,
+  ): Observable<CreateDashboardFilterResponse> {
+    return this.http.post<CreateDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters`,
+      request,
+    );
+  }
+
+  updateDashboardFilter(
+    dashboardId: string,
+    filterId: string,
+    request: UpdateDashboardFilterRequest,
+  ): Observable<UpdateDashboardFilterResponse> {
+    return this.http.put<UpdateDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}`,
+      request,
+    );
+  }
+
+  deleteDashboardFilter(
+    dashboardId: string,
+    filterId: string,
+  ): Observable<DeleteDashboardFilterResponse> {
+    return this.http.delete<DeleteDashboardFilterResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}`,
+    );
+  }
+
+  getFilterOptions(
+    dashboardId: string,
+    filterId: string,
+  ): Observable<GetFilterOptionsResponse> {
+    return this.http.post<GetFilterOptionsResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/filters/${filterId}/options`,
+      {},
     );
   }
 }

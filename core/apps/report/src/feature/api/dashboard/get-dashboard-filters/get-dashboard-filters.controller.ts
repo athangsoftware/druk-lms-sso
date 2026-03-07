@@ -1,0 +1,64 @@
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  NotFoundException,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Authorize } from '@app/shared';
+import { PrismaService } from '@app/prisma';
+import { Role } from '@app/prisma';
+import { GetDashboardFiltersResponse } from './get-dashboard-filters-response';
+import { SuccessMessages } from '../../../../core/models/message';
+
+@ApiTags('Dashboards')
+@ApiBearerAuth()
+@Controller('/dashboards')
+export class GetDashboardFiltersController {
+  constructor(private readonly prismaService: PrismaService) {}
+
+  @Get(':id/filters')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ operationId: 'getDashboardFilters' })
+  @ApiResponse({ status: HttpStatus.OK, type: GetDashboardFiltersResponse })
+  @Authorize(Role.MEMBER)
+  async execute(
+    @Param('id') dashboardId: string,
+  ): Promise<GetDashboardFiltersResponse> {
+    return await this.prismaService.client(
+      async ({ dbContext }) => {
+        const dashboard = await dbContext.dashboard.findUnique({
+          where: { id: dashboardId },
+        });
+        if (!dashboard) {
+          throw new NotFoundException('Dashboard not found.');
+        }
+
+        const filters = await dbContext.dashboardFilter.findMany({
+          where: { dashboardId },
+          orderBy: { order: 'asc' },
+        });
+
+        return {
+          successMessage: SuccessMessages.getListSuccess('Dashboard filters'),
+          data: filters.map((f) => ({
+            id: f.id,
+            dashboardId: f.dashboardId,
+            name: f.name,
+            filterType: f.filterType,
+            connectionId: f.connectionId,
+            targetColumn: f.targetColumn,
+            sourceQuery: f.sourceQuery,
+            defaultValue: f.defaultValue,
+            order: f.order,
+            createdAt: f.createdAt,
+            updatedAt: f.updatedAt,
+          })),
+        };
+      },
+      { isTransaction: false },
+    );
+  }
+}
