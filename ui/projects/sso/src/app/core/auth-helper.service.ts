@@ -22,20 +22,22 @@ export class AuthHelperService {
     const redirectUrl = sessionStorage.getItem(redirectUrlKey);
     sessionStorage.removeItem(redirectUrlKey);
 
+    const defaultRoute = this.isMember() ? '/main/my-profile' : '/main';
+
     if (redirectUrl) {
       try {
         const url = new URL(redirectUrl);
         const relativePath = url.pathname + url.search;
         if (relativePath === '/' || relativePath === '/callback' || relativePath.startsWith('/callback?')) {
-          await this.router.navigateByUrl('/main');
+          await this.router.navigateByUrl(defaultRoute);
         } else {
           await this.router.navigateByUrl(relativePath);
         }
       } catch {
-        await this.router.navigateByUrl('/main');
+        await this.router.navigateByUrl(defaultRoute);
       }
     } else {
-      await this.router.navigateByUrl('/main');
+      await this.router.navigateByUrl(defaultRoute);
     }
   }
 

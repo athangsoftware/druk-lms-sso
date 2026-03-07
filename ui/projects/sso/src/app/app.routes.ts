@@ -1,5 +1,15 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router, Routes } from '@angular/router';
+import { AuthHelperService } from '@core/auth-helper.service';
 import { roleGuard } from '@core/role.guard';
+
+const mainRedirectGuard: CanActivateFn = () => {
+  const authService = inject(AuthHelperService);
+  const router = inject(Router);
+  return authService.isMember()
+    ? router.createUrlTree(['/main/my-profile'])
+    : router.createUrlTree(['/main/dashboard']);
+};
 
 export const routes: Routes = [
   {
@@ -21,13 +31,16 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
         pathMatch: 'full',
+        canActivate: [mainRedirectGuard],
+        children: [],
       },
       {
         path: 'dashboard',
         loadComponent: () =>
           import('./pages/main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
       },
       {
         path: 'users',
