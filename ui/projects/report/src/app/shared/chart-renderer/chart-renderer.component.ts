@@ -8,7 +8,7 @@ import {
   AfterViewInit,
   OnDestroy,
 } from '@angular/core';
-import { NgIf, NgFor, NgClass, KeyValuePipe } from '@angular/common';
+import { NgClass, KeyValuePipe } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import type { ChartType, ChartItem } from '@core/api/model';
 
@@ -23,35 +23,33 @@ export interface ChartQueryResult {
 @Component({
   selector: 'app-chart-renderer',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, KeyValuePipe],
+  imports: [NgClass, KeyValuePipe],
   template: `
     <div class="w-full h-full flex flex-col">
-      <ng-container *ngIf="chartType === 'TABLE'; else canvasChart">
+      @if (chartType === 'TABLE') {
         <div class="overflow-auto h-full">
           <table class="min-w-full text-sm border-collapse">
             <thead class="bg-neutral-100 sticky top-0">
               <tr>
-                <th
-                  *ngFor="let col of queryResult?.columns"
-                  class="px-3 py-2 text-left font-medium text-neutral-700 border-b border-neutral-200"
-                >{{ col }}</th>
+                @for (col of queryResult?.columns ?? []; track col) {
+                  <th class="px-3 py-2 text-left font-medium text-neutral-700 border-b border-neutral-200">{{ col }}</th>
+                }
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of queryResult?.rows; let i = index"
-                  [class]="i % 2 === 0 ? 'bg-white' : 'bg-neutral-50'">
-                <td
-                  *ngFor="let col of queryResult?.columns"
-                  class="px-3 py-2 text-neutral-700 border-b border-neutral-100"
-                >{{ row[col] }}</td>
-              </tr>
+              @for (row of queryResult?.rows ?? []; track $index; let i = $index) {
+                <tr [class]="i % 2 === 0 ? 'bg-white' : 'bg-neutral-50'">
+                  @for (col of queryResult?.columns ?? []; track col) {
+                    <td class="px-3 py-2 text-neutral-700 border-b border-neutral-100">{{ row[col] }}</td>
+                  }
+                </tr>
+              }
             </tbody>
           </table>
         </div>
-      </ng-container>
-      <ng-template #canvasChart>
+      } @else {
         <canvas #chartCanvas class="w-full h-full"></canvas>
-      </ng-template>
+      }
     </div>
   `,
 })

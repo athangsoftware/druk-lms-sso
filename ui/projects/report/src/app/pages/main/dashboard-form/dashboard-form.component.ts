@@ -1,7 +1,6 @@
 import { Component, inject, signal, OnInit, DoCheck } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
 import type { CreateDashboardRequest, UpdateDashboardRequest } from '@core/api/model';
@@ -10,7 +9,7 @@ import { Button, httpQuery, httpMutation } from '@projects/shared-lib';
 @Component({
   selector: 'app-dashboard-form',
   standalone: true,
-  imports: [FormsModule, NgIf, Button],
+  imports: [FormsModule, Button],
   template: `
     <div class="w-full max-w-lg mx-auto p-6 flex flex-col gap-6">
       <h1 class="text-xl font-semibold text-neutral-800">
@@ -39,7 +38,9 @@ import { Button, httpQuery, httpMutation } from '@projects/shared-lib';
         </div>
       </div>
 
-      <div *ngIf="errorMessage()" class="text-red-600 text-sm">{{ errorMessage() }}</div>
+      @if (errorMessage()) {
+        <div class="text-red-600 text-sm">{{ errorMessage() }}</div>
+      }
 
       <div class="flex gap-3">
         <ui-button type="button" (click)="onCancel()">Cancel</ui-button>

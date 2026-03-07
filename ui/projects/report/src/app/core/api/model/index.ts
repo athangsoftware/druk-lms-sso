@@ -185,15 +185,19 @@ export interface GetChartListParams extends ListParams {
 // ─── Dashboard ────────────────────────────────────────────────────
 
 export interface DashboardChartItem {
-  id: string;
+  dashboardChartId: string;
   chartId: string;
-  dashboardId: string;
+  chartName: string;
+  chartType: ChartType;
+  chartConfig: Record<string, unknown>;
+  sqlQuery: string;
+  connectionId: string;
+  connectionName: string;
+  positionX: number;
+  positionY: number;
+  width: number;
+  height: number;
   order: number;
-  gridX: number;
-  gridY: number;
-  gridW: number;
-  gridH: number;
-  chart: ChartItem;
 }
 
 export interface DashboardItem {
@@ -206,7 +210,7 @@ export interface DashboardItem {
 }
 
 export interface DashboardDetail extends DashboardItem {
-  dashboardCharts: DashboardChartItem[];
+  charts: DashboardChartItem[];
 }
 
 export type GetDashboardListResponse = PaginatedResponse<DashboardItem>;

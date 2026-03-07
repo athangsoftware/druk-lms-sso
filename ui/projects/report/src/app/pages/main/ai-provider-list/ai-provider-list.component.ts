@@ -1,5 +1,4 @@
 import { Component, inject, signal } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
@@ -23,7 +22,7 @@ import {
 @Component({
   selector: 'app-ai-provider-list',
   standalone: true,
-  imports: [DataTable, Button, NgIf, FormsModule],
+  imports: [DataTable, Button, FormsModule],
   host: { class: 'flex-1 flex flex-col min-h-0' },
   template: `
     <div class="w-full sm:px-4 h-full flex flex-col gap-4">
@@ -33,26 +32,30 @@ import {
       </div>
 
       <!-- Create / Edit Panel -->
-      <div *ngIf="showPanel" class="p-4 border border-neutral-200 rounded-lg bg-neutral-50 flex flex-col gap-3">
-        <h2 class="font-medium text-neutral-800">{{ editingId ? 'Edit Provider' : 'New AI Provider' }}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <input [(ngModel)]="form.name" placeholder="Name *" class="input-field" />
-          <input [(ngModel)]="form.model" placeholder="Model (e.g. gpt-4o) *" class="input-field" />
-          <input
-            [(ngModel)]="form.apiKey"
-            type="password"
-            placeholder="API Key {{ editingId ? '(leave blank to keep)' : '*' }}"
-            class="input-field sm:col-span-2"
-          />
+      @if (showPanel) {
+        <div class="p-4 border border-neutral-200 rounded-lg bg-neutral-50 flex flex-col gap-3">
+          <h2 class="font-medium text-neutral-800">{{ editingId ? 'Edit Provider' : 'New AI Provider' }}</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input [(ngModel)]="form.name" placeholder="Name *" class="input-field" />
+            <input [(ngModel)]="form.model" placeholder="Model (e.g. gpt-4o) *" class="input-field" />
+            <input
+              [(ngModel)]="form.apiKey"
+              type="password"
+              placeholder="API Key {{ editingId ? '(leave blank to keep)' : '*' }}"
+              class="input-field sm:col-span-2"
+            />
+          </div>
+          @if (saveMutation.error()) {
+            <div class="text-red-600 text-sm">{{ saveMutation.error()?.message ?? 'An error occurred' }}</div>
+          }
+          <div class="flex gap-2">
+            <ui-button type="button" (click)="submitForm()" [disabled]="saveMutation.isLoading()">
+              {{ saveMutation.isLoading() ? 'Saving...' : 'Save' }}
+            </ui-button>
+            <ui-button type="button" (click)="showPanel = false">Cancel</ui-button>
+          </div>
         </div>
-        <div *ngIf="saveMutation.error()" class="text-red-600 text-sm">{{ saveMutation.error()?.message ?? 'An error occurred' }}</div>
-        <div class="flex gap-2">
-          <ui-button type="button" (click)="submitForm()" [disabled]="saveMutation.isLoading()">
-            {{ saveMutation.isLoading() ? 'Saving...' : 'Save' }}
-          </ui-button>
-          <ui-button type="button" (click)="showPanel = false">Cancel</ui-button>
-        </div>
-      </div>
+      }
 
       <div class="flex-1 min-h-0">
         <ui-data-table

@@ -1,6 +1,5 @@
 import { Component, inject, signal, OnInit, effect, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
@@ -12,13 +11,15 @@ import { Button, httpQuery, httpMutation } from '@projects/shared-lib';
   selector: 'app-chart-view',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, FormsModule, Button, ChartRendererComponent],
+  imports: [FormsModule, Button, ChartRendererComponent],
   template: `
     <div class="w-full p-6 flex flex-col gap-4">
       <div class="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h1 class="text-xl font-semibold text-neutral-800">{{ chart?.name }}</h1>
-          <p *ngIf="chart?.description" class="text-sm text-neutral-500">{{ chart?.description }}</p>
+          @if (chart?.description) {
+            <p class="text-sm text-neutral-500">{{ chart?.description }}</p>
+          }
         </div>
         <div class="flex gap-2">
           <ui-button type="button" (click)="reload()">Refresh</ui-button>
@@ -26,8 +27,12 @@ import { Button, httpQuery, httpMutation } from '@projects/shared-lib';
         </div>
       </div>
 
-      <div *ngIf="chartQuery.isLoading()" class="text-neutral-500 text-sm">Loading chart...</div>
-      <div *ngIf="chartQuery.error()" class="text-red-600 text-sm">Failed to load chart.</div>
+      @if (chartQuery.isLoading()) {
+        <div class="text-neutral-500 text-sm">Loading chart...</div>
+      }
+      @if (chartQuery.error()) {
+        <div class="text-red-600 text-sm">Failed to load chart.</div>
+      }
 
       <!-- AI modify inline -->
       <div class="flex gap-2 items-center">
@@ -47,18 +52,22 @@ import { Button, httpQuery, httpMutation } from '@projects/shared-lib';
       </div>
 
       <!-- Chart preview -->
-      <div *ngIf="chart" class="h-96 border border-neutral-200 rounded-lg p-4 overflow-hidden">
-        <app-chart-renderer
-          [chartItem]="chart"
-          [queryResult]="queryResult"
-        />
-      </div>
+      @if (chart) {
+        <div class="h-96 border border-neutral-200 rounded-lg p-4 overflow-hidden">
+          <app-chart-renderer
+            [chartItem]="chart"
+            [queryResult]="queryResult"
+          />
+        </div>
+      }
 
       <!-- SQL preview -->
-      <div *ngIf="chart" class="flex flex-col gap-1">
-        <label class="text-xs font-medium text-neutral-500 uppercase tracking-wide">SQL Query</label>
-        <pre class="bg-neutral-100 rounded p-3 text-xs overflow-auto max-h-40 text-neutral-700">{{ chart.sqlQuery }}</pre>
-      </div>
+      @if (chart) {
+        <div class="flex flex-col gap-1">
+          <label class="text-xs font-medium text-neutral-500 uppercase tracking-wide">SQL Query</label>
+          <pre class="bg-neutral-100 rounded p-3 text-xs overflow-auto max-h-40 text-neutral-700">{{ chart.sqlQuery }}</pre>
+        </div>
+      }
     </div>
   `,
 })

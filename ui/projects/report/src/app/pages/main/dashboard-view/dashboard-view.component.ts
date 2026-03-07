@@ -1,10 +1,9 @@
 import { Component, inject, signal, OnInit, computed, effect, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgIf, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@core/api/api.service';
 import { environment } from '@environments/environment';
-import type { DashboardDetail, DashboardChartItem, GetChartListResponse } from '@core/api/model';
+import type { DashboardDetail, DashboardChartItem, ChartItem, GetChartListResponse } from '@core/api/model';
 import { ChartRendererComponent, ChartQueryResult } from '@app/shared/chart-renderer/chart-renderer.component';
 import { Button, OverlayStore, httpQuery, httpMutation } from '@projects/shared-lib';
 
@@ -12,14 +11,16 @@ import { Button, OverlayStore, httpQuery, httpMutation } from '@projects/shared-
   selector: 'app-dashboard-view',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgFor, FormsModule, Button, ChartRendererComponent],
+  imports: [FormsModule, Button, ChartRendererComponent],
   template: `
     <div class="w-full p-4 flex flex-col gap-4">
       <!-- Header -->
       <div class="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h1 class="text-xl font-semibold text-neutral-800">{{ dashboard()?.name }}</h1>
-          <p *ngIf="dashboard()?.description" class="text-sm text-neutral-500">{{ dashboard()?.description }}</p>
+          @if (dashboard()?.description) {
+            <p class="text-sm text-neutral-500">{{ dashboard()?.description }}</p>
+          }
         </div>
         <div class="flex gap-2">
           <ui-button type="button" (click)="onAddChart()">+ Add Chart</ui-button>
@@ -28,51 +29,60 @@ import { Button, OverlayStore, httpQuery, httpMutation } from '@projects/shared-
       </div>
 
       <!-- Loading -->
-      <div *ngIf="dashboardQuery.isLoading" class="text-neutral-500 text-sm">Loading...</div>
-      <div *ngIf="dashboardQuery.error()" class="text-red-600 text-sm">Failed to load dashboard.</div>
+      @if (dashboardQuery.isLoading()) {
+        <div class="text-neutral-500 text-sm">Loading...</div>
+      }
+      @if (dashboardQuery.error()) {
+        <div class="text-red-600 text-sm">Failed to load dashboard.</div>
+      }
 
       <!-- Add chart panel -->
-      <div *ngIf="showAddChart()" class="p-4 border border-neutral-200 rounded-lg bg-neutral-50 flex flex-col gap-3">
-        <h2 class="font-medium text-neutral-800">Add Chart</h2>
-        <select
-          [(ngModel)]="selectedChartId"
-          class="border border-neutral-300 rounded-md px-3 py-2 text-sm"
-        >
-          <option value="">Select a chart...</option>
-          <option *ngFor="let c of chartList.value()?.data ?? []" [value]="c.id">{{ c.name }}</option>
-        </select>
-        <div class="flex gap-2">
-          <ui-button type="button" (click)="confirmAddChart()" [disabled]="!selectedChartId">Add</ui-button>
-          <ui-button type="button" (click)="showAddChart.set(false)">Cancel</ui-button>
+      @if (showAddChart()) {
+        <div class="p-4 border border-neutral-200 rounded-lg bg-neutral-50 flex flex-col gap-3">
+          <h2 class="font-medium text-neutral-800">Add Chart</h2>
+          <select
+            [(ngModel)]="selectedChartId"
+            class="border border-neutral-300 rounded-md px-3 py-2 text-sm"
+          >
+            <option value="">Select a chart...</option>
+            @for (c of availableCharts(); track c.id) {
+              <option [value]="c.id">{{ c.name }}</option>
+            }
+          </select>
+          <div class="flex gap-2">
+            <ui-button type="button" (click)="confirmAddChart()" [disabled]="!selectedChartId">Add</ui-button>
+            <ui-button type="button" (click)="showAddChart.set(false)">Cancel</ui-button>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Charts Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <div
-          *ngFor="let dc of dashboard()?.dashboardCharts ?? []"
-          class="bg-white border border-neutral-200 rounded-lg p-4 flex flex-col gap-2 h-80 overflow-hidden"
-        >
-          <div class="flex items-center justify-between">
-            <span class="font-medium text-sm text-neutral-700">{{ dc.chart?.name }}</span>
-            <button
-              (click)="removeChart(dc)"
-              class="text-red-500 hover:text-red-700 text-xs"
-            >Remove</button>
+        @for (dc of dashboard()?.charts ?? []; track dc.chartId) {
+          <div class="bg-white border border-neutral-200 rounded-lg p-4 flex flex-col gap-2 h-80 overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="font-medium text-sm text-neutral-700">{{ dc.chartName }}</span>
+              <button
+                (click)="removeChart(dc)"
+                class="text-red-500 hover:text-red-700 text-xs"
+              >Remove</button>
+            </div>
+            <div class="flex-1 min-h-0">
+              <app-chart-renderer
+                [chartItem]="toChartItem(dc)"
+                [queryResult]="chartData()[dc.chartId] ?? null"
+              />
+            </div>
           </div>
-          <div class="flex-1 min-h-0">
-            <app-chart-renderer
-              [chartItem]="dc.chart"
-              [queryResult]="chartData()[dc.chartId] ?? null"
-            />
-          </div>
-        </div>
+        }
       </div>
 
       <!-- Empty state -->
-      <div *ngIf="!dashboardQuery.isLoading && !(dashboard()?.dashboardCharts?.length)" class="text-center text-neutral-500 py-12">
-        No charts added yet. Click "+ Add Chart" to get started.
-      </div>
+      @if (!dashboardQuery.isLoading() && !(dashboard()?.charts?.length)) {
+        <div class="text-center text-neutral-500 py-12">
+          No charts added yet. Click "+ Add Chart" to get started.
+        </div>
+      }
     </div>
   `,
 })
@@ -107,6 +117,11 @@ export class DashboardViewComponent implements OnInit {
 
   dashboard = computed(() => (this.dashboardQuery.value() as any)?.data as DashboardDetail ?? null);
 
+  availableCharts = computed(() => {
+    const existing = new Set((this.dashboard()?.charts ?? []).map(dc => dc.chartId));
+    return (this.chartList.value()?.data ?? []).filter(c => !existing.has(c.id));
+  });
+
   addChartMutation = httpMutation({
     request: () =>
       this.api.addChartToDashboard(this.dashboardId(), { chartId: this.selectedChartId }),
@@ -140,7 +155,7 @@ export class DashboardViewComponent implements OnInit {
   }
 
   private loadChartData(dashboard: DashboardDetail) {
-    dashboard.dashboardCharts?.forEach((dc) => {
+    dashboard.charts?.forEach((dc) => {
       if (!this.chartData()[dc.chartId]) {
         this.api.executeChartQuery(dc.chartId).subscribe({
           next: (res) => {
@@ -149,6 +164,21 @@ export class DashboardViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  toChartItem(dc: DashboardChartItem): ChartItem {
+    return {
+      id: dc.chartId,
+      name: dc.chartName,
+      chartType: dc.chartType,
+      chartConfig: dc.chartConfig,
+      sqlQuery: dc.sqlQuery,
+      connectionId: dc.connectionId,
+      connectionName: dc.connectionName,
+      isActive: true,
+      createdAt: '',
+      updatedAt: '',
+    };
   }
 
   onAddChart() {
