@@ -51,6 +51,15 @@ import type {
   ListDashboardFiltersResponse,
   GetFilterOptionsResponse,
   ListParams,
+  CreateGlobalFilterRequest,
+  CreateGlobalFilterResponse,
+  UpdateGlobalFilterRequest,
+  UpdateGlobalFilterResponse,
+  DeleteGlobalFilterResponse,
+  ListGlobalFiltersResponse,
+  GlobalFilterOverrideRequest,
+  UpsertGlobalFilterOverridesResponse,
+  ListGlobalFilterOverridesResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -246,6 +255,42 @@ export class ApiService {
     return this.http.post<GenerateDashboardFilterResponse>(
       `${this.apiUrl}/dashboards/${dashboardId}/filters/generate`,
       request,
+    );
+  }
+
+  // ─── Global Filters ─────────────────────────────────────────────────
+
+  listGlobalFilters(): Observable<ListGlobalFiltersResponse> {
+    return this.http.get<ListGlobalFiltersResponse>(`${this.apiUrl}/global-filters`);
+  }
+
+  createGlobalFilter(request: CreateGlobalFilterRequest): Observable<CreateGlobalFilterResponse> {
+    return this.http.post<CreateGlobalFilterResponse>(`${this.apiUrl}/global-filters`, request);
+  }
+
+  updateGlobalFilter(id: string, request: UpdateGlobalFilterRequest): Observable<UpdateGlobalFilterResponse> {
+    return this.http.put<UpdateGlobalFilterResponse>(`${this.apiUrl}/global-filters/${id}`, request);
+  }
+
+  deleteGlobalFilter(id: string): Observable<DeleteGlobalFilterResponse> {
+    return this.http.delete<DeleteGlobalFilterResponse>(`${this.apiUrl}/global-filters/${id}`);
+  }
+
+  // ─── Dashboard Global Filter Overrides ──────────────────────────────
+
+  listGlobalFilterOverrides(dashboardId: string): Observable<ListGlobalFilterOverridesResponse> {
+    return this.http.get<ListGlobalFilterOverridesResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/global-filter-overrides`,
+    );
+  }
+
+  upsertGlobalFilterOverrides(
+    dashboardId: string,
+    overrides: GlobalFilterOverrideRequest[],
+  ): Observable<UpsertGlobalFilterOverridesResponse> {
+    return this.http.put<UpsertGlobalFilterOverridesResponse>(
+      `${this.apiUrl}/dashboards/${dashboardId}/global-filter-overrides`,
+      overrides,
     );
   }
 }

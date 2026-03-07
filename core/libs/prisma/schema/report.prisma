@@ -22,6 +22,11 @@ enum FilterType {
   NUMBER
 }
 
+enum MissingColumnBehavior {
+  SHOW_ALL
+  HIDE_DATA
+}
+
 model DbConnection {
   id                String  @id @default(uuid())
   name              String
@@ -90,6 +95,7 @@ model Dashboard {
 
   dashboardCharts  DashboardChart[]
   dashboardFilters DashboardFilter[]
+  globalFilterOverrides GlobalFilterOverride[]
 
   createdBy String?   @map("created_by")
   createdAt DateTime  @default(now()) @map("created_at")
@@ -147,4 +153,46 @@ model DashboardFilter {
   updatedIp String?   @map("updated_ip")
 
   @@map("rpt_dashboard_filters")
+}
+
+model GlobalFilter {
+  id                    String                  @id @default(uuid())
+  columnName            String                  @map("column_name")
+  columnValue           String                  @map("column_value") @db.Text
+  missingColumnBehavior MissingColumnBehavior?  @map("missing_column_behavior")
+  isEnabled             Boolean                 @default(true) @map("is_enabled")
+  order                 Int                     @default(0)
+
+  overrides GlobalFilterOverride[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_global_filters")
+}
+
+model GlobalFilterOverride {
+  id                    String                  @id @default(uuid())
+  globalFilterId        String                  @map("global_filter_id")
+  dashboardId           String                  @map("dashboard_id")
+  isDisabled            Boolean                 @default(false) @map("is_disabled")
+  columnValue           String?                 @map("column_value") @db.Text
+  missingColumnBehavior MissingColumnBehavior?  @map("missing_column_behavior")
+
+  globalFilter GlobalFilter @relation(fields: [globalFilterId], references: [id], onDelete: Cascade)
+  dashboard    Dashboard    @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([globalFilterId, dashboardId])
+  @@map("rpt_global_filter_overrides")
 }

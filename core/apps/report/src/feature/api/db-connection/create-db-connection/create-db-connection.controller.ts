@@ -30,7 +30,7 @@ export class CreateDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: CreateDbConnectionResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Body() body: CreateDbConnectionRequest,
   ): Promise<CreateDbConnectionResponse> {

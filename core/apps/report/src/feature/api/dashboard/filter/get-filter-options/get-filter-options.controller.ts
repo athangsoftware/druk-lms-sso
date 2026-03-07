@@ -43,7 +43,7 @@ export class GetFilterOptionsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getFilterOptions' })
   @ApiResponse({ status: HttpStatus.OK, type: GetFilterOptionsResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Param('id') dashboardId: string,
     @Param('filterId') filterId: string,

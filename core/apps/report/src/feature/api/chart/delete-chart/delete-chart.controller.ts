@@ -23,7 +23,7 @@ export class DeleteChartController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteChart' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteChartResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<DeleteChartResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.chart.findUnique({ where: { id } });

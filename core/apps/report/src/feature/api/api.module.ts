@@ -42,6 +42,16 @@ import { ListDashboardFiltersController } from './dashboard/filter/list-dashboar
 import { GetFilterOptionsController } from './dashboard/filter/get-filter-options/get-filter-options.controller';
 import { GenerateDashboardFilterController } from './dashboard/filter/generate-dashboard-filter/generate-dashboard-filter.controller';
 
+// Global Filter Controllers
+import { CreateGlobalFilterController } from './global-filter/create-global-filter/create-global-filter.controller';
+import { UpdateGlobalFilterController } from './global-filter/update-global-filter/update-global-filter.controller';
+import { DeleteGlobalFilterController } from './global-filter/delete-global-filter/delete-global-filter.controller';
+import { ListGlobalFiltersController } from './global-filter/list-global-filters/list-global-filters.controller';
+
+// Dashboard Global Filter Override Controllers
+import { UpsertGlobalFilterOverridesController } from './dashboard/global-filter-override/upsert-global-filter-overrides/upsert-global-filter-overrides.controller';
+import { ListGlobalFilterOverridesController } from './dashboard/global-filter-override/list-global-filter-overrides/list-global-filter-overrides.controller';
+
 const DB_CONNECTION_CONTROLLERS = [
   CreateDbConnectionController,
   UpdateDbConnectionController,
@@ -88,6 +98,18 @@ const DASHBOARD_FILTER_CONTROLLERS = [
   GenerateDashboardFilterController,
 ];
 
+const GLOBAL_FILTER_CONTROLLERS = [
+  CreateGlobalFilterController,
+  UpdateGlobalFilterController,
+  DeleteGlobalFilterController,
+  ListGlobalFiltersController,
+];
+
+const DASHBOARD_GLOBAL_FILTER_OVERRIDE_CONTROLLERS = [
+  UpsertGlobalFilterOverridesController,
+  ListGlobalFilterOverridesController,
+];
+
 @Module({
   imports: [],
   controllers: [
@@ -96,6 +118,8 @@ const DASHBOARD_FILTER_CONTROLLERS = [
     ...CHART_CONTROLLERS,
     ...DASHBOARD_CONTROLLERS,
     ...DASHBOARD_FILTER_CONTROLLERS,
+    ...GLOBAL_FILTER_CONTROLLERS,
+    ...DASHBOARD_GLOBAL_FILTER_OVERRIDE_CONTROLLERS,
   ],
   providers: [AiService],
 })

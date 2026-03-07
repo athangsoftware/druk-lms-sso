@@ -1,4 +1,4 @@
-import { FilterType } from '@app/prisma';
+import { FilterType, MissingColumnBehavior } from '@app/prisma';
 import { SchemaMetadata } from '../drivers/database-driver.interface';
 
 const VALID_COLUMN_NAME = /^[a-zA-Z_][a-zA-Z0-9_.]*$/;
@@ -240,4 +240,101 @@ function levenshtein(a: string, b: string): number {
     }
   }
   return dp[m][n];
+}
+
+// --- Global Filter utilities ---
+
+export interface GlobalFilterDefinition {
+  id: string;
+  columnName: string;
+  columnValue: string;
+  missingColumnBehavior: MissingColumnBehavior | null;
+  isEnabled: boolean;
+}
+
+export interface GlobalFilterOverrideDefinition {
+  globalFilterId: string;
+  isDisabled: boolean;
+  columnValue: string | null;
+  missingColumnBehavior: MissingColumnBehavior | null;
+}
+
+export interface GlobalFilterResult {
+  /** SQL fragment with AND clauses, empty string if no filters apply */
+  sql: string;
+  /** true if any filter with HIDE_DATA targets a missing column — query should return empty */
+  blocked: boolean;
+}
+
+/**
+ * Build SQL filter fragment from global filters.
+ * @param filters - all enabled global filters
+ * @param overrides - per-dashboard overrides (keyed by globalFilterId)
+ * @param schemaColumns - set of all column names (lowercase) in the target database
+ */
+export function buildGlobalFilterSql(
+  filters: GlobalFilterDefinition[],
+  overrides: Map<string, GlobalFilterOverrideDefinition>,
+  schemaColumns: Set<string>,
+): GlobalFilterResult {
+  const clauses: string[] = [];
+
+  for (const gf of filters) {
+    if (!gf.isEnabled) continue;
+
+    const override = overrides.get(gf.id);
+    if (override?.isDisabled) continue;
+
+    const columnName = gf.columnName;
+    validateColumnName(columnName);
+
+    // Resolve effective value and behavior
+    const effectiveValue = override?.columnValue ?? gf.columnValue;
+    const effectiveBehavior = override?.missingColumnBehavior ?? gf.missingColumnBehavior;
+
+    if (!effectiveValue) continue;
+
+    // Check column existence (case-insensitive)
+    const colLower = columnName.toLowerCase();
+    const columnExists = schemaColumns.has(colLower);
+
+    if (!columnExists) {
+      if (effectiveBehavior === 'HIDE_DATA') {
+        return { sql: '', blocked: true };
+      }
+      // SHOW_ALL or null (default) → skip this filter
+      continue;
+    }
+
+    // Build clause — support comma-separated values for IN()
+    const values = effectiveValue.split(',').map((v) => v.trim()).filter((v) => v !== '');
+    if (values.length === 0) continue;
+
+    if (values.length === 1) {
+      clauses.push(`${columnName} = '${escapeValue(values[0])}'`);
+    } else {
+      const escaped = values.map((v) => `'${escapeValue(v)}'`).join(',');
+      clauses.push(`${columnName} IN (${escaped})`);
+    }
+  }
+
+  if (!clauses.length) return { sql: '', blocked: false };
+
+  return {
+    sql: clauses.map((c) => `AND ${c}`).join('\n'),
+    blocked: false,
+  };
+}
+
+/**
+ * Extract a flat set of column names (lowercase) from schema metadata.
+ */
+export function extractSchemaColumnNames(schema: SchemaMetadata): Set<string> {
+  const cols = new Set<string>();
+  for (const table of schema.tables) {
+    for (const col of table.columns) {
+      cols.add(col.columnName.toLowerCase());
+    }
+  }
+  return cols;
 }

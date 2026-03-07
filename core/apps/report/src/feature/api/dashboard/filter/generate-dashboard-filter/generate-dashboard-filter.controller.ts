@@ -39,7 +39,7 @@ export class GenerateDashboardFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'generateDashboardFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: GenerateDashboardFilterResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Param('id') dashboardId: string,
     @Body() body: GenerateDashboardFilterRequest,

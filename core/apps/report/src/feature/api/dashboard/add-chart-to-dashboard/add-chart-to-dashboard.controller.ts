@@ -26,7 +26,7 @@ export class AddChartToDashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'addChartToDashboard' })
   @ApiResponse({ status: HttpStatus.OK, type: AddChartToDashboardResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Param('id') dashboardId: string,
     @Body() body: AddChartToDashboardRequest,

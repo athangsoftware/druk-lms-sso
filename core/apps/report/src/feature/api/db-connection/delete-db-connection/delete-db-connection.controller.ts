@@ -24,7 +24,7 @@ export class DeleteDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteDbConnectionResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<DeleteDbConnectionResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.dbConnection.findUnique({ where: { id } });

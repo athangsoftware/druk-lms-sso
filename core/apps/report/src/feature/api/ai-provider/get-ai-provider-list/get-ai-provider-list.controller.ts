@@ -17,7 +17,7 @@ export class GetAiProviderListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getAiProviderList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetAiProviderListResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Query() request: GetAiProviderListRequest,
   ): Promise<GetAiProviderListResponse> {

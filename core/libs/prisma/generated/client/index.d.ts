@@ -75,6 +75,16 @@ export type DashboardChart = $Result.DefaultSelection<Prisma.$DashboardChartPayl
  */
 export type DashboardFilter = $Result.DefaultSelection<Prisma.$DashboardFilterPayload>
 /**
+ * Model GlobalFilter
+ * 
+ */
+export type GlobalFilter = $Result.DefaultSelection<Prisma.$GlobalFilterPayload>
+/**
+ * Model GlobalFilterOverride
+ * 
+ */
+export type GlobalFilterOverride = $Result.DefaultSelection<Prisma.$GlobalFilterOverridePayload>
+/**
  * Model User
  * 
  */
@@ -138,6 +148,14 @@ export const FilterType: {
 export type FilterType = (typeof FilterType)[keyof typeof FilterType]
 
 
+export const MissingColumnBehavior: {
+  SHOW_ALL: 'SHOW_ALL',
+  HIDE_DATA: 'HIDE_DATA'
+};
+
+export type MissingColumnBehavior = (typeof MissingColumnBehavior)[keyof typeof MissingColumnBehavior]
+
+
 export const Role: {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -164,6 +182,10 @@ export const ChartType: typeof $Enums.ChartType
 export type FilterType = $Enums.FilterType
 
 export const FilterType: typeof $Enums.FilterType
+
+export type MissingColumnBehavior = $Enums.MissingColumnBehavior
+
+export const MissingColumnBehavior: typeof $Enums.MissingColumnBehavior
 
 export type Role = $Enums.Role
 
@@ -409,6 +431,26 @@ export class PrismaClient<
     * ```
     */
   get dashboardFilter(): Prisma.DashboardFilterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.globalFilter`: Exposes CRUD operations for the **GlobalFilter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GlobalFilters
+    * const globalFilters = await prisma.globalFilter.findMany()
+    * ```
+    */
+  get globalFilter(): Prisma.GlobalFilterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.globalFilterOverride`: Exposes CRUD operations for the **GlobalFilterOverride** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GlobalFilterOverrides
+    * const globalFilterOverrides = await prisma.globalFilterOverride.findMany()
+    * ```
+    */
+  get globalFilterOverride(): Prisma.GlobalFilterOverrideDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -895,6 +937,8 @@ export namespace Prisma {
     Dashboard: 'Dashboard',
     DashboardChart: 'DashboardChart',
     DashboardFilter: 'DashboardFilter',
+    GlobalFilter: 'GlobalFilter',
+    GlobalFilterOverride: 'GlobalFilterOverride',
     User: 'User',
     PasswordResetToken: 'PasswordResetToken',
     RefreshToken: 'RefreshToken',
@@ -914,7 +958,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "auditLog" | "metaData" | "client" | "authorizationCode" | "redirectURL" | "postLogoutRedirectURL" | "dbConnection" | "aiProvider" | "chart" | "dashboard" | "dashboardChart" | "dashboardFilter" | "user" | "passwordResetToken" | "refreshToken" | "webhookLog"
+      modelProps: "auditLog" | "metaData" | "client" | "authorizationCode" | "redirectURL" | "postLogoutRedirectURL" | "dbConnection" | "aiProvider" | "chart" | "dashboard" | "dashboardChart" | "dashboardFilter" | "globalFilter" | "globalFilterOverride" | "user" | "passwordResetToken" | "refreshToken" | "webhookLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1710,6 +1754,138 @@ export namespace Prisma {
           }
         }
       }
+      GlobalFilter: {
+        payload: Prisma.$GlobalFilterPayload<ExtArgs>
+        fields: Prisma.GlobalFilterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GlobalFilterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GlobalFilterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          findFirst: {
+            args: Prisma.GlobalFilterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GlobalFilterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          findMany: {
+            args: Prisma.GlobalFilterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>[]
+          }
+          create: {
+            args: Prisma.GlobalFilterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          createMany: {
+            args: Prisma.GlobalFilterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.GlobalFilterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          update: {
+            args: Prisma.GlobalFilterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          deleteMany: {
+            args: Prisma.GlobalFilterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GlobalFilterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.GlobalFilterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterPayload>
+          }
+          aggregate: {
+            args: Prisma.GlobalFilterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGlobalFilter>
+          }
+          groupBy: {
+            args: Prisma.GlobalFilterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GlobalFilterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GlobalFilterCountArgs<ExtArgs>
+            result: $Utils.Optional<GlobalFilterCountAggregateOutputType> | number
+          }
+        }
+      }
+      GlobalFilterOverride: {
+        payload: Prisma.$GlobalFilterOverridePayload<ExtArgs>
+        fields: Prisma.GlobalFilterOverrideFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GlobalFilterOverrideFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GlobalFilterOverrideFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          findFirst: {
+            args: Prisma.GlobalFilterOverrideFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GlobalFilterOverrideFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          findMany: {
+            args: Prisma.GlobalFilterOverrideFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>[]
+          }
+          create: {
+            args: Prisma.GlobalFilterOverrideCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          createMany: {
+            args: Prisma.GlobalFilterOverrideCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.GlobalFilterOverrideDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          update: {
+            args: Prisma.GlobalFilterOverrideUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          deleteMany: {
+            args: Prisma.GlobalFilterOverrideDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GlobalFilterOverrideUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.GlobalFilterOverrideUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GlobalFilterOverridePayload>
+          }
+          aggregate: {
+            args: Prisma.GlobalFilterOverrideAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGlobalFilterOverride>
+          }
+          groupBy: {
+            args: Prisma.GlobalFilterOverrideGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GlobalFilterOverrideGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GlobalFilterOverrideCountArgs<ExtArgs>
+            result: $Utils.Optional<GlobalFilterOverrideCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -2094,6 +2270,8 @@ export namespace Prisma {
     dashboard?: DashboardOmit
     dashboardChart?: DashboardChartOmit
     dashboardFilter?: DashboardFilterOmit
+    globalFilter?: GlobalFilterOmit
+    globalFilterOverride?: GlobalFilterOverrideOmit
     user?: UserOmit
     passwordResetToken?: PasswordResetTokenOmit
     refreshToken?: RefreshTokenOmit
@@ -2309,11 +2487,13 @@ export namespace Prisma {
   export type DashboardCountOutputType = {
     dashboardCharts: number
     dashboardFilters: number
+    globalFilterOverrides: number
   }
 
   export type DashboardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dashboardCharts?: boolean | DashboardCountOutputTypeCountDashboardChartsArgs
     dashboardFilters?: boolean | DashboardCountOutputTypeCountDashboardFiltersArgs
+    globalFilterOverrides?: boolean | DashboardCountOutputTypeCountGlobalFilterOverridesArgs
   }
 
   // Custom InputTypes
@@ -2339,6 +2519,44 @@ export namespace Prisma {
    */
   export type DashboardCountOutputTypeCountDashboardFiltersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DashboardFilterWhereInput
+  }
+
+  /**
+   * DashboardCountOutputType without action
+   */
+  export type DashboardCountOutputTypeCountGlobalFilterOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GlobalFilterOverrideWhereInput
+  }
+
+
+  /**
+   * Count Type GlobalFilterCountOutputType
+   */
+
+  export type GlobalFilterCountOutputType = {
+    overrides: number
+  }
+
+  export type GlobalFilterCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    overrides?: boolean | GlobalFilterCountOutputTypeCountOverridesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GlobalFilterCountOutputType without action
+   */
+  export type GlobalFilterCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterCountOutputType
+     */
+    select?: GlobalFilterCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GlobalFilterCountOutputType without action
+   */
+  export type GlobalFilterCountOutputTypeCountOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GlobalFilterOverrideWhereInput
   }
 
 
@@ -11624,6 +11842,7 @@ export namespace Prisma {
     updatedIp?: boolean
     dashboardCharts?: boolean | Dashboard$dashboardChartsArgs<ExtArgs>
     dashboardFilters?: boolean | Dashboard$dashboardFiltersArgs<ExtArgs>
+    globalFilterOverrides?: boolean | Dashboard$globalFilterOverridesArgs<ExtArgs>
     _count?: boolean | DashboardCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dashboard"]>
 
@@ -11645,6 +11864,7 @@ export namespace Prisma {
   export type DashboardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dashboardCharts?: boolean | Dashboard$dashboardChartsArgs<ExtArgs>
     dashboardFilters?: boolean | Dashboard$dashboardFiltersArgs<ExtArgs>
+    globalFilterOverrides?: boolean | Dashboard$globalFilterOverridesArgs<ExtArgs>
     _count?: boolean | DashboardCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -11653,6 +11873,7 @@ export namespace Prisma {
     objects: {
       dashboardCharts: Prisma.$DashboardChartPayload<ExtArgs>[]
       dashboardFilters: Prisma.$DashboardFilterPayload<ExtArgs>[]
+      globalFilterOverrides: Prisma.$GlobalFilterOverridePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12006,6 +12227,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     dashboardCharts<T extends Dashboard$dashboardChartsArgs<ExtArgs> = {}>(args?: Subset<T, Dashboard$dashboardChartsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardChartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dashboardFilters<T extends Dashboard$dashboardFiltersArgs<ExtArgs> = {}>(args?: Subset<T, Dashboard$dashboardFiltersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DashboardFilterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    globalFilterOverrides<T extends Dashboard$globalFilterOverridesArgs<ExtArgs> = {}>(args?: Subset<T, Dashboard$globalFilterOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12432,6 +12654,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DashboardFilterScalarFieldEnum | DashboardFilterScalarFieldEnum[]
+  }
+
+  /**
+   * Dashboard.globalFilterOverrides
+   */
+  export type Dashboard$globalFilterOverridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    where?: GlobalFilterOverrideWhereInput
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GlobalFilterOverrideScalarFieldEnum | GlobalFilterOverrideScalarFieldEnum[]
   }
 
   /**
@@ -14609,6 +14855,2082 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DashboardFilterInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GlobalFilter
+   */
+
+  export type AggregateGlobalFilter = {
+    _count: GlobalFilterCountAggregateOutputType | null
+    _avg: GlobalFilterAvgAggregateOutputType | null
+    _sum: GlobalFilterSumAggregateOutputType | null
+    _min: GlobalFilterMinAggregateOutputType | null
+    _max: GlobalFilterMaxAggregateOutputType | null
+  }
+
+  export type GlobalFilterAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type GlobalFilterSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type GlobalFilterMinAggregateOutputType = {
+    id: string | null
+    columnName: string | null
+    columnValue: string | null
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    isEnabled: boolean | null
+    order: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type GlobalFilterMaxAggregateOutputType = {
+    id: string | null
+    columnName: string | null
+    columnValue: string | null
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    isEnabled: boolean | null
+    order: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type GlobalFilterCountAggregateOutputType = {
+    id: number
+    columnName: number
+    columnValue: number
+    missingColumnBehavior: number
+    isEnabled: number
+    order: number
+    createdBy: number
+    createdAt: number
+    createdIp: number
+    updatedBy: number
+    updatedAt: number
+    updatedIp: number
+    _all: number
+  }
+
+
+  export type GlobalFilterAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type GlobalFilterSumAggregateInputType = {
+    order?: true
+  }
+
+  export type GlobalFilterMinAggregateInputType = {
+    id?: true
+    columnName?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    isEnabled?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type GlobalFilterMaxAggregateInputType = {
+    id?: true
+    columnName?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    isEnabled?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type GlobalFilterCountAggregateInputType = {
+    id?: true
+    columnName?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    isEnabled?: true
+    order?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+    _all?: true
+  }
+
+  export type GlobalFilterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalFilter to aggregate.
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilters to fetch.
+     */
+    orderBy?: GlobalFilterOrderByWithRelationInput | GlobalFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GlobalFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GlobalFilters
+    **/
+    _count?: true | GlobalFilterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GlobalFilterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GlobalFilterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GlobalFilterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GlobalFilterMaxAggregateInputType
+  }
+
+  export type GetGlobalFilterAggregateType<T extends GlobalFilterAggregateArgs> = {
+        [P in keyof T & keyof AggregateGlobalFilter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGlobalFilter[P]>
+      : GetScalarType<T[P], AggregateGlobalFilter[P]>
+  }
+
+
+
+
+  export type GlobalFilterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GlobalFilterWhereInput
+    orderBy?: GlobalFilterOrderByWithAggregationInput | GlobalFilterOrderByWithAggregationInput[]
+    by: GlobalFilterScalarFieldEnum[] | GlobalFilterScalarFieldEnum
+    having?: GlobalFilterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GlobalFilterCountAggregateInputType | true
+    _avg?: GlobalFilterAvgAggregateInputType
+    _sum?: GlobalFilterSumAggregateInputType
+    _min?: GlobalFilterMinAggregateInputType
+    _max?: GlobalFilterMaxAggregateInputType
+  }
+
+  export type GlobalFilterGroupByOutputType = {
+    id: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    isEnabled: boolean
+    order: number
+    createdBy: string | null
+    createdAt: Date
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+    _count: GlobalFilterCountAggregateOutputType | null
+    _avg: GlobalFilterAvgAggregateOutputType | null
+    _sum: GlobalFilterSumAggregateOutputType | null
+    _min: GlobalFilterMinAggregateOutputType | null
+    _max: GlobalFilterMaxAggregateOutputType | null
+  }
+
+  type GetGlobalFilterGroupByPayload<T extends GlobalFilterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GlobalFilterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GlobalFilterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GlobalFilterGroupByOutputType[P]>
+            : GetScalarType<T[P], GlobalFilterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GlobalFilterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    columnName?: boolean
+    columnValue?: boolean
+    missingColumnBehavior?: boolean
+    isEnabled?: boolean
+    order?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+    overrides?: boolean | GlobalFilter$overridesArgs<ExtArgs>
+    _count?: boolean | GlobalFilterCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["globalFilter"]>
+
+
+
+  export type GlobalFilterSelectScalar = {
+    id?: boolean
+    columnName?: boolean
+    columnValue?: boolean
+    missingColumnBehavior?: boolean
+    isEnabled?: boolean
+    order?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+  }
+
+  export type GlobalFilterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "columnName" | "columnValue" | "missingColumnBehavior" | "isEnabled" | "order" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["globalFilter"]>
+  export type GlobalFilterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    overrides?: boolean | GlobalFilter$overridesArgs<ExtArgs>
+    _count?: boolean | GlobalFilterCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $GlobalFilterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GlobalFilter"
+    objects: {
+      overrides: Prisma.$GlobalFilterOverridePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      columnName: string
+      columnValue: string
+      missingColumnBehavior: $Enums.MissingColumnBehavior | null
+      isEnabled: boolean
+      order: number
+      createdBy: string | null
+      createdAt: Date
+      createdIp: string | null
+      updatedBy: string | null
+      updatedAt: Date | null
+      updatedIp: string | null
+    }, ExtArgs["result"]["globalFilter"]>
+    composites: {}
+  }
+
+  type GlobalFilterGetPayload<S extends boolean | null | undefined | GlobalFilterDefaultArgs> = $Result.GetResult<Prisma.$GlobalFilterPayload, S>
+
+  type GlobalFilterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GlobalFilterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GlobalFilterCountAggregateInputType | true
+    }
+
+  export interface GlobalFilterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GlobalFilter'], meta: { name: 'GlobalFilter' } }
+    /**
+     * Find zero or one GlobalFilter that matches the filter.
+     * @param {GlobalFilterFindUniqueArgs} args - Arguments to find a GlobalFilter
+     * @example
+     * // Get one GlobalFilter
+     * const globalFilter = await prisma.globalFilter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GlobalFilterFindUniqueArgs>(args: SelectSubset<T, GlobalFilterFindUniqueArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GlobalFilter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GlobalFilterFindUniqueOrThrowArgs} args - Arguments to find a GlobalFilter
+     * @example
+     * // Get one GlobalFilter
+     * const globalFilter = await prisma.globalFilter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GlobalFilterFindUniqueOrThrowArgs>(args: SelectSubset<T, GlobalFilterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GlobalFilter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterFindFirstArgs} args - Arguments to find a GlobalFilter
+     * @example
+     * // Get one GlobalFilter
+     * const globalFilter = await prisma.globalFilter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GlobalFilterFindFirstArgs>(args?: SelectSubset<T, GlobalFilterFindFirstArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GlobalFilter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterFindFirstOrThrowArgs} args - Arguments to find a GlobalFilter
+     * @example
+     * // Get one GlobalFilter
+     * const globalFilter = await prisma.globalFilter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GlobalFilterFindFirstOrThrowArgs>(args?: SelectSubset<T, GlobalFilterFindFirstOrThrowArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GlobalFilters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GlobalFilters
+     * const globalFilters = await prisma.globalFilter.findMany()
+     * 
+     * // Get first 10 GlobalFilters
+     * const globalFilters = await prisma.globalFilter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const globalFilterWithIdOnly = await prisma.globalFilter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GlobalFilterFindManyArgs>(args?: SelectSubset<T, GlobalFilterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GlobalFilter.
+     * @param {GlobalFilterCreateArgs} args - Arguments to create a GlobalFilter.
+     * @example
+     * // Create one GlobalFilter
+     * const GlobalFilter = await prisma.globalFilter.create({
+     *   data: {
+     *     // ... data to create a GlobalFilter
+     *   }
+     * })
+     * 
+     */
+    create<T extends GlobalFilterCreateArgs>(args: SelectSubset<T, GlobalFilterCreateArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GlobalFilters.
+     * @param {GlobalFilterCreateManyArgs} args - Arguments to create many GlobalFilters.
+     * @example
+     * // Create many GlobalFilters
+     * const globalFilter = await prisma.globalFilter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GlobalFilterCreateManyArgs>(args?: SelectSubset<T, GlobalFilterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a GlobalFilter.
+     * @param {GlobalFilterDeleteArgs} args - Arguments to delete one GlobalFilter.
+     * @example
+     * // Delete one GlobalFilter
+     * const GlobalFilter = await prisma.globalFilter.delete({
+     *   where: {
+     *     // ... filter to delete one GlobalFilter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GlobalFilterDeleteArgs>(args: SelectSubset<T, GlobalFilterDeleteArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GlobalFilter.
+     * @param {GlobalFilterUpdateArgs} args - Arguments to update one GlobalFilter.
+     * @example
+     * // Update one GlobalFilter
+     * const globalFilter = await prisma.globalFilter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GlobalFilterUpdateArgs>(args: SelectSubset<T, GlobalFilterUpdateArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GlobalFilters.
+     * @param {GlobalFilterDeleteManyArgs} args - Arguments to filter GlobalFilters to delete.
+     * @example
+     * // Delete a few GlobalFilters
+     * const { count } = await prisma.globalFilter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GlobalFilterDeleteManyArgs>(args?: SelectSubset<T, GlobalFilterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GlobalFilters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GlobalFilters
+     * const globalFilter = await prisma.globalFilter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GlobalFilterUpdateManyArgs>(args: SelectSubset<T, GlobalFilterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one GlobalFilter.
+     * @param {GlobalFilterUpsertArgs} args - Arguments to update or create a GlobalFilter.
+     * @example
+     * // Update or create a GlobalFilter
+     * const globalFilter = await prisma.globalFilter.upsert({
+     *   create: {
+     *     // ... data to create a GlobalFilter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GlobalFilter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GlobalFilterUpsertArgs>(args: SelectSubset<T, GlobalFilterUpsertArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GlobalFilters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterCountArgs} args - Arguments to filter GlobalFilters to count.
+     * @example
+     * // Count the number of GlobalFilters
+     * const count = await prisma.globalFilter.count({
+     *   where: {
+     *     // ... the filter for the GlobalFilters we want to count
+     *   }
+     * })
+    **/
+    count<T extends GlobalFilterCountArgs>(
+      args?: Subset<T, GlobalFilterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GlobalFilterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GlobalFilter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GlobalFilterAggregateArgs>(args: Subset<T, GlobalFilterAggregateArgs>): Prisma.PrismaPromise<GetGlobalFilterAggregateType<T>>
+
+    /**
+     * Group by GlobalFilter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GlobalFilterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GlobalFilterGroupByArgs['orderBy'] }
+        : { orderBy?: GlobalFilterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GlobalFilterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGlobalFilterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GlobalFilter model
+   */
+  readonly fields: GlobalFilterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GlobalFilter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GlobalFilterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    overrides<T extends GlobalFilter$overridesArgs<ExtArgs> = {}>(args?: Subset<T, GlobalFilter$overridesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GlobalFilter model
+   */
+  interface GlobalFilterFieldRefs {
+    readonly id: FieldRef<"GlobalFilter", 'String'>
+    readonly columnName: FieldRef<"GlobalFilter", 'String'>
+    readonly columnValue: FieldRef<"GlobalFilter", 'String'>
+    readonly missingColumnBehavior: FieldRef<"GlobalFilter", 'MissingColumnBehavior'>
+    readonly isEnabled: FieldRef<"GlobalFilter", 'Boolean'>
+    readonly order: FieldRef<"GlobalFilter", 'Int'>
+    readonly createdBy: FieldRef<"GlobalFilter", 'String'>
+    readonly createdAt: FieldRef<"GlobalFilter", 'DateTime'>
+    readonly createdIp: FieldRef<"GlobalFilter", 'String'>
+    readonly updatedBy: FieldRef<"GlobalFilter", 'String'>
+    readonly updatedAt: FieldRef<"GlobalFilter", 'DateTime'>
+    readonly updatedIp: FieldRef<"GlobalFilter", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GlobalFilter findUnique
+   */
+  export type GlobalFilterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilter to fetch.
+     */
+    where: GlobalFilterWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilter findUniqueOrThrow
+   */
+  export type GlobalFilterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilter to fetch.
+     */
+    where: GlobalFilterWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilter findFirst
+   */
+  export type GlobalFilterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilter to fetch.
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilters to fetch.
+     */
+    orderBy?: GlobalFilterOrderByWithRelationInput | GlobalFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalFilters.
+     */
+    cursor?: GlobalFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalFilters.
+     */
+    distinct?: GlobalFilterScalarFieldEnum | GlobalFilterScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilter findFirstOrThrow
+   */
+  export type GlobalFilterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilter to fetch.
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilters to fetch.
+     */
+    orderBy?: GlobalFilterOrderByWithRelationInput | GlobalFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalFilters.
+     */
+    cursor?: GlobalFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalFilters.
+     */
+    distinct?: GlobalFilterScalarFieldEnum | GlobalFilterScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilter findMany
+   */
+  export type GlobalFilterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilters to fetch.
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilters to fetch.
+     */
+    orderBy?: GlobalFilterOrderByWithRelationInput | GlobalFilterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GlobalFilters.
+     */
+    cursor?: GlobalFilterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilters.
+     */
+    skip?: number
+    distinct?: GlobalFilterScalarFieldEnum | GlobalFilterScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilter create
+   */
+  export type GlobalFilterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GlobalFilter.
+     */
+    data: XOR<GlobalFilterCreateInput, GlobalFilterUncheckedCreateInput>
+  }
+
+  /**
+   * GlobalFilter createMany
+   */
+  export type GlobalFilterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GlobalFilters.
+     */
+    data: GlobalFilterCreateManyInput | GlobalFilterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GlobalFilter update
+   */
+  export type GlobalFilterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GlobalFilter.
+     */
+    data: XOR<GlobalFilterUpdateInput, GlobalFilterUncheckedUpdateInput>
+    /**
+     * Choose, which GlobalFilter to update.
+     */
+    where: GlobalFilterWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilter updateMany
+   */
+  export type GlobalFilterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GlobalFilters.
+     */
+    data: XOR<GlobalFilterUpdateManyMutationInput, GlobalFilterUncheckedUpdateManyInput>
+    /**
+     * Filter which GlobalFilters to update
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * Limit how many GlobalFilters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GlobalFilter upsert
+   */
+  export type GlobalFilterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GlobalFilter to update in case it exists.
+     */
+    where: GlobalFilterWhereUniqueInput
+    /**
+     * In case the GlobalFilter found by the `where` argument doesn't exist, create a new GlobalFilter with this data.
+     */
+    create: XOR<GlobalFilterCreateInput, GlobalFilterUncheckedCreateInput>
+    /**
+     * In case the GlobalFilter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GlobalFilterUpdateInput, GlobalFilterUncheckedUpdateInput>
+  }
+
+  /**
+   * GlobalFilter delete
+   */
+  export type GlobalFilterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+    /**
+     * Filter which GlobalFilter to delete.
+     */
+    where: GlobalFilterWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilter deleteMany
+   */
+  export type GlobalFilterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalFilters to delete
+     */
+    where?: GlobalFilterWhereInput
+    /**
+     * Limit how many GlobalFilters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GlobalFilter.overrides
+   */
+  export type GlobalFilter$overridesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    where?: GlobalFilterOverrideWhereInput
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GlobalFilterOverrideScalarFieldEnum | GlobalFilterOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilter without action
+   */
+  export type GlobalFilterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilter
+     */
+    select?: GlobalFilterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilter
+     */
+    omit?: GlobalFilterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GlobalFilterOverride
+   */
+
+  export type AggregateGlobalFilterOverride = {
+    _count: GlobalFilterOverrideCountAggregateOutputType | null
+    _min: GlobalFilterOverrideMinAggregateOutputType | null
+    _max: GlobalFilterOverrideMaxAggregateOutputType | null
+  }
+
+  export type GlobalFilterOverrideMinAggregateOutputType = {
+    id: string | null
+    globalFilterId: string | null
+    dashboardId: string | null
+    isDisabled: boolean | null
+    columnValue: string | null
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type GlobalFilterOverrideMaxAggregateOutputType = {
+    id: string | null
+    globalFilterId: string | null
+    dashboardId: string | null
+    isDisabled: boolean | null
+    columnValue: string | null
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    createdBy: string | null
+    createdAt: Date | null
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+  }
+
+  export type GlobalFilterOverrideCountAggregateOutputType = {
+    id: number
+    globalFilterId: number
+    dashboardId: number
+    isDisabled: number
+    columnValue: number
+    missingColumnBehavior: number
+    createdBy: number
+    createdAt: number
+    createdIp: number
+    updatedBy: number
+    updatedAt: number
+    updatedIp: number
+    _all: number
+  }
+
+
+  export type GlobalFilterOverrideMinAggregateInputType = {
+    id?: true
+    globalFilterId?: true
+    dashboardId?: true
+    isDisabled?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type GlobalFilterOverrideMaxAggregateInputType = {
+    id?: true
+    globalFilterId?: true
+    dashboardId?: true
+    isDisabled?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+  }
+
+  export type GlobalFilterOverrideCountAggregateInputType = {
+    id?: true
+    globalFilterId?: true
+    dashboardId?: true
+    isDisabled?: true
+    columnValue?: true
+    missingColumnBehavior?: true
+    createdBy?: true
+    createdAt?: true
+    createdIp?: true
+    updatedBy?: true
+    updatedAt?: true
+    updatedIp?: true
+    _all?: true
+  }
+
+  export type GlobalFilterOverrideAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalFilterOverride to aggregate.
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilterOverrides to fetch.
+     */
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilterOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilterOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GlobalFilterOverrides
+    **/
+    _count?: true | GlobalFilterOverrideCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GlobalFilterOverrideMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GlobalFilterOverrideMaxAggregateInputType
+  }
+
+  export type GetGlobalFilterOverrideAggregateType<T extends GlobalFilterOverrideAggregateArgs> = {
+        [P in keyof T & keyof AggregateGlobalFilterOverride]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGlobalFilterOverride[P]>
+      : GetScalarType<T[P], AggregateGlobalFilterOverride[P]>
+  }
+
+
+
+
+  export type GlobalFilterOverrideGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GlobalFilterOverrideWhereInput
+    orderBy?: GlobalFilterOverrideOrderByWithAggregationInput | GlobalFilterOverrideOrderByWithAggregationInput[]
+    by: GlobalFilterOverrideScalarFieldEnum[] | GlobalFilterOverrideScalarFieldEnum
+    having?: GlobalFilterOverrideScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GlobalFilterOverrideCountAggregateInputType | true
+    _min?: GlobalFilterOverrideMinAggregateInputType
+    _max?: GlobalFilterOverrideMaxAggregateInputType
+  }
+
+  export type GlobalFilterOverrideGroupByOutputType = {
+    id: string
+    globalFilterId: string
+    dashboardId: string
+    isDisabled: boolean
+    columnValue: string | null
+    missingColumnBehavior: $Enums.MissingColumnBehavior | null
+    createdBy: string | null
+    createdAt: Date
+    createdIp: string | null
+    updatedBy: string | null
+    updatedAt: Date | null
+    updatedIp: string | null
+    _count: GlobalFilterOverrideCountAggregateOutputType | null
+    _min: GlobalFilterOverrideMinAggregateOutputType | null
+    _max: GlobalFilterOverrideMaxAggregateOutputType | null
+  }
+
+  type GetGlobalFilterOverrideGroupByPayload<T extends GlobalFilterOverrideGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GlobalFilterOverrideGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GlobalFilterOverrideGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GlobalFilterOverrideGroupByOutputType[P]>
+            : GetScalarType<T[P], GlobalFilterOverrideGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GlobalFilterOverrideSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    globalFilterId?: boolean
+    dashboardId?: boolean
+    isDisabled?: boolean
+    columnValue?: boolean
+    missingColumnBehavior?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+    globalFilter?: boolean | GlobalFilterDefaultArgs<ExtArgs>
+    dashboard?: boolean | DashboardDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["globalFilterOverride"]>
+
+
+
+  export type GlobalFilterOverrideSelectScalar = {
+    id?: boolean
+    globalFilterId?: boolean
+    dashboardId?: boolean
+    isDisabled?: boolean
+    columnValue?: boolean
+    missingColumnBehavior?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    createdIp?: boolean
+    updatedBy?: boolean
+    updatedAt?: boolean
+    updatedIp?: boolean
+  }
+
+  export type GlobalFilterOverrideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "globalFilterId" | "dashboardId" | "isDisabled" | "columnValue" | "missingColumnBehavior" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["globalFilterOverride"]>
+  export type GlobalFilterOverrideInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    globalFilter?: boolean | GlobalFilterDefaultArgs<ExtArgs>
+    dashboard?: boolean | DashboardDefaultArgs<ExtArgs>
+  }
+
+  export type $GlobalFilterOverridePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GlobalFilterOverride"
+    objects: {
+      globalFilter: Prisma.$GlobalFilterPayload<ExtArgs>
+      dashboard: Prisma.$DashboardPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      globalFilterId: string
+      dashboardId: string
+      isDisabled: boolean
+      columnValue: string | null
+      missingColumnBehavior: $Enums.MissingColumnBehavior | null
+      createdBy: string | null
+      createdAt: Date
+      createdIp: string | null
+      updatedBy: string | null
+      updatedAt: Date | null
+      updatedIp: string | null
+    }, ExtArgs["result"]["globalFilterOverride"]>
+    composites: {}
+  }
+
+  type GlobalFilterOverrideGetPayload<S extends boolean | null | undefined | GlobalFilterOverrideDefaultArgs> = $Result.GetResult<Prisma.$GlobalFilterOverridePayload, S>
+
+  type GlobalFilterOverrideCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GlobalFilterOverrideFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GlobalFilterOverrideCountAggregateInputType | true
+    }
+
+  export interface GlobalFilterOverrideDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GlobalFilterOverride'], meta: { name: 'GlobalFilterOverride' } }
+    /**
+     * Find zero or one GlobalFilterOverride that matches the filter.
+     * @param {GlobalFilterOverrideFindUniqueArgs} args - Arguments to find a GlobalFilterOverride
+     * @example
+     * // Get one GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GlobalFilterOverrideFindUniqueArgs>(args: SelectSubset<T, GlobalFilterOverrideFindUniqueArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GlobalFilterOverride that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GlobalFilterOverrideFindUniqueOrThrowArgs} args - Arguments to find a GlobalFilterOverride
+     * @example
+     * // Get one GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GlobalFilterOverrideFindUniqueOrThrowArgs>(args: SelectSubset<T, GlobalFilterOverrideFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GlobalFilterOverride that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideFindFirstArgs} args - Arguments to find a GlobalFilterOverride
+     * @example
+     * // Get one GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GlobalFilterOverrideFindFirstArgs>(args?: SelectSubset<T, GlobalFilterOverrideFindFirstArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GlobalFilterOverride that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideFindFirstOrThrowArgs} args - Arguments to find a GlobalFilterOverride
+     * @example
+     * // Get one GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GlobalFilterOverrideFindFirstOrThrowArgs>(args?: SelectSubset<T, GlobalFilterOverrideFindFirstOrThrowArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GlobalFilterOverrides that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GlobalFilterOverrides
+     * const globalFilterOverrides = await prisma.globalFilterOverride.findMany()
+     * 
+     * // Get first 10 GlobalFilterOverrides
+     * const globalFilterOverrides = await prisma.globalFilterOverride.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const globalFilterOverrideWithIdOnly = await prisma.globalFilterOverride.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GlobalFilterOverrideFindManyArgs>(args?: SelectSubset<T, GlobalFilterOverrideFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GlobalFilterOverride.
+     * @param {GlobalFilterOverrideCreateArgs} args - Arguments to create a GlobalFilterOverride.
+     * @example
+     * // Create one GlobalFilterOverride
+     * const GlobalFilterOverride = await prisma.globalFilterOverride.create({
+     *   data: {
+     *     // ... data to create a GlobalFilterOverride
+     *   }
+     * })
+     * 
+     */
+    create<T extends GlobalFilterOverrideCreateArgs>(args: SelectSubset<T, GlobalFilterOverrideCreateArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GlobalFilterOverrides.
+     * @param {GlobalFilterOverrideCreateManyArgs} args - Arguments to create many GlobalFilterOverrides.
+     * @example
+     * // Create many GlobalFilterOverrides
+     * const globalFilterOverride = await prisma.globalFilterOverride.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GlobalFilterOverrideCreateManyArgs>(args?: SelectSubset<T, GlobalFilterOverrideCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a GlobalFilterOverride.
+     * @param {GlobalFilterOverrideDeleteArgs} args - Arguments to delete one GlobalFilterOverride.
+     * @example
+     * // Delete one GlobalFilterOverride
+     * const GlobalFilterOverride = await prisma.globalFilterOverride.delete({
+     *   where: {
+     *     // ... filter to delete one GlobalFilterOverride
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GlobalFilterOverrideDeleteArgs>(args: SelectSubset<T, GlobalFilterOverrideDeleteArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GlobalFilterOverride.
+     * @param {GlobalFilterOverrideUpdateArgs} args - Arguments to update one GlobalFilterOverride.
+     * @example
+     * // Update one GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GlobalFilterOverrideUpdateArgs>(args: SelectSubset<T, GlobalFilterOverrideUpdateArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GlobalFilterOverrides.
+     * @param {GlobalFilterOverrideDeleteManyArgs} args - Arguments to filter GlobalFilterOverrides to delete.
+     * @example
+     * // Delete a few GlobalFilterOverrides
+     * const { count } = await prisma.globalFilterOverride.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GlobalFilterOverrideDeleteManyArgs>(args?: SelectSubset<T, GlobalFilterOverrideDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GlobalFilterOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GlobalFilterOverrides
+     * const globalFilterOverride = await prisma.globalFilterOverride.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GlobalFilterOverrideUpdateManyArgs>(args: SelectSubset<T, GlobalFilterOverrideUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one GlobalFilterOverride.
+     * @param {GlobalFilterOverrideUpsertArgs} args - Arguments to update or create a GlobalFilterOverride.
+     * @example
+     * // Update or create a GlobalFilterOverride
+     * const globalFilterOverride = await prisma.globalFilterOverride.upsert({
+     *   create: {
+     *     // ... data to create a GlobalFilterOverride
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GlobalFilterOverride we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GlobalFilterOverrideUpsertArgs>(args: SelectSubset<T, GlobalFilterOverrideUpsertArgs<ExtArgs>>): Prisma__GlobalFilterOverrideClient<$Result.GetResult<Prisma.$GlobalFilterOverridePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GlobalFilterOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideCountArgs} args - Arguments to filter GlobalFilterOverrides to count.
+     * @example
+     * // Count the number of GlobalFilterOverrides
+     * const count = await prisma.globalFilterOverride.count({
+     *   where: {
+     *     // ... the filter for the GlobalFilterOverrides we want to count
+     *   }
+     * })
+    **/
+    count<T extends GlobalFilterOverrideCountArgs>(
+      args?: Subset<T, GlobalFilterOverrideCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GlobalFilterOverrideCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GlobalFilterOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GlobalFilterOverrideAggregateArgs>(args: Subset<T, GlobalFilterOverrideAggregateArgs>): Prisma.PrismaPromise<GetGlobalFilterOverrideAggregateType<T>>
+
+    /**
+     * Group by GlobalFilterOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GlobalFilterOverrideGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GlobalFilterOverrideGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GlobalFilterOverrideGroupByArgs['orderBy'] }
+        : { orderBy?: GlobalFilterOverrideGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GlobalFilterOverrideGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGlobalFilterOverrideGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GlobalFilterOverride model
+   */
+  readonly fields: GlobalFilterOverrideFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GlobalFilterOverride.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GlobalFilterOverrideClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    globalFilter<T extends GlobalFilterDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GlobalFilterDefaultArgs<ExtArgs>>): Prisma__GlobalFilterClient<$Result.GetResult<Prisma.$GlobalFilterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dashboard<T extends DashboardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DashboardDefaultArgs<ExtArgs>>): Prisma__DashboardClient<$Result.GetResult<Prisma.$DashboardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GlobalFilterOverride model
+   */
+  interface GlobalFilterOverrideFieldRefs {
+    readonly id: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly globalFilterId: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly dashboardId: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly isDisabled: FieldRef<"GlobalFilterOverride", 'Boolean'>
+    readonly columnValue: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly missingColumnBehavior: FieldRef<"GlobalFilterOverride", 'MissingColumnBehavior'>
+    readonly createdBy: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly createdAt: FieldRef<"GlobalFilterOverride", 'DateTime'>
+    readonly createdIp: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly updatedBy: FieldRef<"GlobalFilterOverride", 'String'>
+    readonly updatedAt: FieldRef<"GlobalFilterOverride", 'DateTime'>
+    readonly updatedIp: FieldRef<"GlobalFilterOverride", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GlobalFilterOverride findUnique
+   */
+  export type GlobalFilterOverrideFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilterOverride to fetch.
+     */
+    where: GlobalFilterOverrideWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilterOverride findUniqueOrThrow
+   */
+  export type GlobalFilterOverrideFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilterOverride to fetch.
+     */
+    where: GlobalFilterOverrideWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilterOverride findFirst
+   */
+  export type GlobalFilterOverrideFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilterOverride to fetch.
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilterOverrides to fetch.
+     */
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalFilterOverrides.
+     */
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilterOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilterOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalFilterOverrides.
+     */
+    distinct?: GlobalFilterOverrideScalarFieldEnum | GlobalFilterOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilterOverride findFirstOrThrow
+   */
+  export type GlobalFilterOverrideFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilterOverride to fetch.
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilterOverrides to fetch.
+     */
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GlobalFilterOverrides.
+     */
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilterOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilterOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GlobalFilterOverrides.
+     */
+    distinct?: GlobalFilterOverrideScalarFieldEnum | GlobalFilterOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilterOverride findMany
+   */
+  export type GlobalFilterOverrideFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter, which GlobalFilterOverrides to fetch.
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GlobalFilterOverrides to fetch.
+     */
+    orderBy?: GlobalFilterOverrideOrderByWithRelationInput | GlobalFilterOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GlobalFilterOverrides.
+     */
+    cursor?: GlobalFilterOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GlobalFilterOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GlobalFilterOverrides.
+     */
+    skip?: number
+    distinct?: GlobalFilterOverrideScalarFieldEnum | GlobalFilterOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * GlobalFilterOverride create
+   */
+  export type GlobalFilterOverrideCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GlobalFilterOverride.
+     */
+    data: XOR<GlobalFilterOverrideCreateInput, GlobalFilterOverrideUncheckedCreateInput>
+  }
+
+  /**
+   * GlobalFilterOverride createMany
+   */
+  export type GlobalFilterOverrideCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GlobalFilterOverrides.
+     */
+    data: GlobalFilterOverrideCreateManyInput | GlobalFilterOverrideCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GlobalFilterOverride update
+   */
+  export type GlobalFilterOverrideUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GlobalFilterOverride.
+     */
+    data: XOR<GlobalFilterOverrideUpdateInput, GlobalFilterOverrideUncheckedUpdateInput>
+    /**
+     * Choose, which GlobalFilterOverride to update.
+     */
+    where: GlobalFilterOverrideWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilterOverride updateMany
+   */
+  export type GlobalFilterOverrideUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GlobalFilterOverrides.
+     */
+    data: XOR<GlobalFilterOverrideUpdateManyMutationInput, GlobalFilterOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which GlobalFilterOverrides to update
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * Limit how many GlobalFilterOverrides to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GlobalFilterOverride upsert
+   */
+  export type GlobalFilterOverrideUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GlobalFilterOverride to update in case it exists.
+     */
+    where: GlobalFilterOverrideWhereUniqueInput
+    /**
+     * In case the GlobalFilterOverride found by the `where` argument doesn't exist, create a new GlobalFilterOverride with this data.
+     */
+    create: XOR<GlobalFilterOverrideCreateInput, GlobalFilterOverrideUncheckedCreateInput>
+    /**
+     * In case the GlobalFilterOverride was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GlobalFilterOverrideUpdateInput, GlobalFilterOverrideUncheckedUpdateInput>
+  }
+
+  /**
+   * GlobalFilterOverride delete
+   */
+  export type GlobalFilterOverrideDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
+    /**
+     * Filter which GlobalFilterOverride to delete.
+     */
+    where: GlobalFilterOverrideWhereUniqueInput
+  }
+
+  /**
+   * GlobalFilterOverride deleteMany
+   */
+  export type GlobalFilterOverrideDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GlobalFilterOverrides to delete
+     */
+    where?: GlobalFilterOverrideWhereInput
+    /**
+     * Limit how many GlobalFilterOverrides to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GlobalFilterOverride without action
+   */
+  export type GlobalFilterOverrideDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GlobalFilterOverride
+     */
+    select?: GlobalFilterOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GlobalFilterOverride
+     */
+    omit?: GlobalFilterOverrideOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GlobalFilterOverrideInclude<ExtArgs> | null
   }
 
 
@@ -18918,6 +21240,42 @@ export namespace Prisma {
   export type DashboardFilterScalarFieldEnum = (typeof DashboardFilterScalarFieldEnum)[keyof typeof DashboardFilterScalarFieldEnum]
 
 
+  export const GlobalFilterScalarFieldEnum: {
+    id: 'id',
+    columnName: 'columnName',
+    columnValue: 'columnValue',
+    missingColumnBehavior: 'missingColumnBehavior',
+    isEnabled: 'isEnabled',
+    order: 'order',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedAt: 'updatedAt',
+    updatedIp: 'updatedIp'
+  };
+
+  export type GlobalFilterScalarFieldEnum = (typeof GlobalFilterScalarFieldEnum)[keyof typeof GlobalFilterScalarFieldEnum]
+
+
+  export const GlobalFilterOverrideScalarFieldEnum: {
+    id: 'id',
+    globalFilterId: 'globalFilterId',
+    dashboardId: 'dashboardId',
+    isDisabled: 'isDisabled',
+    columnValue: 'columnValue',
+    missingColumnBehavior: 'missingColumnBehavior',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedAt: 'updatedAt',
+    updatedIp: 'updatedIp'
+  };
+
+  export type GlobalFilterOverrideScalarFieldEnum = (typeof GlobalFilterOverrideScalarFieldEnum)[keyof typeof GlobalFilterOverrideScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     firstName: 'firstName',
@@ -19208,6 +21566,33 @@ export namespace Prisma {
   export type DashboardFilterOrderByRelevanceFieldEnum = (typeof DashboardFilterOrderByRelevanceFieldEnum)[keyof typeof DashboardFilterOrderByRelevanceFieldEnum]
 
 
+  export const GlobalFilterOrderByRelevanceFieldEnum: {
+    id: 'id',
+    columnName: 'columnName',
+    columnValue: 'columnValue',
+    createdBy: 'createdBy',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedIp: 'updatedIp'
+  };
+
+  export type GlobalFilterOrderByRelevanceFieldEnum = (typeof GlobalFilterOrderByRelevanceFieldEnum)[keyof typeof GlobalFilterOrderByRelevanceFieldEnum]
+
+
+  export const GlobalFilterOverrideOrderByRelevanceFieldEnum: {
+    id: 'id',
+    globalFilterId: 'globalFilterId',
+    dashboardId: 'dashboardId',
+    columnValue: 'columnValue',
+    createdBy: 'createdBy',
+    createdIp: 'createdIp',
+    updatedBy: 'updatedBy',
+    updatedIp: 'updatedIp'
+  };
+
+  export type GlobalFilterOverrideOrderByRelevanceFieldEnum = (typeof GlobalFilterOverrideOrderByRelevanceFieldEnum)[keyof typeof GlobalFilterOverrideOrderByRelevanceFieldEnum]
+
+
   export const UserOrderByRelevanceFieldEnum: {
     id: 'id',
     firstName: 'firstName',
@@ -19338,6 +21723,13 @@ export namespace Prisma {
    * Reference to a field of type 'FilterType'
    */
   export type EnumFilterTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FilterType'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissingColumnBehavior'
+   */
+  export type EnumMissingColumnBehaviorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissingColumnBehavior'>
     
 
 
@@ -20149,6 +22541,7 @@ export namespace Prisma {
     updatedIp?: StringNullableFilter<"Dashboard"> | string | null
     dashboardCharts?: DashboardChartListRelationFilter
     dashboardFilters?: DashboardFilterListRelationFilter
+    globalFilterOverrides?: GlobalFilterOverrideListRelationFilter
   }
 
   export type DashboardOrderByWithRelationInput = {
@@ -20163,6 +22556,7 @@ export namespace Prisma {
     updatedIp?: SortOrderInput | SortOrder
     dashboardCharts?: DashboardChartOrderByRelationAggregateInput
     dashboardFilters?: DashboardFilterOrderByRelationAggregateInput
+    globalFilterOverrides?: GlobalFilterOverrideOrderByRelationAggregateInput
     _relevance?: DashboardOrderByRelevanceInput
   }
 
@@ -20181,6 +22575,7 @@ export namespace Prisma {
     updatedIp?: StringNullableFilter<"Dashboard"> | string | null
     dashboardCharts?: DashboardChartListRelationFilter
     dashboardFilters?: DashboardFilterListRelationFilter
+    globalFilterOverrides?: GlobalFilterOverrideListRelationFilter
   }, "id">
 
   export type DashboardOrderByWithAggregationInput = {
@@ -20429,6 +22824,194 @@ export namespace Prisma {
     updatedBy?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"DashboardFilter"> | Date | string | null
     updatedIp?: StringNullableWithAggregatesFilter<"DashboardFilter"> | string | null
+  }
+
+  export type GlobalFilterWhereInput = {
+    AND?: GlobalFilterWhereInput | GlobalFilterWhereInput[]
+    OR?: GlobalFilterWhereInput[]
+    NOT?: GlobalFilterWhereInput | GlobalFilterWhereInput[]
+    id?: StringFilter<"GlobalFilter"> | string
+    columnName?: StringFilter<"GlobalFilter"> | string
+    columnValue?: StringFilter<"GlobalFilter"> | string
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableFilter<"GlobalFilter"> | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFilter<"GlobalFilter"> | boolean
+    order?: IntFilter<"GlobalFilter"> | number
+    createdBy?: StringNullableFilter<"GlobalFilter"> | string | null
+    createdAt?: DateTimeFilter<"GlobalFilter"> | Date | string
+    createdIp?: StringNullableFilter<"GlobalFilter"> | string | null
+    updatedBy?: StringNullableFilter<"GlobalFilter"> | string | null
+    updatedAt?: DateTimeNullableFilter<"GlobalFilter"> | Date | string | null
+    updatedIp?: StringNullableFilter<"GlobalFilter"> | string | null
+    overrides?: GlobalFilterOverrideListRelationFilter
+  }
+
+  export type GlobalFilterOrderByWithRelationInput = {
+    id?: SortOrder
+    columnName?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrderInput | SortOrder
+    isEnabled?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    overrides?: GlobalFilterOverrideOrderByRelationAggregateInput
+    _relevance?: GlobalFilterOrderByRelevanceInput
+  }
+
+  export type GlobalFilterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GlobalFilterWhereInput | GlobalFilterWhereInput[]
+    OR?: GlobalFilterWhereInput[]
+    NOT?: GlobalFilterWhereInput | GlobalFilterWhereInput[]
+    columnName?: StringFilter<"GlobalFilter"> | string
+    columnValue?: StringFilter<"GlobalFilter"> | string
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableFilter<"GlobalFilter"> | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFilter<"GlobalFilter"> | boolean
+    order?: IntFilter<"GlobalFilter"> | number
+    createdBy?: StringNullableFilter<"GlobalFilter"> | string | null
+    createdAt?: DateTimeFilter<"GlobalFilter"> | Date | string
+    createdIp?: StringNullableFilter<"GlobalFilter"> | string | null
+    updatedBy?: StringNullableFilter<"GlobalFilter"> | string | null
+    updatedAt?: DateTimeNullableFilter<"GlobalFilter"> | Date | string | null
+    updatedIp?: StringNullableFilter<"GlobalFilter"> | string | null
+    overrides?: GlobalFilterOverrideListRelationFilter
+  }, "id">
+
+  export type GlobalFilterOrderByWithAggregationInput = {
+    id?: SortOrder
+    columnName?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrderInput | SortOrder
+    isEnabled?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    _count?: GlobalFilterCountOrderByAggregateInput
+    _avg?: GlobalFilterAvgOrderByAggregateInput
+    _max?: GlobalFilterMaxOrderByAggregateInput
+    _min?: GlobalFilterMinOrderByAggregateInput
+    _sum?: GlobalFilterSumOrderByAggregateInput
+  }
+
+  export type GlobalFilterScalarWhereWithAggregatesInput = {
+    AND?: GlobalFilterScalarWhereWithAggregatesInput | GlobalFilterScalarWhereWithAggregatesInput[]
+    OR?: GlobalFilterScalarWhereWithAggregatesInput[]
+    NOT?: GlobalFilterScalarWhereWithAggregatesInput | GlobalFilterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GlobalFilter"> | string
+    columnName?: StringWithAggregatesFilter<"GlobalFilter"> | string
+    columnValue?: StringWithAggregatesFilter<"GlobalFilter"> | string
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableWithAggregatesFilter<"GlobalFilter"> | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolWithAggregatesFilter<"GlobalFilter"> | boolean
+    order?: IntWithAggregatesFilter<"GlobalFilter"> | number
+    createdBy?: StringNullableWithAggregatesFilter<"GlobalFilter"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GlobalFilter"> | Date | string
+    createdIp?: StringNullableWithAggregatesFilter<"GlobalFilter"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"GlobalFilter"> | string | null
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"GlobalFilter"> | Date | string | null
+    updatedIp?: StringNullableWithAggregatesFilter<"GlobalFilter"> | string | null
+  }
+
+  export type GlobalFilterOverrideWhereInput = {
+    AND?: GlobalFilterOverrideWhereInput | GlobalFilterOverrideWhereInput[]
+    OR?: GlobalFilterOverrideWhereInput[]
+    NOT?: GlobalFilterOverrideWhereInput | GlobalFilterOverrideWhereInput[]
+    id?: StringFilter<"GlobalFilterOverride"> | string
+    globalFilterId?: StringFilter<"GlobalFilterOverride"> | string
+    dashboardId?: StringFilter<"GlobalFilterOverride"> | string
+    isDisabled?: BoolFilter<"GlobalFilterOverride"> | boolean
+    columnValue?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableFilter<"GlobalFilterOverride"> | $Enums.MissingColumnBehavior | null
+    createdBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    createdAt?: DateTimeFilter<"GlobalFilterOverride"> | Date | string
+    createdIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedAt?: DateTimeNullableFilter<"GlobalFilterOverride"> | Date | string | null
+    updatedIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    globalFilter?: XOR<GlobalFilterScalarRelationFilter, GlobalFilterWhereInput>
+    dashboard?: XOR<DashboardScalarRelationFilter, DashboardWhereInput>
+  }
+
+  export type GlobalFilterOverrideOrderByWithRelationInput = {
+    id?: SortOrder
+    globalFilterId?: SortOrder
+    dashboardId?: SortOrder
+    isDisabled?: SortOrder
+    columnValue?: SortOrderInput | SortOrder
+    missingColumnBehavior?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    globalFilter?: GlobalFilterOrderByWithRelationInput
+    dashboard?: DashboardOrderByWithRelationInput
+    _relevance?: GlobalFilterOverrideOrderByRelevanceInput
+  }
+
+  export type GlobalFilterOverrideWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    globalFilterId_dashboardId?: GlobalFilterOverrideGlobalFilterIdDashboardIdCompoundUniqueInput
+    AND?: GlobalFilterOverrideWhereInput | GlobalFilterOverrideWhereInput[]
+    OR?: GlobalFilterOverrideWhereInput[]
+    NOT?: GlobalFilterOverrideWhereInput | GlobalFilterOverrideWhereInput[]
+    globalFilterId?: StringFilter<"GlobalFilterOverride"> | string
+    dashboardId?: StringFilter<"GlobalFilterOverride"> | string
+    isDisabled?: BoolFilter<"GlobalFilterOverride"> | boolean
+    columnValue?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableFilter<"GlobalFilterOverride"> | $Enums.MissingColumnBehavior | null
+    createdBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    createdAt?: DateTimeFilter<"GlobalFilterOverride"> | Date | string
+    createdIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedAt?: DateTimeNullableFilter<"GlobalFilterOverride"> | Date | string | null
+    updatedIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    globalFilter?: XOR<GlobalFilterScalarRelationFilter, GlobalFilterWhereInput>
+    dashboard?: XOR<DashboardScalarRelationFilter, DashboardWhereInput>
+  }, "id" | "globalFilterId_dashboardId">
+
+  export type GlobalFilterOverrideOrderByWithAggregationInput = {
+    id?: SortOrder
+    globalFilterId?: SortOrder
+    dashboardId?: SortOrder
+    isDisabled?: SortOrder
+    columnValue?: SortOrderInput | SortOrder
+    missingColumnBehavior?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrderInput | SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
+    updatedIp?: SortOrderInput | SortOrder
+    _count?: GlobalFilterOverrideCountOrderByAggregateInput
+    _max?: GlobalFilterOverrideMaxOrderByAggregateInput
+    _min?: GlobalFilterOverrideMinOrderByAggregateInput
+  }
+
+  export type GlobalFilterOverrideScalarWhereWithAggregatesInput = {
+    AND?: GlobalFilterOverrideScalarWhereWithAggregatesInput | GlobalFilterOverrideScalarWhereWithAggregatesInput[]
+    OR?: GlobalFilterOverrideScalarWhereWithAggregatesInput[]
+    NOT?: GlobalFilterOverrideScalarWhereWithAggregatesInput | GlobalFilterOverrideScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GlobalFilterOverride"> | string
+    globalFilterId?: StringWithAggregatesFilter<"GlobalFilterOverride"> | string
+    dashboardId?: StringWithAggregatesFilter<"GlobalFilterOverride"> | string
+    isDisabled?: BoolWithAggregatesFilter<"GlobalFilterOverride"> | boolean
+    columnValue?: StringNullableWithAggregatesFilter<"GlobalFilterOverride"> | string | null
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableWithAggregatesFilter<"GlobalFilterOverride"> | $Enums.MissingColumnBehavior | null
+    createdBy?: StringNullableWithAggregatesFilter<"GlobalFilterOverride"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GlobalFilterOverride"> | Date | string
+    createdIp?: StringNullableWithAggregatesFilter<"GlobalFilterOverride"> | string | null
+    updatedBy?: StringNullableWithAggregatesFilter<"GlobalFilterOverride"> | string | null
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"GlobalFilterOverride"> | Date | string | null
+    updatedIp?: StringNullableWithAggregatesFilter<"GlobalFilterOverride"> | string | null
   }
 
   export type UserWhereInput = {
@@ -21714,6 +24297,7 @@ export namespace Prisma {
     updatedIp?: string | null
     dashboardCharts?: DashboardChartCreateNestedManyWithoutDashboardInput
     dashboardFilters?: DashboardFilterCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUncheckedCreateInput = {
@@ -21728,6 +24312,7 @@ export namespace Prisma {
     updatedIp?: string | null
     dashboardCharts?: DashboardChartUncheckedCreateNestedManyWithoutDashboardInput
     dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUpdateInput = {
@@ -21742,6 +24327,7 @@ export namespace Prisma {
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUpdateManyWithoutDashboardNestedInput
     dashboardFilters?: DashboardFilterUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardUncheckedUpdateInput = {
@@ -21756,6 +24342,7 @@ export namespace Prisma {
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput
     dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardCreateManyInput = {
@@ -22027,6 +24614,218 @@ export namespace Prisma {
     sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
     defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterCreateInput = {
+    id?: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    isEnabled?: boolean
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    overrides?: GlobalFilterOverrideCreateNestedManyWithoutGlobalFilterInput
+  }
+
+  export type GlobalFilterUncheckedCreateInput = {
+    id?: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    isEnabled?: boolean
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    overrides?: GlobalFilterOverrideUncheckedCreateNestedManyWithoutGlobalFilterInput
+  }
+
+  export type GlobalFilterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    overrides?: GlobalFilterOverrideUpdateManyWithoutGlobalFilterNestedInput
+  }
+
+  export type GlobalFilterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    overrides?: GlobalFilterOverrideUncheckedUpdateManyWithoutGlobalFilterNestedInput
+  }
+
+  export type GlobalFilterCreateManyInput = {
+    id?: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    isEnabled?: boolean
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideCreateInput = {
+    id?: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    globalFilter: GlobalFilterCreateNestedOneWithoutOverridesInput
+    dashboard: DashboardCreateNestedOneWithoutGlobalFilterOverridesInput
+  }
+
+  export type GlobalFilterOverrideUncheckedCreateInput = {
+    id?: string
+    globalFilterId: string
+    dashboardId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterOverrideUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    globalFilter?: GlobalFilterUpdateOneRequiredWithoutOverridesNestedInput
+    dashboard?: DashboardUpdateOneRequiredWithoutGlobalFilterOverridesNestedInput
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    globalFilterId?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideCreateManyInput = {
+    id?: string
+    globalFilterId: string
+    dashboardId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterOverrideUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    globalFilterId?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdIp?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23306,6 +26105,16 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type GlobalFilterOverrideListRelationFilter = {
+    every?: GlobalFilterOverrideWhereInput
+    some?: GlobalFilterOverrideWhereInput
+    none?: GlobalFilterOverrideWhereInput
+  }
+
+  export type GlobalFilterOverrideOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type DashboardOrderByRelevanceInput = {
     fields: DashboardOrderByRelevanceFieldEnum | DashboardOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -23519,6 +26328,143 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumFilterTypeFilter<$PrismaModel>
     _max?: NestedEnumFilterTypeFilter<$PrismaModel>
+  }
+
+  export type EnumMissingColumnBehaviorNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingColumnBehavior | EnumMissingColumnBehaviorFieldRefInput<$PrismaModel> | null
+    in?: $Enums.MissingColumnBehavior[] | null
+    notIn?: $Enums.MissingColumnBehavior[] | null
+    not?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel> | $Enums.MissingColumnBehavior | null
+  }
+
+  export type GlobalFilterOrderByRelevanceInput = {
+    fields: GlobalFilterOrderByRelevanceFieldEnum | GlobalFilterOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type GlobalFilterCountOrderByAggregateInput = {
+    id?: SortOrder
+    columnName?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    isEnabled?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type GlobalFilterAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type GlobalFilterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    columnName?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    isEnabled?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type GlobalFilterMinOrderByAggregateInput = {
+    id?: SortOrder
+    columnName?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    isEnabled?: SortOrder
+    order?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type GlobalFilterSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type EnumMissingColumnBehaviorNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingColumnBehavior | EnumMissingColumnBehaviorFieldRefInput<$PrismaModel> | null
+    in?: $Enums.MissingColumnBehavior[] | null
+    notIn?: $Enums.MissingColumnBehavior[] | null
+    not?: NestedEnumMissingColumnBehaviorNullableWithAggregatesFilter<$PrismaModel> | $Enums.MissingColumnBehavior | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel>
+    _max?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel>
+  }
+
+  export type GlobalFilterScalarRelationFilter = {
+    is?: GlobalFilterWhereInput
+    isNot?: GlobalFilterWhereInput
+  }
+
+  export type GlobalFilterOverrideOrderByRelevanceInput = {
+    fields: GlobalFilterOverrideOrderByRelevanceFieldEnum | GlobalFilterOverrideOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type GlobalFilterOverrideGlobalFilterIdDashboardIdCompoundUniqueInput = {
+    globalFilterId: string
+    dashboardId: string
+  }
+
+  export type GlobalFilterOverrideCountOrderByAggregateInput = {
+    id?: SortOrder
+    globalFilterId?: SortOrder
+    dashboardId?: SortOrder
+    isDisabled?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type GlobalFilterOverrideMaxOrderByAggregateInput = {
+    id?: SortOrder
+    globalFilterId?: SortOrder
+    dashboardId?: SortOrder
+    isDisabled?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
+  }
+
+  export type GlobalFilterOverrideMinOrderByAggregateInput = {
+    id?: SortOrder
+    globalFilterId?: SortOrder
+    dashboardId?: SortOrder
+    isDisabled?: SortOrder
+    columnValue?: SortOrder
+    missingColumnBehavior?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    createdIp?: SortOrder
+    updatedBy?: SortOrder
+    updatedAt?: SortOrder
+    updatedIp?: SortOrder
   }
 
   export type EnumRoleFilter<$PrismaModel = never> = {
@@ -24183,6 +27129,13 @@ export namespace Prisma {
     connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
   }
 
+  export type GlobalFilterOverrideCreateNestedManyWithoutDashboardInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput> | GlobalFilterOverrideCreateWithoutDashboardInput[] | GlobalFilterOverrideUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutDashboardInput | GlobalFilterOverrideCreateOrConnectWithoutDashboardInput[]
+    createMany?: GlobalFilterOverrideCreateManyDashboardInputEnvelope
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+  }
+
   export type DashboardChartUncheckedCreateNestedManyWithoutDashboardInput = {
     create?: XOR<DashboardChartCreateWithoutDashboardInput, DashboardChartUncheckedCreateWithoutDashboardInput> | DashboardChartCreateWithoutDashboardInput[] | DashboardChartUncheckedCreateWithoutDashboardInput[]
     connectOrCreate?: DashboardChartCreateOrConnectWithoutDashboardInput | DashboardChartCreateOrConnectWithoutDashboardInput[]
@@ -24195,6 +27148,13 @@ export namespace Prisma {
     connectOrCreate?: DashboardFilterCreateOrConnectWithoutDashboardInput | DashboardFilterCreateOrConnectWithoutDashboardInput[]
     createMany?: DashboardFilterCreateManyDashboardInputEnvelope
     connect?: DashboardFilterWhereUniqueInput | DashboardFilterWhereUniqueInput[]
+  }
+
+  export type GlobalFilterOverrideUncheckedCreateNestedManyWithoutDashboardInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput> | GlobalFilterOverrideCreateWithoutDashboardInput[] | GlobalFilterOverrideUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutDashboardInput | GlobalFilterOverrideCreateOrConnectWithoutDashboardInput[]
+    createMany?: GlobalFilterOverrideCreateManyDashboardInputEnvelope
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
   }
 
   export type DashboardChartUpdateManyWithoutDashboardNestedInput = {
@@ -24225,6 +27185,20 @@ export namespace Prisma {
     deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
   }
 
+  export type GlobalFilterOverrideUpdateManyWithoutDashboardNestedInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput> | GlobalFilterOverrideCreateWithoutDashboardInput[] | GlobalFilterOverrideUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutDashboardInput | GlobalFilterOverrideCreateOrConnectWithoutDashboardInput[]
+    upsert?: GlobalFilterOverrideUpsertWithWhereUniqueWithoutDashboardInput | GlobalFilterOverrideUpsertWithWhereUniqueWithoutDashboardInput[]
+    createMany?: GlobalFilterOverrideCreateManyDashboardInputEnvelope
+    set?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    disconnect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    delete?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    update?: GlobalFilterOverrideUpdateWithWhereUniqueWithoutDashboardInput | GlobalFilterOverrideUpdateWithWhereUniqueWithoutDashboardInput[]
+    updateMany?: GlobalFilterOverrideUpdateManyWithWhereWithoutDashboardInput | GlobalFilterOverrideUpdateManyWithWhereWithoutDashboardInput[]
+    deleteMany?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
+  }
+
   export type DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput = {
     create?: XOR<DashboardChartCreateWithoutDashboardInput, DashboardChartUncheckedCreateWithoutDashboardInput> | DashboardChartCreateWithoutDashboardInput[] | DashboardChartUncheckedCreateWithoutDashboardInput[]
     connectOrCreate?: DashboardChartCreateOrConnectWithoutDashboardInput | DashboardChartCreateOrConnectWithoutDashboardInput[]
@@ -24251,6 +27225,20 @@ export namespace Prisma {
     update?: DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput | DashboardFilterUpdateWithWhereUniqueWithoutDashboardInput[]
     updateMany?: DashboardFilterUpdateManyWithWhereWithoutDashboardInput | DashboardFilterUpdateManyWithWhereWithoutDashboardInput[]
     deleteMany?: DashboardFilterScalarWhereInput | DashboardFilterScalarWhereInput[]
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardNestedInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput> | GlobalFilterOverrideCreateWithoutDashboardInput[] | GlobalFilterOverrideUncheckedCreateWithoutDashboardInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutDashboardInput | GlobalFilterOverrideCreateOrConnectWithoutDashboardInput[]
+    upsert?: GlobalFilterOverrideUpsertWithWhereUniqueWithoutDashboardInput | GlobalFilterOverrideUpsertWithWhereUniqueWithoutDashboardInput[]
+    createMany?: GlobalFilterOverrideCreateManyDashboardInputEnvelope
+    set?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    disconnect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    delete?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    update?: GlobalFilterOverrideUpdateWithWhereUniqueWithoutDashboardInput | GlobalFilterOverrideUpdateWithWhereUniqueWithoutDashboardInput[]
+    updateMany?: GlobalFilterOverrideUpdateManyWithWhereWithoutDashboardInput | GlobalFilterOverrideUpdateManyWithWhereWithoutDashboardInput[]
+    deleteMany?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
   }
 
   export type DashboardCreateNestedOneWithoutDashboardChartsInput = {
@@ -24311,6 +27299,80 @@ export namespace Prisma {
     upsert?: DbConnectionUpsertWithoutDashboardFiltersInput
     connect?: DbConnectionWhereUniqueInput
     update?: XOR<XOR<DbConnectionUpdateToOneWithWhereWithoutDashboardFiltersInput, DbConnectionUpdateWithoutDashboardFiltersInput>, DbConnectionUncheckedUpdateWithoutDashboardFiltersInput>
+  }
+
+  export type GlobalFilterOverrideCreateNestedManyWithoutGlobalFilterInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput> | GlobalFilterOverrideCreateWithoutGlobalFilterInput[] | GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput | GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput[]
+    createMany?: GlobalFilterOverrideCreateManyGlobalFilterInputEnvelope
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+  }
+
+  export type GlobalFilterOverrideUncheckedCreateNestedManyWithoutGlobalFilterInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput> | GlobalFilterOverrideCreateWithoutGlobalFilterInput[] | GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput | GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput[]
+    createMany?: GlobalFilterOverrideCreateManyGlobalFilterInputEnvelope
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+  }
+
+  export type NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput = {
+    set?: $Enums.MissingColumnBehavior | null
+  }
+
+  export type GlobalFilterOverrideUpdateManyWithoutGlobalFilterNestedInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput> | GlobalFilterOverrideCreateWithoutGlobalFilterInput[] | GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput | GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput[]
+    upsert?: GlobalFilterOverrideUpsertWithWhereUniqueWithoutGlobalFilterInput | GlobalFilterOverrideUpsertWithWhereUniqueWithoutGlobalFilterInput[]
+    createMany?: GlobalFilterOverrideCreateManyGlobalFilterInputEnvelope
+    set?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    disconnect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    delete?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    update?: GlobalFilterOverrideUpdateWithWhereUniqueWithoutGlobalFilterInput | GlobalFilterOverrideUpdateWithWhereUniqueWithoutGlobalFilterInput[]
+    updateMany?: GlobalFilterOverrideUpdateManyWithWhereWithoutGlobalFilterInput | GlobalFilterOverrideUpdateManyWithWhereWithoutGlobalFilterInput[]
+    deleteMany?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateManyWithoutGlobalFilterNestedInput = {
+    create?: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput> | GlobalFilterOverrideCreateWithoutGlobalFilterInput[] | GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput[]
+    connectOrCreate?: GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput | GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput[]
+    upsert?: GlobalFilterOverrideUpsertWithWhereUniqueWithoutGlobalFilterInput | GlobalFilterOverrideUpsertWithWhereUniqueWithoutGlobalFilterInput[]
+    createMany?: GlobalFilterOverrideCreateManyGlobalFilterInputEnvelope
+    set?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    disconnect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    delete?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    connect?: GlobalFilterOverrideWhereUniqueInput | GlobalFilterOverrideWhereUniqueInput[]
+    update?: GlobalFilterOverrideUpdateWithWhereUniqueWithoutGlobalFilterInput | GlobalFilterOverrideUpdateWithWhereUniqueWithoutGlobalFilterInput[]
+    updateMany?: GlobalFilterOverrideUpdateManyWithWhereWithoutGlobalFilterInput | GlobalFilterOverrideUpdateManyWithWhereWithoutGlobalFilterInput[]
+    deleteMany?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
+  }
+
+  export type GlobalFilterCreateNestedOneWithoutOverridesInput = {
+    create?: XOR<GlobalFilterCreateWithoutOverridesInput, GlobalFilterUncheckedCreateWithoutOverridesInput>
+    connectOrCreate?: GlobalFilterCreateOrConnectWithoutOverridesInput
+    connect?: GlobalFilterWhereUniqueInput
+  }
+
+  export type DashboardCreateNestedOneWithoutGlobalFilterOverridesInput = {
+    create?: XOR<DashboardCreateWithoutGlobalFilterOverridesInput, DashboardUncheckedCreateWithoutGlobalFilterOverridesInput>
+    connectOrCreate?: DashboardCreateOrConnectWithoutGlobalFilterOverridesInput
+    connect?: DashboardWhereUniqueInput
+  }
+
+  export type GlobalFilterUpdateOneRequiredWithoutOverridesNestedInput = {
+    create?: XOR<GlobalFilterCreateWithoutOverridesInput, GlobalFilterUncheckedCreateWithoutOverridesInput>
+    connectOrCreate?: GlobalFilterCreateOrConnectWithoutOverridesInput
+    upsert?: GlobalFilterUpsertWithoutOverridesInput
+    connect?: GlobalFilterWhereUniqueInput
+    update?: XOR<XOR<GlobalFilterUpdateToOneWithWhereWithoutOverridesInput, GlobalFilterUpdateWithoutOverridesInput>, GlobalFilterUncheckedUpdateWithoutOverridesInput>
+  }
+
+  export type DashboardUpdateOneRequiredWithoutGlobalFilterOverridesNestedInput = {
+    create?: XOR<DashboardCreateWithoutGlobalFilterOverridesInput, DashboardUncheckedCreateWithoutGlobalFilterOverridesInput>
+    connectOrCreate?: DashboardCreateOrConnectWithoutGlobalFilterOverridesInput
+    upsert?: DashboardUpsertWithoutGlobalFilterOverridesInput
+    connect?: DashboardWhereUniqueInput
+    update?: XOR<XOR<DashboardUpdateToOneWithWhereWithoutGlobalFilterOverridesInput, DashboardUpdateWithoutGlobalFilterOverridesInput>, DashboardUncheckedUpdateWithoutGlobalFilterOverridesInput>
   }
 
   export type RefreshTokenCreateNestedManyWithoutUserInput = {
@@ -24775,6 +27837,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumFilterTypeFilter<$PrismaModel>
     _max?: NestedEnumFilterTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingColumnBehavior | EnumMissingColumnBehaviorFieldRefInput<$PrismaModel> | null
+    in?: $Enums.MissingColumnBehavior[] | null
+    notIn?: $Enums.MissingColumnBehavior[] | null
+    not?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel> | $Enums.MissingColumnBehavior | null
+  }
+
+  export type NestedEnumMissingColumnBehaviorNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingColumnBehavior | EnumMissingColumnBehaviorFieldRefInput<$PrismaModel> | null
+    in?: $Enums.MissingColumnBehavior[] | null
+    notIn?: $Enums.MissingColumnBehavior[] | null
+    not?: NestedEnumMissingColumnBehaviorNullableWithAggregatesFilter<$PrismaModel> | $Enums.MissingColumnBehavior | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel>
+    _max?: NestedEnumMissingColumnBehaviorNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
@@ -25851,6 +28930,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GlobalFilterOverrideCreateWithoutDashboardInput = {
+    id?: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    globalFilter: GlobalFilterCreateNestedOneWithoutOverridesInput
+  }
+
+  export type GlobalFilterOverrideUncheckedCreateWithoutDashboardInput = {
+    id?: string
+    globalFilterId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterOverrideCreateOrConnectWithoutDashboardInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    create: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput>
+  }
+
+  export type GlobalFilterOverrideCreateManyDashboardInputEnvelope = {
+    data: GlobalFilterOverrideCreateManyDashboardInput | GlobalFilterOverrideCreateManyDashboardInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DashboardChartUpsertWithWhereUniqueWithoutDashboardInput = {
     where: DashboardChartWhereUniqueInput
     update: XOR<DashboardChartUpdateWithoutDashboardInput, DashboardChartUncheckedUpdateWithoutDashboardInput>
@@ -25883,6 +29000,40 @@ export namespace Prisma {
     data: XOR<DashboardFilterUpdateManyMutationInput, DashboardFilterUncheckedUpdateManyWithoutDashboardInput>
   }
 
+  export type GlobalFilterOverrideUpsertWithWhereUniqueWithoutDashboardInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    update: XOR<GlobalFilterOverrideUpdateWithoutDashboardInput, GlobalFilterOverrideUncheckedUpdateWithoutDashboardInput>
+    create: XOR<GlobalFilterOverrideCreateWithoutDashboardInput, GlobalFilterOverrideUncheckedCreateWithoutDashboardInput>
+  }
+
+  export type GlobalFilterOverrideUpdateWithWhereUniqueWithoutDashboardInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    data: XOR<GlobalFilterOverrideUpdateWithoutDashboardInput, GlobalFilterOverrideUncheckedUpdateWithoutDashboardInput>
+  }
+
+  export type GlobalFilterOverrideUpdateManyWithWhereWithoutDashboardInput = {
+    where: GlobalFilterOverrideScalarWhereInput
+    data: XOR<GlobalFilterOverrideUpdateManyMutationInput, GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardInput>
+  }
+
+  export type GlobalFilterOverrideScalarWhereInput = {
+    AND?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
+    OR?: GlobalFilterOverrideScalarWhereInput[]
+    NOT?: GlobalFilterOverrideScalarWhereInput | GlobalFilterOverrideScalarWhereInput[]
+    id?: StringFilter<"GlobalFilterOverride"> | string
+    globalFilterId?: StringFilter<"GlobalFilterOverride"> | string
+    dashboardId?: StringFilter<"GlobalFilterOverride"> | string
+    isDisabled?: BoolFilter<"GlobalFilterOverride"> | boolean
+    columnValue?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    missingColumnBehavior?: EnumMissingColumnBehaviorNullableFilter<"GlobalFilterOverride"> | $Enums.MissingColumnBehavior | null
+    createdBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    createdAt?: DateTimeFilter<"GlobalFilterOverride"> | Date | string
+    createdIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedBy?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+    updatedAt?: DateTimeNullableFilter<"GlobalFilterOverride"> | Date | string | null
+    updatedIp?: StringNullableFilter<"GlobalFilterOverride"> | string | null
+  }
+
   export type DashboardCreateWithoutDashboardChartsInput = {
     id?: string
     name: string
@@ -25894,6 +29045,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardFilters?: DashboardFilterCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUncheckedCreateWithoutDashboardChartsInput = {
@@ -25907,6 +29059,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardCreateOrConnectWithoutDashboardChartsInput = {
@@ -25971,6 +29124,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardFilters?: DashboardFilterUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardUncheckedUpdateWithoutDashboardChartsInput = {
@@ -25984,6 +29138,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type ChartUpsertWithoutDashboardChartsInput = {
@@ -26038,6 +29193,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardCharts?: DashboardChartCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardUncheckedCreateWithoutDashboardFiltersInput = {
@@ -26051,6 +29207,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     updatedIp?: string | null
     dashboardCharts?: DashboardChartUncheckedCreateNestedManyWithoutDashboardInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedCreateNestedManyWithoutDashboardInput
   }
 
   export type DashboardCreateOrConnectWithoutDashboardFiltersInput = {
@@ -26121,6 +29278,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUpdateManyWithoutDashboardNestedInput
   }
 
   export type DashboardUncheckedUpdateWithoutDashboardFiltersInput = {
@@ -26134,6 +29292,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     dashboardCharts?: DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput
+    globalFilterOverrides?: GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type DbConnectionUpsertWithoutDashboardFiltersInput = {
@@ -26181,6 +29340,208 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
     charts?: ChartUncheckedUpdateManyWithoutConnectionNestedInput
+  }
+
+  export type GlobalFilterOverrideCreateWithoutGlobalFilterInput = {
+    id?: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboard: DashboardCreateNestedOneWithoutGlobalFilterOverridesInput
+  }
+
+  export type GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput = {
+    id?: string
+    dashboardId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterOverrideCreateOrConnectWithoutGlobalFilterInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    create: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput>
+  }
+
+  export type GlobalFilterOverrideCreateManyGlobalFilterInputEnvelope = {
+    data: GlobalFilterOverrideCreateManyGlobalFilterInput | GlobalFilterOverrideCreateManyGlobalFilterInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GlobalFilterOverrideUpsertWithWhereUniqueWithoutGlobalFilterInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    update: XOR<GlobalFilterOverrideUpdateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedUpdateWithoutGlobalFilterInput>
+    create: XOR<GlobalFilterOverrideCreateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedCreateWithoutGlobalFilterInput>
+  }
+
+  export type GlobalFilterOverrideUpdateWithWhereUniqueWithoutGlobalFilterInput = {
+    where: GlobalFilterOverrideWhereUniqueInput
+    data: XOR<GlobalFilterOverrideUpdateWithoutGlobalFilterInput, GlobalFilterOverrideUncheckedUpdateWithoutGlobalFilterInput>
+  }
+
+  export type GlobalFilterOverrideUpdateManyWithWhereWithoutGlobalFilterInput = {
+    where: GlobalFilterOverrideScalarWhereInput
+    data: XOR<GlobalFilterOverrideUpdateManyMutationInput, GlobalFilterOverrideUncheckedUpdateManyWithoutGlobalFilterInput>
+  }
+
+  export type GlobalFilterCreateWithoutOverridesInput = {
+    id?: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    isEnabled?: boolean
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterUncheckedCreateWithoutOverridesInput = {
+    id?: string
+    columnName: string
+    columnValue: string
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    isEnabled?: boolean
+    order?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterCreateOrConnectWithoutOverridesInput = {
+    where: GlobalFilterWhereUniqueInput
+    create: XOR<GlobalFilterCreateWithoutOverridesInput, GlobalFilterUncheckedCreateWithoutOverridesInput>
+  }
+
+  export type DashboardCreateWithoutGlobalFilterOverridesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboardCharts?: DashboardChartCreateNestedManyWithoutDashboardInput
+    dashboardFilters?: DashboardFilterCreateNestedManyWithoutDashboardInput
+  }
+
+  export type DashboardUncheckedCreateWithoutGlobalFilterOverridesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    dashboardCharts?: DashboardChartUncheckedCreateNestedManyWithoutDashboardInput
+    dashboardFilters?: DashboardFilterUncheckedCreateNestedManyWithoutDashboardInput
+  }
+
+  export type DashboardCreateOrConnectWithoutGlobalFilterOverridesInput = {
+    where: DashboardWhereUniqueInput
+    create: XOR<DashboardCreateWithoutGlobalFilterOverridesInput, DashboardUncheckedCreateWithoutGlobalFilterOverridesInput>
+  }
+
+  export type GlobalFilterUpsertWithoutOverridesInput = {
+    update: XOR<GlobalFilterUpdateWithoutOverridesInput, GlobalFilterUncheckedUpdateWithoutOverridesInput>
+    create: XOR<GlobalFilterCreateWithoutOverridesInput, GlobalFilterUncheckedCreateWithoutOverridesInput>
+    where?: GlobalFilterWhereInput
+  }
+
+  export type GlobalFilterUpdateToOneWithWhereWithoutOverridesInput = {
+    where?: GlobalFilterWhereInput
+    data: XOR<GlobalFilterUpdateWithoutOverridesInput, GlobalFilterUncheckedUpdateWithoutOverridesInput>
+  }
+
+  export type GlobalFilterUpdateWithoutOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterUncheckedUpdateWithoutOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    columnName?: StringFieldUpdateOperationsInput | string
+    columnValue?: StringFieldUpdateOperationsInput | string
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DashboardUpsertWithoutGlobalFilterOverridesInput = {
+    update: XOR<DashboardUpdateWithoutGlobalFilterOverridesInput, DashboardUncheckedUpdateWithoutGlobalFilterOverridesInput>
+    create: XOR<DashboardCreateWithoutGlobalFilterOverridesInput, DashboardUncheckedCreateWithoutGlobalFilterOverridesInput>
+    where?: DashboardWhereInput
+  }
+
+  export type DashboardUpdateToOneWithWhereWithoutGlobalFilterOverridesInput = {
+    where?: DashboardWhereInput
+    data: XOR<DashboardUpdateWithoutGlobalFilterOverridesInput, DashboardUncheckedUpdateWithoutGlobalFilterOverridesInput>
+  }
+
+  export type DashboardUpdateWithoutGlobalFilterOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardCharts?: DashboardChartUpdateManyWithoutDashboardNestedInput
+    dashboardFilters?: DashboardFilterUpdateManyWithoutDashboardNestedInput
+  }
+
+  export type DashboardUncheckedUpdateWithoutGlobalFilterOverridesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboardCharts?: DashboardChartUncheckedUpdateManyWithoutDashboardNestedInput
+    dashboardFilters?: DashboardFilterUncheckedUpdateManyWithoutDashboardNestedInput
   }
 
   export type RefreshTokenCreateWithoutUserInput = {
@@ -27103,6 +30464,20 @@ export namespace Prisma {
     updatedIp?: string | null
   }
 
+  export type GlobalFilterOverrideCreateManyDashboardInput = {
+    id?: string
+    globalFilterId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
   export type DashboardChartUpdateWithoutDashboardInput = {
     id?: StringFieldUpdateOperationsInput | string
     positionX?: IntFieldUpdateOperationsInput | number
@@ -27194,6 +30569,104 @@ export namespace Prisma {
     sourceQuery?: NullableStringFieldUpdateOperationsInput | string | null
     defaultValue?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideUpdateWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    globalFilter?: GlobalFilterUpdateOneRequiredWithoutOverridesNestedInput
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    globalFilterId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateManyWithoutDashboardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    globalFilterId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideCreateManyGlobalFilterInput = {
+    id?: string
+    dashboardId: string
+    isDisabled?: boolean
+    columnValue?: string | null
+    missingColumnBehavior?: $Enums.MissingColumnBehavior | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+  }
+
+  export type GlobalFilterOverrideUpdateWithoutGlobalFilterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    dashboard?: DashboardUpdateOneRequiredWithoutGlobalFilterOverridesNestedInput
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateWithoutGlobalFilterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GlobalFilterOverrideUncheckedUpdateManyWithoutGlobalFilterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dashboardId?: StringFieldUpdateOperationsInput | string
+    isDisabled?: BoolFieldUpdateOperationsInput | boolean
+    columnValue?: NullableStringFieldUpdateOperationsInput | string | null
+    missingColumnBehavior?: NullableEnumMissingColumnBehaviorFieldUpdateOperationsInput | $Enums.MissingColumnBehavior | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdIp?: NullableStringFieldUpdateOperationsInput | string | null

@@ -20,7 +20,7 @@ import { ExecuteChartQueryResponse } from './execute-chart-query-response';
 import { decrypt } from '../../../../core/utils/encryption.util';
 import { createDatabaseDriver } from '../../../../core/drivers/database-driver.factory';
 import { validateQuery, injectLimit } from '../../../../core/utils/query-validator.util';
-import { buildFilterSql, injectFilters } from '../../../../core/utils/filter.util';
+import { buildFilterSql, injectFilters, buildGlobalFilterSql, extractSchemaColumnNames } from '../../../../core/utils/filter.util';
 
 const MAX_ROWS = 1000;
 const TIMEOUT_MS = 30_000;
@@ -38,7 +38,7 @@ export class ExecuteChartQueryController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'executeChartQuery' })
   @ApiResponse({ status: HttpStatus.OK, type: ExecuteChartQueryResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Param('id') id: string,
     @Body() body: ExecuteChartQueryRequest,
@@ -59,6 +59,50 @@ export class ExecuteChartQueryController {
 
     // Build filter SQL fragment if dashboard filters are supplied
     let querySql = chart.sqlQuery;
+
+    const appConfig = this.configService.get<AppConfig>('app')!;
+    const password = decrypt(
+      chart.connection.encryptedPassword,
+      appConfig.encryptionKey,
+    );
+    const driver = createDatabaseDriver(chart.connection, password);
+
+    // --- Global filters ---
+    const globalFilters = await this.prismaService.client(
+      async ({ dbContext }) => dbContext.globalFilter.findMany({ where: { isEnabled: true }, orderBy: { order: 'asc' } }),
+      { isTransaction: false },
+    );
+
+    if (globalFilters.length) {
+      const overridesMap = new Map<string, { globalFilterId: string; isDisabled: boolean; columnValue: string | null; missingColumnBehavior: any }>(); 
+      if (body?.dashboardId) {
+        const overrides = await this.prismaService.client(
+          async ({ dbContext }) => dbContext.globalFilterOverride.findMany({ where: { dashboardId: body.dashboardId } }),
+          { isTransaction: false },
+        );
+        for (const o of overrides) {
+          overridesMap.set(o.globalFilterId, o);
+        }
+      }
+
+      const schema = await driver.getSchemaMetadata();
+      const schemaColumns = extractSchemaColumnNames(schema);
+
+      const globalResult = buildGlobalFilterSql(globalFilters, overridesMap, schemaColumns);
+      if (globalResult.blocked) {
+        return {
+          successMessage: 'Query blocked by global filter (HIDE_DATA). 0 row(s) returned.',
+          columns: [],
+          rows: [],
+          rowCount: 0,
+        };
+      }
+      if (globalResult.sql) {
+        querySql = injectFilters(querySql, globalResult.sql);
+      }
+    }
+
+    // --- Dashboard filters ---
     if (body?.dashboardId && body?.filterValues && Object.keys(body.filterValues).length) {
       const filters = await this.prismaService.client(
         async ({ dbContext }) => {
@@ -92,13 +136,6 @@ export class ExecuteChartQueryController {
       );
     }
 
-    const appConfig = this.configService.get<AppConfig>('app')!;
-    const password = decrypt(
-      chart.connection.encryptedPassword,
-      appConfig.encryptionKey,
-    );
-
-    const driver = createDatabaseDriver(chart.connection, password);
     const sql = injectLimit(querySql, MAX_ROWS);
     const result = await driver.runQuery(sql, MAX_ROWS, TIMEOUT_MS);
 

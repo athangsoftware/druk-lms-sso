@@ -36,7 +36,7 @@ export class GenerateChartController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'generateChart' })
   @ApiResponse({ status: HttpStatus.OK, type: GenerateChartResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(
     @Body() body: GenerateChartRequest,
   ): Promise<GenerateChartResponse> {

@@ -369,3 +369,80 @@ export interface ExecuteChartQueryRequest {
   dashboardId?: string;
   filterValues?: Record<string, unknown>;
 }
+
+// ─── Global Filters ───────────────────────────────────────────────
+
+export type MissingColumnBehavior = 'SHOW_ALL' | 'HIDE_DATA';
+
+export interface GlobalFilterItem {
+  id: string;
+  columnName: string;
+  columnValue: string;
+  missingColumnBehavior?: MissingColumnBehavior | null;
+  isEnabled: boolean;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CreateGlobalFilterRequest {
+  columnName: string;
+  columnValue: string;
+  missingColumnBehavior?: MissingColumnBehavior;
+  isEnabled?: boolean;
+  order?: number;
+}
+
+export interface CreateGlobalFilterResponse {
+  successMessage: string;
+  data: GlobalFilterItem;
+}
+
+export interface UpdateGlobalFilterRequest {
+  columnName?: string;
+  columnValue?: string;
+  missingColumnBehavior?: MissingColumnBehavior | null;
+  isEnabled?: boolean;
+  order?: number;
+}
+
+export interface UpdateGlobalFilterResponse {
+  successMessage: string;
+}
+
+export interface DeleteGlobalFilterResponse {
+  successMessage: string;
+}
+
+export interface ListGlobalFiltersResponse {
+  successMessage: string;
+  data: GlobalFilterItem[];
+}
+
+// ─── Global Filter Dashboard Overrides ────────────────────────────
+
+export interface GlobalFilterOverrideItem {
+  id: string;
+  globalFilterId: string;
+  dashboardId: string;
+  isDisabled: boolean;
+  columnValue?: string | null;
+  missingColumnBehavior?: MissingColumnBehavior | null;
+}
+
+export interface GlobalFilterOverrideRequest {
+  globalFilterId: string;
+  isDisabled?: boolean;
+  columnValue?: string | null;
+  missingColumnBehavior?: MissingColumnBehavior | null;
+}
+
+export interface UpsertGlobalFilterOverridesResponse {
+  successMessage: string;
+  data: GlobalFilterOverrideItem[];
+}
+
+export interface ListGlobalFilterOverridesResponse {
+  successMessage: string;
+  data: GlobalFilterOverrideItem[];
+}

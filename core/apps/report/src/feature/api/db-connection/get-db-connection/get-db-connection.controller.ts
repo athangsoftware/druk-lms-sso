@@ -23,7 +23,7 @@ export class GetDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDbConnectionResponse })
-  @Authorize(Role.MEMBER)
+  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<GetDbConnectionResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {

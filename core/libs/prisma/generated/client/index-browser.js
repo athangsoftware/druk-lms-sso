@@ -291,6 +291,36 @@ exports.Prisma.DashboardFilterScalarFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.GlobalFilterScalarFieldEnum = {
+  id: 'id',
+  columnName: 'columnName',
+  columnValue: 'columnValue',
+  missingColumnBehavior: 'missingColumnBehavior',
+  isEnabled: 'isEnabled',
+  order: 'order',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.GlobalFilterOverrideScalarFieldEnum = {
+  id: 'id',
+  globalFilterId: 'globalFilterId',
+  dashboardId: 'dashboardId',
+  isDisabled: 'isDisabled',
+  columnValue: 'columnValue',
+  missingColumnBehavior: 'missingColumnBehavior',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -515,6 +545,27 @@ exports.Prisma.DashboardFilterOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.GlobalFilterOrderByRelevanceFieldEnum = {
+  id: 'id',
+  columnName: 'columnName',
+  columnValue: 'columnValue',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
+exports.Prisma.GlobalFilterOverrideOrderByRelevanceFieldEnum = {
+  id: 'id',
+  globalFilterId: 'globalFilterId',
+  dashboardId: 'dashboardId',
+  columnValue: 'columnValue',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -587,6 +638,11 @@ exports.FilterType = exports.$Enums.FilterType = {
   NUMBER: 'NUMBER'
 };
 
+exports.MissingColumnBehavior = exports.$Enums.MissingColumnBehavior = {
+  SHOW_ALL: 'SHOW_ALL',
+  HIDE_DATA: 'HIDE_DATA'
+};
+
 exports.Role = exports.$Enums.Role = {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -607,6 +663,8 @@ exports.Prisma.ModelName = {
   Dashboard: 'Dashboard',
   DashboardChart: 'DashboardChart',
   DashboardFilter: 'DashboardFilter',
+  GlobalFilter: 'GlobalFilter',
+  GlobalFilterOverride: 'GlobalFilterOverride',
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   RefreshToken: 'RefreshToken',

@@ -15,6 +15,10 @@ import type {
   GetDbConnectionListResponse,
   DbConnectionItem,
   SchemaTableInfo,
+  GlobalFilterItem,
+  GlobalFilterOverrideItem,
+  GlobalFilterOverrideRequest,
+  MissingColumnBehavior,
 } from '@core/api/model';
 import { Button, SelectDropdownField, httpQuery, httpMutation } from '@projects/shared-lib';
 
@@ -200,6 +204,62 @@ import { Button, SelectDropdownField, httpQuery, httpMutation } from '@projects/
             }
           </div>
         </div>
+
+        <!-- Global Filter Overrides -->
+        @if (globalFilters().length) {
+          <div class="mt-6">
+            <h2 class="text-lg font-semibold">Global Filter Overrides</h2>
+            <p class="text-sm text-neutral-500 mb-2">Override global filter settings for this dashboard.</p>
+            <div class="flex flex-col gap-2">
+              @for (gf of globalFilters(); track gf.id) {
+                <div class="p-3 border border-neutral-200 rounded-md bg-neutral-50 flex flex-col gap-2">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <code class="px-1.5 py-0.5 bg-neutral-100 rounded text-sm font-mono">{{ gf.columnName }}</code>
+                      <span class="text-neutral-400">=</span>
+                      <code class="px-1.5 py-0.5 bg-blue-50 rounded text-sm font-mono text-blue-700">{{ gf.columnValue }}</code>
+                    </div>
+                    <label class="flex items-center gap-1.5 text-sm">
+                      <input
+                        type="checkbox"
+                        [checked]="!getOverride(gf.id).isDisabled"
+                        (change)="toggleOverrideEnabled(gf.id, $event)"
+                        class="w-4 h-4"
+                      />
+                      Enabled
+                    </label>
+                  </div>
+                  @if (!getOverride(gf.id).isDisabled) {
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <input
+                        [value]="getOverride(gf.id).columnValue ?? ''"
+                        (input)="setOverrideValue(gf.id, $event)"
+                        placeholder="Override value (leave blank for global)"
+                        class="border border-neutral-300 rounded px-2 py-1 text-sm"
+                      />
+                      <select
+                        [value]="getOverride(gf.id).missingColumnBehavior ?? ''"
+                        (change)="setOverrideBehavior(gf.id, $event)"
+                        class="border border-neutral-300 rounded px-2 py-1 text-sm bg-white"
+                      >
+                        <option value="">Use global default</option>
+                        <option value="SHOW_ALL">SHOW_ALL</option>
+                        <option value="HIDE_DATA">HIDE_DATA</option>
+                      </select>
+                    </div>
+                  }
+                </div>
+              }
+              <ui-button
+                type="button"
+                (click)="saveOverrides()"
+                [disabled]="overrideSaveMutation.isLoading()"
+              >
+                {{ overrideSaveMutation.isLoading() ? 'Saving…' : 'Save Overrides' }}
+              </ui-button>
+            </div>
+          </div>
+        }
       }
 
       @if (errorMessage()) {
@@ -267,6 +327,10 @@ export class DashboardFormComponent implements OnInit {
   schemaLoading = signal(false);
   private schemaCache = new Map<string, string[]>();
 
+  // Global filter overrides
+  globalFilters = signal<GlobalFilterItem[]>([]);
+  overrideMap = signal<Record<string, Partial<GlobalFilterOverrideRequest>>>({});
+
   generateFilterMutation = httpMutation<GenerateDashboardFilterResponse>({
     request: () => {
       const connId = this.newFilterForm.connectionId;
@@ -326,6 +390,7 @@ export class DashboardFormComponent implements OnInit {
         this.form.description = res.data.description ?? '';
         this.filters.set(res.data.filters ?? []);
         this.formLoaded = true;
+        this.loadGlobalFilters();
         this.cdr.detectChanges();
       }
     },
@@ -347,6 +412,23 @@ export class DashboardFormComponent implements OnInit {
       const id = this.dashboardId() || res?.data?.id;
       this.router.navigate(['/main/dashboards', id]);
     },
+  });
+
+  overrideSaveMutation = httpMutation({
+    request: () => {
+      const map = this.overrideMap();
+      const overrides: GlobalFilterOverrideRequest[] = this.globalFilters().map((gf) => {
+        const o = map[gf.id] ?? {};
+        return {
+          globalFilterId: gf.id,
+          isDisabled: o.isDisabled ?? false,
+          columnValue: o.columnValue || null,
+          missingColumnBehavior: o.missingColumnBehavior || null,
+        };
+      });
+      return this.api.upsertGlobalFilterOverrides(this.dashboardId(), overrides);
+    },
+    handleSuccess: true,
   });
 
   ngOnInit() {
@@ -485,5 +567,66 @@ export class DashboardFormComponent implements OnInit {
       },
     });
   }
-}
 
+  // --- Global filter overrides ------------------------------------------
+
+  private loadGlobalFilters() {
+    this.api.listGlobalFilters().subscribe({
+      next: (res) => {
+        this.globalFilters.set(res.data ?? []);
+        // Load existing overrides for this dashboard
+        this.api.listGlobalFilterOverrides(this.dashboardId()).subscribe({
+          next: (overRes) => {
+            const map: Record<string, Partial<GlobalFilterOverrideRequest>> = {};
+            for (const o of overRes.data ?? []) {
+              map[o.globalFilterId] = {
+                globalFilterId: o.globalFilterId,
+                isDisabled: o.isDisabled,
+                columnValue: o.columnValue,
+                missingColumnBehavior: o.missingColumnBehavior,
+              };
+            }
+            this.overrideMap.set(map);
+            this.cdr.detectChanges();
+          },
+        });
+      },
+    });
+  }
+
+  getOverride(globalFilterId: string): Partial<GlobalFilterOverrideRequest> {
+    return this.overrideMap()[globalFilterId] ?? {};
+  }
+
+  toggleOverrideEnabled(globalFilterId: string, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.overrideMap.update((map) => ({
+      ...map,
+      [globalFilterId]: { ...map[globalFilterId], globalFilterId, isDisabled: !checked },
+    }));
+  }
+
+  setOverrideValue(globalFilterId: string, event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.overrideMap.update((map) => ({
+      ...map,
+      [globalFilterId]: { ...map[globalFilterId], globalFilterId, columnValue: value || null },
+    }));
+  }
+
+  setOverrideBehavior(globalFilterId: string, event: Event) {
+    const value = (event.target as HTMLSelectElement).value as MissingColumnBehavior | '';
+    this.overrideMap.update((map) => ({
+      ...map,
+      [globalFilterId]: {
+        ...map[globalFilterId],
+        globalFilterId,
+        missingColumnBehavior: value || null,
+      },
+    }));
+  }
+
+  saveOverrides() {
+    this.overrideSaveMutation.trigger();
+  }
+}

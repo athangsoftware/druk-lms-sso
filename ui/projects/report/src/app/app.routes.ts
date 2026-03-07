@@ -74,6 +74,13 @@ export const routes: Routes = [
             (m) => m.AiProviderListComponent,
           ),
       },
+      {
+        path: 'global-filters',
+        loadComponent: () =>
+          import('./pages/main/global-filter-settings/global-filter-settings.component').then(
+            (m) => m.GlobalFilterSettingsComponent,
+          ),
+      },
     ],
   },
   {
