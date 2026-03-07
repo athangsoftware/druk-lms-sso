@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { FilterType } from '@app/prisma';
+import { FilterType } from '@app/prisma-report';
 import { ErrorMessages } from '../../../../../core/models/message';
 
 export class UpdateDashboardFilterRequest {

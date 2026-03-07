@@ -29,13 +29,22 @@
         "tsConfigPath": "apps/report/tsconfig.app.json"
       }
     },
-    "prisma": {
+    "prisma-sso": {
       "type": "library",
-      "root": "libs/prisma",
+      "root": "libs/prisma-sso",
       "entryFile": "index",
-      "sourceRoot": "libs/prisma/src",
+      "sourceRoot": "libs/prisma-sso/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/prisma/tsconfig.lib.json"
+        "tsConfigPath": "libs/prisma-sso/tsconfig.lib.json"
+      }
+    },
+    "prisma-report": {
+      "type": "library",
+      "root": "libs/prisma-report",
+      "entryFile": "index",
+      "sourceRoot": "libs/prisma-report/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/prisma-report/tsconfig.lib.json"
       }
     },
     "shared": {

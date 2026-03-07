@@ -19,7 +19,10 @@ module.exports = function (options) {
         ...options.module.rules,
         {
           test: /\.ts$/,
-          include: path.resolve(__dirname, 'libs/prisma/generated'),
+          include: [
+            path.resolve(__dirname, 'libs/prisma-sso/generated'),
+            path.resolve(__dirname, 'libs/prisma-report/generated'),
+          ],
           use: [
             {
               loader: 'ts-loader',

@@ -2,7 +2,7 @@ import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@ne
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SetPasswordRequest } from './set-password-request';
 import { SetPasswordResponse } from './set-password-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { BcryptService } from '@app/shared';
 
 @ApiTags('User')

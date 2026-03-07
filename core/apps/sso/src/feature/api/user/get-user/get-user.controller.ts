@@ -2,8 +2,8 @@ import { Controller, Get, HttpCode, HttpStatus, Param, HttpException } from '@ne
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { GetUserResponse, GetUserResponseData } from './get-user-response';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
+import { Role } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()

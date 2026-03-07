@@ -1,6 +1,6 @@
 import { ErrorMessages } from '../../../../core/models/message';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Role } from '@app/prisma';
+import { Role } from '@app/prisma-sso';
 import { IsOptional, IsString, IsEmail, IsEnum } from 'class-validator';
 
 export class UpdateUserRequest {

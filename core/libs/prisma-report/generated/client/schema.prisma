@@ -1,0 +1,237 @@
+// Audit log model for tracking all data changes
+
+model AuditLog {
+  id        String    @id @default(uuid())
+  action    String?
+  operation String?
+  tableName String?   @map("table_name")
+  recordId  String?   @map("record_id")
+  oldValue  Json?     @map("old_value")
+  newValue  Json?     @map("new_value")
+  createdBy String?   @map("created_by")
+  createdAt DateTime? @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+
+  @@map("_audit_logs")
+}
+
+// Metadata model for system configuration
+model MetaData {
+  id   String  @id
+  name String
+  desc String?
+  type String
+
+  @@map("pub_meta_data")
+}
+
+// Report application models
+
+enum DbType {
+  MYSQL
+}
+
+enum ChartType {
+  BAR
+  LINE
+  PIE
+  DOUGHNUT
+  SCATTER
+  AREA
+  TABLE
+}
+
+enum FilterType {
+  MULTI_SELECT
+  SINGLE_SELECT
+  DATE_RANGE
+  TEXT
+  NUMBER
+}
+
+enum MissingColumnBehavior {
+  SHOW_ALL
+  HIDE_DATA
+}
+
+model DbConnection {
+  id                String @id @default(uuid())
+  name              String
+  dbType            DbType @map("db_type")
+  host              String
+  port              Int
+  databaseName      String @map("database_name")
+  username          String
+  encryptedPassword String @map("encrypted_password") @db.LongText
+
+  charts           Chart[]
+  dashboardFilters DashboardFilter[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_db_connections")
+}
+
+model AiProvider {
+  id              String  @id @default(uuid())
+  name            String
+  model           String
+  encryptedApiKey String  @map("encrypted_api_key") @db.LongText
+  isEnabled       Boolean @default(false) @map("is_enabled")
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_ai_providers")
+}
+
+model Chart {
+  id           String    @id @default(uuid())
+  name         String
+  connectionId String    @map("connection_id")
+  sqlQuery     String    @map("sql_query") @db.LongText
+  chartType    ChartType @map("chart_type")
+  chartConfig  Json      @map("chart_config")
+
+  connection      DbConnection     @relation(fields: [connectionId], references: [id])
+  dashboardCharts DashboardChart[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_charts")
+}
+
+model Dashboard {
+  id          String  @id @default(uuid())
+  name        String
+  description String? @db.Text
+
+  dashboardCharts       DashboardChart[]
+  dashboardFilters      DashboardFilter[]
+  globalFilterOverrides GlobalFilterOverride[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_dashboards")
+}
+
+model DashboardChart {
+  id          String @id @default(uuid())
+  dashboardId String @map("dashboard_id")
+  chartId     String @map("chart_id")
+  positionX   Int    @default(0) @map("position_x")
+  positionY   Int    @default(0) @map("position_y")
+  width       Int    @default(6) @map("width")
+  height      Int    @default(4) @map("height")
+  order       Int    @default(0)
+
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  chart     Chart     @relation(fields: [chartId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([dashboardId, chartId])
+  @@map("rpt_dashboard_charts")
+}
+
+model DashboardFilter {
+  id           String     @id @default(uuid())
+  dashboardId  String     @map("dashboard_id")
+  name         String
+  filterType   FilterType @map("filter_type")
+  connectionId String     @map("connection_id")
+  targetColumn String     @map("target_column")
+  sourceQuery  String?    @map("source_query") @db.LongText
+  defaultValue String?    @map("default_value") @db.Text
+  order        Int        @default(0)
+
+  dashboard  Dashboard    @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  connection DbConnection @relation(fields: [connectionId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_dashboard_filters")
+}
+
+model GlobalFilter {
+  id                    String                 @id @default(uuid())
+  columnName            String                 @map("column_name")
+  columnValue           String                 @map("column_value") @db.Text
+  missingColumnBehavior MissingColumnBehavior? @map("missing_column_behavior")
+  isEnabled             Boolean                @default(true) @map("is_enabled")
+  order                 Int                    @default(0)
+
+  overrides GlobalFilterOverride[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("rpt_global_filters")
+}
+
+model GlobalFilterOverride {
+  id                    String                 @id @default(uuid())
+  globalFilterId        String                 @map("global_filter_id")
+  dashboardId           String                 @map("dashboard_id")
+  isDisabled            Boolean                @default(false) @map("is_disabled")
+  columnValue           String?                @map("column_value") @db.Text
+  missingColumnBehavior MissingColumnBehavior? @map("missing_column_behavior")
+
+  globalFilter GlobalFilter @relation(fields: [globalFilterId], references: [id], onDelete: Cascade)
+  dashboard    Dashboard    @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([globalFilterId, dashboardId])
+  @@map("rpt_global_filter_overrides")
+}
+
+// Main schema configuration file for Report database
+
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/client"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FilterType } from '@app/prisma';
+import { FilterType } from '@app/prisma-report';
 
 export class DashboardFilterItem {
   @ApiProperty() id: string;

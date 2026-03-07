@@ -2,7 +2,7 @@ import {
   Controller, Get, UnauthorizedException, HttpCode, HttpStatus, Headers,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { AuthService } from '@app/shared';
 import { UserInfoResponse } from './info-response';
 

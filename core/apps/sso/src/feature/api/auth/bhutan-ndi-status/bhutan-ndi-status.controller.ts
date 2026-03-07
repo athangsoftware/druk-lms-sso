@@ -1,6 +1,6 @@
 import { Controller, Get, Query, HttpException, HttpStatus, Inject, Logger } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import appConfig, { type AppConfig } from '../../../../config';
 
 @ApiTags('Ndi')

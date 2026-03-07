@@ -2,7 +2,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, BadRequestException } from '@nestjs/common';
 import { ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TokenResponse } from './token-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { AuthService } from '@app/shared';
 import { TokenRequest } from './token-request';
 

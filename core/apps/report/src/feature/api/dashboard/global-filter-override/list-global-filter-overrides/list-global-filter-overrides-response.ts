@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MissingColumnBehavior } from '@app/prisma';
+import { MissingColumnBehavior } from '@app/prisma-report';
 
 export class GlobalFilterOverrideListItem {
   @ApiProperty() id: string;

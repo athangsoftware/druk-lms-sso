@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { RequestContextModule } from '@app/shared';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig, { AppConfig } from './config';
-import { PrismaModule } from '@app/prisma';
+import { PrismaModule } from '@app/prisma-sso';
 import { BcryptModule, AuthModule, ApiKeyModule, MailModule } from '@app/shared';
 import { ApiModule } from './feature/api/api.module';
 
@@ -12,6 +12,7 @@ import { ApiModule } from './feature/api/api.module';
     ConfigModule.forRoot({
       load: [appConfig],
       isGlobal: true,
+      envFilePath: 'apps/sso/.env',
     }),
     ApiModule,
     AuthModule.forRootAsync({

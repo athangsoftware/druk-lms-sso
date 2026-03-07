@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { StringValue } from 'ms';
 import type { AuthModuleOptions } from './auth.module';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '../prisma';
 import { BcryptService } from '../bcrypt/bcrypt.service';
 
 interface JwtPayload {

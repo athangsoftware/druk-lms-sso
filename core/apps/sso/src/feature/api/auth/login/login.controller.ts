@@ -6,7 +6,7 @@ import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginRequest } from './login-request';
 import { LoginResponse } from './login-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { BcryptService, SnakeToCamelInterceptor, RequestContext, AuthService } from '@app/shared';
 
 @ApiTags('Auth')

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ChartType } from '@app/prisma';
+import { ChartType } from '@app/prisma-report';
 
 export class ChartData {
   @ApiProperty() id: string;

@@ -2,7 +2,7 @@ import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@ne
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GenerateSetPasswordLinkRequest } from './generate-set-password-link-request';
 import { GenerateSetPasswordLinkResponse } from './generate-set-password-link-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { ApiKeyAuthorization, EmailService } from '@app/shared';
 import * as crypto from 'crypto';
 

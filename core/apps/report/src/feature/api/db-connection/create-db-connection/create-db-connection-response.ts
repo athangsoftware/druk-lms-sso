@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DbType } from '@app/prisma';
+import { DbType } from '@app/prisma-report';
 
 export class DbConnectionData {
   @ApiProperty() id: string;

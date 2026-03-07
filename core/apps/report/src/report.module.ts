@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { RequestContextModule } from '@app/shared';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig, { AppConfig } from './config';
-import { PrismaModule } from '@app/prisma';
+import { PrismaModule } from '@app/prisma-report';
 import { BcryptModule, AuthModule, ApiKeyModule } from '@app/shared';
 import { ApiModule } from './feature/api/api.module';
 

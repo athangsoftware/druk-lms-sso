@@ -22,11 +22,17 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/prisma": [
-        "libs/prisma/src"
+      "@app/prisma-sso": [
+        "libs/prisma-sso/src"
       ],
-      "@app/prisma/*": [
-        "libs/prisma/src/*"
+      "@app/prisma-sso/*": [
+        "libs/prisma-sso/src/*"
+      ],
+      "@app/prisma-report": [
+        "libs/prisma-report/src"
+      ],
+      "@app/prisma-report/*": [
+        "libs/prisma-report/src/*"
       ],
       "@app/shared": [
         "libs/shared/src"

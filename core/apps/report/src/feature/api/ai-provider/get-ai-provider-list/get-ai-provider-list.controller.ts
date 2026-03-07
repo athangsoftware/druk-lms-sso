@@ -1,8 +1,8 @@
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { GetAiProviderListRequest } from './get-ai-provider-list-request';
 import { GetAiProviderListResponse } from './get-ai-provider-list-response';
 import { SuccessMessages } from '../../../../core/models/message';

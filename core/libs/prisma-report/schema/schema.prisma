@@ -1,0 +1,11 @@
+// Main schema configuration file for Report database
+
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/client"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}

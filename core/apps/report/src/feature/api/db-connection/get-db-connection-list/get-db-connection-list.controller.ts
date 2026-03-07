@@ -1,8 +1,8 @@
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Prisma } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService, Prisma } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { GetDbConnectionListRequest } from './get-db-connection-list-request';
 import { GetDbConnectionListResponse } from './get-db-connection-list-response';
 import { SuccessMessages } from '../../../../core/models/message';

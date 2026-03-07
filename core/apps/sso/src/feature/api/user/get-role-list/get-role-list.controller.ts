@@ -4,7 +4,7 @@ import { Authorize } from '@app/shared';
 import { GetRoleListResponse } from './get-role-list-response';
 import { roles } from '../../../../core/enum-mapping';
 import { SuccessMessages } from '../../../../core/models/message';
-import { Role } from '@app/prisma';
+import { Role } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()

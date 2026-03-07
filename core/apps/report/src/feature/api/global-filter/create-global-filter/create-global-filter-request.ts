@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, IsEnum, Min } from 'class-validator';
-import { MissingColumnBehavior } from '@app/prisma';
+import { MissingColumnBehavior } from '@app/prisma-report';
 import { ErrorMessages } from '../../../../core/models/message';
 
 export class CreateGlobalFilterRequest {

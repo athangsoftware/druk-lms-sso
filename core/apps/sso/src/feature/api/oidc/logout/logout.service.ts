@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 
 /**
  * OIDC RP-Initiated Logout Service

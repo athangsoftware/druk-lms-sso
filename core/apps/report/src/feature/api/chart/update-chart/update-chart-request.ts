@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { ChartType } from '@app/prisma';
+import { ChartType } from '@app/prisma-report';
 import { ErrorMessages } from '../../../../core/models/message';
 
 export class UpdateChartRequest {

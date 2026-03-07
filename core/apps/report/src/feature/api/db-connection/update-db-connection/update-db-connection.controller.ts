@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
 import { UpdateDbConnectionRequest } from './update-db-connection-request';

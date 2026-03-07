@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { GlobalFilterOverrideItemRequest } from './upsert-global-filter-overrides-request';
 import { UpsertGlobalFilterOverridesResponse, GlobalFilterOverrideData } from './upsert-global-filter-overrides-response';
 import { SuccessMessages } from '../../../../../core/models/message';

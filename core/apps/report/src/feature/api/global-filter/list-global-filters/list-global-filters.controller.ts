@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { ListGlobalFiltersResponse } from './list-global-filters-response';
 import { SuccessMessages } from '../../../../core/models/message';
 

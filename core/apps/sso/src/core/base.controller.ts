@@ -1,4 +1,4 @@
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { Inject } from '@nestjs/common';
 import appConfig from '../config';
 import type { AppConfig } from '../config';

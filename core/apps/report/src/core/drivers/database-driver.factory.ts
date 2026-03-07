@@ -1,4 +1,4 @@
-import { DbConnection } from '@app/prisma';
+import { DbConnection } from '@app/prisma-report';
 import { DatabaseDriver } from './database-driver.interface';
 import { MySqlDriver } from './mysql.driver';
 

@@ -2,9 +2,30 @@ import path from 'node:path';
 import { defineConfig, env } from 'prisma/config';
 import 'dotenv/config';
 
+const target = process.env.PRISMA_SCHEMA || 'sso';
+
+const schemas: Record<string, { path: string; url: ReturnType<typeof env> }> = {
+  sso: {
+    path: path.join(__dirname, 'libs/prisma-sso/schema'),
+    url: env('DATABASE_URL_SSO'),
+  },
+  report: {
+    path: path.join(__dirname, 'libs/prisma-report/schema'),
+    url: env('DATABASE_URL_REPORT'),
+  },
+};
+
+const selected = schemas[target];
+
+if (!selected) {
+  throw new Error(
+    `Unknown PRISMA_SCHEMA: "${target}". Use "sso" or "report".`
+  );
+}
+
 export default defineConfig({
-  schema: path.join(__dirname, 'libs/prisma/schema'),
+  schema: selected.path,
   datasource: {
-    url: env('DATABASE_URL'),
+    url: selected.url,
   },
 });

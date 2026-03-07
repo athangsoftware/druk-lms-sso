@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
 import { AppConfig } from '../../config';
 import { AiProviderBase, AiChartResult, AiFilterResult } from './ai-provider.interface';
 import { OpenAiProvider } from './openai.provider';

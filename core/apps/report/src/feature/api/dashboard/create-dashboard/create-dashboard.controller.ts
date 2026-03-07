@@ -1,8 +1,8 @@
 import { Controller, Post, HttpCode, HttpStatus, Body } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService } from '@app/prisma';
-import { Role } from '@app/prisma';
+import { PrismaService } from '@app/prisma-report';
+import { Role } from '@app/shared';
 import { CreateDashboardRequest } from './create-dashboard-request';
 import { CreateDashboardResponse } from './create-dashboard-response';
 import { SuccessMessages } from '../../../../core/models/message';

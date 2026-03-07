@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
-import { DbType } from '@app/prisma';
+import { DbType } from '@app/prisma-report';
 import { ErrorMessages } from '../../../../core/models/message';
 
 export class CreateDbConnectionRequest {

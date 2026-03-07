@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, Query, Res, BadRequestException, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BhutanNdiService } from '../../bhutan-ndi.service';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { BhutanNdiSignInRequest } from './bhutan-ndi-sign-in-request';
 import { SnakeToCamelInterceptor } from '@app/shared';
 import type { Response } from 'express';

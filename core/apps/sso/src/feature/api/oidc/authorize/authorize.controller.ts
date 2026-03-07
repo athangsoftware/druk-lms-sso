@@ -4,7 +4,7 @@ import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizeRequest } from './authorize-request';
 import { AuthorizeResponse } from './authorize-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import appConfig, { type AppConfig } from '../../../../config';
 
 @ApiTags('OIDC')

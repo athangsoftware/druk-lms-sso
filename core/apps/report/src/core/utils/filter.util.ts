@@ -1,4 +1,4 @@
-import { FilterType, MissingColumnBehavior } from '@app/prisma';
+import { FilterType, MissingColumnBehavior } from '@app/prisma-report';
 import { SchemaMetadata } from '../drivers/database-driver.interface';
 
 const VALID_COLUMN_NAME = /^[a-zA-Z_][a-zA-Z0-9_.]*$/;

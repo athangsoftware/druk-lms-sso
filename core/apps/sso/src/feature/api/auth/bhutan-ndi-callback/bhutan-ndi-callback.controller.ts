@@ -1,6 +1,6 @@
 import { Controller, Post, Body, HttpCode, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { BhutanNdiCallbackResponse } from './bhutan-ndi-callback-response';
 
 @ApiTags('Ndi')

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
-import { Role } from '@app/prisma';
+import { Role } from '@app/prisma-sso';
 import { ErrorMessages } from '../../../../core/models/message';
 
 export class CreateUserRequest {

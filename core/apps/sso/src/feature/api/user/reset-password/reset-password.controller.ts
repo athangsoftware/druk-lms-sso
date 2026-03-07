@@ -2,9 +2,9 @@ import { Controller, Put, HttpCode, HttpStatus, Body, HttpException } from '@nes
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResetPasswordRequest } from './reset-password-request';
 import { ResetPasswordResponse } from './reset-password-response';
-import { PrismaService } from '@app/prisma';
+import { PrismaService } from '@app/prisma-sso';
 import { Authorize, BcryptService } from '@app/shared';
-import { Role } from '@app/prisma';
+import { Role } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()

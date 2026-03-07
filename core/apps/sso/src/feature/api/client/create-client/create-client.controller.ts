@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma';
+import { PrismaService, Role } from '@app/prisma-sso';
 import { CreateClientRequest } from './create-client-request';
 import { CreateClientResponse } from './create-client-response';
 import { SuccessMessages } from '../../../../core/models/message';

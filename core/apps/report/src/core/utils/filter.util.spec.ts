@@ -1,5 +1,5 @@
 import { buildFilterSql, injectFilters, validateColumnName } from './filter.util';
-import { FilterType } from '@app/prisma';
+import { FilterType } from '@app/prisma-report';
 
 describe('filter.util', () => {
   describe('validateColumnName', () => {

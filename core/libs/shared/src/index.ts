@@ -8,6 +8,7 @@ export type { AuthorizeGuardConfig } from './auth/authorize.guard';
 export { CurrentUser } from './auth/current-user';
 export { JwtAuthGuard } from './auth/jwt/jwt.guard';
 export { JwtAuthStrategy } from './auth/jwt/jwt.strategy';
+export { Role } from './auth/roles';
 
 // API Key
 export { ApiKeyModule } from './api-key/api-key.module';
@@ -50,3 +51,14 @@ export { IsRequiredBasedOtherField } from './validators/decorators/is-required-b
 export { IsSingleElement } from './validators/decorators/is-single-element.decorator';
 export { IsValidDate } from './validators/decorators/is-valid-date.decorator';
 export { TransformMMYYYYToISO } from './validators/decorators/transform-mm-yyyy-to-iso.decorator';
+
+// Prisma (shared infrastructure - client-agnostic)
+export { createPrismaModule, PRISMA_CONFIG, TENANT_CONTEXT } from './prisma';
+export type { PrismaModuleAsyncOptions, TenantContext } from './prisma';
+export { PrismaService } from './prisma';
+export type { PrismaLibConfig, PrismaTransactionClient } from './prisma';
+export { DatabaseStrategy } from './prisma';
+export { createPrismaClient, createTenantPrismaClient } from './prisma';
+export { getExtendedPrismaClient } from './prisma';
+export { setAuditLog, setAuditFields } from './prisma';
+export { deepEqual, getCurrentDateInUTC, TerminalStyles } from './prisma';
