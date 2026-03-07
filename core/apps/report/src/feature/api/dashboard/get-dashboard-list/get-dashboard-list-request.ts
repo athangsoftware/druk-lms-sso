@@ -23,6 +23,11 @@ export class GetDashboardListRequest {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @IsString({ message: ErrorMessages.string('order by property name') })
+  orderByPropertyName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsString({ message: ErrorMessages.string('search') })
   search?: string;
 }

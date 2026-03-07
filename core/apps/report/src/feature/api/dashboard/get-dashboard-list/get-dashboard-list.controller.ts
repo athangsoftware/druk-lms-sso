@@ -29,11 +29,25 @@ export class GetDashboardListController {
         }
 
         const count = await dbContext.dashboard.count({ where });
+
+        let orderBy: Prisma.DashboardOrderByWithRelationInput = {};
+        switch (request.orderByPropertyName) {
+          case 'name':
+            orderBy = { name: request.sortingDirection };
+            break;
+          case 'updatedAt':
+            orderBy = { updatedAt: request.sortingDirection };
+            break;
+          default:
+            orderBy = { createdAt: request.sortingDirection };
+            break;
+        }
+
         const items = await dbContext.dashboard.findMany({
           skip: (request.pageNumber - 1) * request.pageSize,
           take: request.pageSize,
           where,
-          orderBy: { createdAt: request.sortingDirection },
+          orderBy,
         });
 
         return {

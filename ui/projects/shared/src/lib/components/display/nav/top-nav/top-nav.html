@@ -1,14 +1,16 @@
 <div class="relative max-w-full">
   <!-- Top Navigation Bar -->
   <nav class="flex items-center justify-between gap-1 max-w-full" [class]="navClasses()">
-    <!-- Left section: Toggle button + Logo -->
-    <div class="flex items-center gap-1 sm:gap-4 min-w-0 overflow-hidden h-full">
-      <!-- Hamburger Menu Toggle for Side Nav (Mobile Only) -->
+
+    <!-- Left: hamburger (always on mobile) + logo + inline items (horizontal desktop only) -->
+    <div class="flex items-center gap-1 sm:gap-3 min-w-0 overflow-hidden h-full">
+
+      <!-- Hamburger: always shown on mobile (sidebar toggle) -->
       @if (isMobile()) {
-      <button class="p-2 rounded-full hover:bg-primary-600 transition-all duration-200 focus:outline-none flex-shrink-0"
+      <button
+        class="p-2 rounded-full hover:bg-primary-600 active:bg-primary-700 transition-colors duration-150 focus:outline-none flex-shrink-0 touch-manipulation"
         (click)="onToggleSideNav()" [attr.aria-label]="isExpanded() ? 'Close sidebar' : 'Open sidebar'">
-        <svg class="w-5 h-5 transition-transform duration-300 text-white" fill="none" stroke="currentColor"
-          viewBox="0 0 24 24">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           @if (isExpanded()) {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           } @else {
@@ -24,10 +26,28 @@
         <ng-content select="[logo]"></ng-content>
       </div>
       }
+
+      <!-- Horizontal nav items: desktop + horizontal mode only -->
+      @if (!isMobile() && navMode() === 'horizontal') {
+      <div class="flex items-center h-full ml-2">
+        @for (menu of menus(); track menu.id) {
+        @if (menu.isEnabled && !menu.isSeparator && !menu.groupHeading) {
+        <a [routerLink]="menu.link" routerLinkActive #rla="routerLinkActive"
+          [class]="'flex items-center px-4 h-full text-sm font-medium border-b-2 transition-colors duration-200 ' +
+            (rla.isActive
+              ? 'border-white text-white'
+              : 'border-transparent text-primary-100 hover:text-white hover:border-primary-200')"
+          (click)="onHorizontalMenuClick(menu, $event)">
+          {{ menu.label }}
+        </a>
+        }
+        }
+      </div>
+      }
     </div>
 
-    <!-- Right-aligned section for actions -->
-    <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0 h-full">
+    <!-- Right: actions -->
+    <div class="flex items-center gap-2 flex-shrink-0 h-full">
       <div class="flex items-center h-full">
         <ng-content select="[actions]"></ng-content>
       </div>

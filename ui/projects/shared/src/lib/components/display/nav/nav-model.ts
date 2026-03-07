@@ -27,3 +27,9 @@ export interface NavTheme {
   borderClass?: string;
   headingClass?: string;
 }
+
+/** Controls the nav layout mode.
+ *  - `'vertical'`   – compact icon sidebar (default)
+ *  - `'horizontal'` – menu items rendered inline in the top bar
+ */
+export type NavMode = 'horizontal' | 'vertical';

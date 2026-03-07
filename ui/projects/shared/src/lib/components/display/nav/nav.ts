@@ -1,6 +1,6 @@
 import { Component, computed, input, output, signal, viewChild, HostListener, inject, PLATFORM_ID, OnInit } from "@angular/core";
 import { isPlatformBrowser } from '@angular/common';
-import { SideMenuItem, NavBreakpoint, BREAKPOINT_MAP, NavTheme } from "./nav-model";
+import { SideMenuItem, NavBreakpoint, BREAKPOINT_MAP, NavTheme, NavMode } from "./nav-model";
 import { CommonModule } from "@angular/common";
 import { SideNavMenu } from "./side-nav-menu/side-nav-menu";
 import { TopNav } from "./top-nav/top-nav";
@@ -25,6 +25,7 @@ export class Nav implements OnInit {
   menus = input<SideMenuItem[]>([]);
   logoutMenu = input<TopMenuItem | null>(null);
   breakpoint = input<NavBreakpoint>('lg');
+  navMode = input<NavMode>('vertical');
   theme = input<NavTheme>({
     bgClass: 'bg-primary-50', // Solid light background
     textClass: 'text-primary-800',
@@ -45,6 +46,12 @@ export class Nav implements OnInit {
   settingsMenuComponent = viewChild<SideNavMenu>("settingsMenuRef");
 
   constructor() {
+    if (isPlatformBrowser(this.platformId)) {
+      const query = BREAKPOINT_MAP[this.breakpoint()];
+      const mobile = window.matchMedia(query).matches;
+      this.isMobile.set(mobile);
+      this.isExpanded.set(!mobile);
+    }
   }
 
   ngOnInit() {
@@ -66,6 +73,7 @@ export class Nav implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
+    // On mobile the sidebar is always an overlay — close on outside click
     if (this.isMobile() && this.isExpanded()) {
       const sidebar = (event.target as HTMLElement).closest('nav');
       if (!sidebar) {
@@ -89,7 +97,6 @@ export class Nav implements OnInit {
   sidebarClasses = computed(() => {
     const themeParams = this.theme();
     const bg = themeParams.bgClass || 'bg-slate-900';
-    const border = themeParams.borderClass || 'border-slate-800';
 
     if (this.isMobile()) {
       // Mobile: compact sidebar slides in from left as overlay
@@ -97,19 +104,17 @@ export class Nav implements OnInit {
       return `fixed top-16 left-0 bottom-0 w-24 z-50 ${bg} shadow-xl transition-transform duration-300 ease-in-out ${translateClass}`;
     } else {
       // Desktop: compact sidebar with icons on top, labels below
-      const widthClass = 'w-24';
-      return `fixed top-16 left-0 bottom-0 z-10 ${widthClass} ${bg} transition-all duration-300 ease-in-out`;
+      return `fixed top-16 left-0 bottom-0 z-10 w-24 ${bg} transition-all duration-300 ease-in-out`;
     }
   });
 
   mainContentClasses = computed(() => {
-    if (this.isMobile()) {
-      // Mobile: content always uses full width
-      return 'ml-0';
-    } else {
-      // Desktop: offset by compact sidebar width
-      return 'ml-24';
-    }
+    // Mobile: sidebar is a floating overlay — content takes full width
+    if (this.isMobile()) return 'ml-0';
+    // Desktop horizontal: no sidebar — content takes full width
+    if (this.navMode() === 'horizontal') return 'ml-0';
+    // Desktop vertical: offset by compact sidebar width
+    return 'ml-24';
   });
 
   toggleButtonLabel = computed(() =>

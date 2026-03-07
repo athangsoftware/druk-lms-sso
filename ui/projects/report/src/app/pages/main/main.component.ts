@@ -8,7 +8,7 @@ import { AuthHelperService } from '@core/auth-helper.service';
   standalone: true,
   imports: [RouterOutlet, Nav],
   template: `
-    <ui-nav [menus]="navMenus">
+    <ui-nav [menus]="navMenus" navMode="horizontal">
       <div logo>
         <span class="text-white font-bold text-lg">Report</span>
       </div>
