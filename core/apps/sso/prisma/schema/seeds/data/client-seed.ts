@@ -11,7 +11,7 @@ export const clientSeeds: ClientSeed[] = [
     name: 'DrukLMS',
     clientId: 'druklms',
     clientSecret: null,
-    clientType: 'CONFIDENTIAL',
+    clientType: 'PUBLIC',
     disableStrictUrlValidation: true,
   },
   {

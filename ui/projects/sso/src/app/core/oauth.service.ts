@@ -297,7 +297,12 @@ export class OAuthService {
     const token = sessionStorage.getItem('access_token');
     if (token) {
       this.accessToken.set(token);
-      this.router.navigate(['/main']);
+      const path = window.location.pathname;
+      const isAuthEntryRoute = path === '/' || path === '/callback' || path === '/login';
+
+      if (isAuthEntryRoute) {
+        this.router.navigate(['/main']);
+      }
     }
   }
 }
