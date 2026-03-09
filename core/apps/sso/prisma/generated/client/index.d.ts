@@ -83,6 +83,8 @@ export type ClientType = (typeof ClientType)[keyof typeof ClientType]
 
 
 export const IdentityProviderType: {
+  GOOGLE: 'GOOGLE',
+  NDI: 'NDI',
   OIDC: 'OIDC',
   CUSTOM: 'CUSTOM'
 };

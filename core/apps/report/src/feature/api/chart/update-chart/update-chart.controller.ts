@@ -63,7 +63,7 @@ export class UpdateChartController {
           id: updated.id,
           name: updated.name,
           connectionId: updated.connectionId,
-          connectionName: updated.connection.name,
+          connectionName: updated.connection?.name ?? 'Unknown connection',
           sqlQuery: updated.sqlQuery,
           chartType: updated.chartType,
           chartConfig: updated.chartConfig as Record<string, unknown>,

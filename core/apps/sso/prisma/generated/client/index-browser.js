@@ -442,6 +442,8 @@ exports.ClientType = exports.$Enums.ClientType = {
 };
 
 exports.IdentityProviderType = exports.$Enums.IdentityProviderType = {
+  GOOGLE: 'GOOGLE',
+  NDI: 'NDI',
   OIDC: 'OIDC',
   CUSTOM: 'CUSTOM'
 };
