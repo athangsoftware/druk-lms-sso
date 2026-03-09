@@ -452,6 +452,136 @@ export interface GoogleCallbackParams {
   state?: string;
 }
 
+// ─── Identity Provider ───────────────────────────────────────────
+
+export type IdentityProviderType = 'OIDC' | 'CUSTOM';
+
+export interface CreateIdentityProviderRequest {
+  name: string;
+  slug?: string;
+  type?: IdentityProviderType;
+  clientId?: string;
+  clientSecret?: string;
+  authorizationUrl?: string;
+  tokenUrl?: string;
+  userInfoUrl?: string;
+  redirectUrl?: string;
+  scopes?: string;
+  iconUrl?: string;
+  isEnabled?: boolean;
+  displayOrder?: number;
+  metadata?: any;
+}
+
+export interface CreateIdentityProviderResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    slug: string;
+    type: string;
+    isEnabled: boolean;
+  };
+}
+
+export interface UpdateIdentityProviderRequest {
+  name?: string;
+  type?: IdentityProviderType;
+  clientId?: string;
+  clientSecret?: string;
+  authorizationUrl?: string;
+  tokenUrl?: string;
+  userInfoUrl?: string;
+  redirectUrl?: string;
+  scopes?: string;
+  iconUrl?: string;
+  isEnabled?: boolean;
+  displayOrder?: number;
+  metadata?: any;
+}
+
+export interface UpdateIdentityProviderResponse {
+  successMessage: string;
+}
+
+export interface DeleteIdentityProviderResponse {
+  successMessage: string;
+}
+
+export interface ToggleIdentityProviderResponse {
+  successMessage: string;
+}
+
+export interface GetIdentityProviderListParams {
+  pageNumber?: number;
+  pageSize?: number;
+  sortingDirection?: string;
+  orderByPropertyName?: string;
+  search?: string;
+  nameValue?: string;
+  nameOperation?: string;
+  slugValue?: string;
+  slugOperation?: string;
+  typeValue?: string;
+  isEnabledValue?: string;
+}
+
+export interface GetIdentityProviderListItem {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  iconUrl: string | null;
+  isEnabled: boolean;
+  displayOrder: number;
+  createdAt: string;
+}
+
+export interface GetIdentityProviderListResponse {
+  successMessage: string;
+  pageSize: number;
+  pageNumber: number;
+  totalCount: number;
+  orderByPropertyName: string;
+  sortingDirection: string;
+  data: GetIdentityProviderListItem[];
+}
+
+export interface GetIdentityProviderResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    slug: string;
+    type: string;
+    clientId: string | null;
+    authorizationUrl: string | null;
+    tokenUrl: string | null;
+    userInfoUrl: string | null;
+    redirectUrl: string | null;
+    scopes: string | null;
+    iconUrl: string | null;
+    isEnabled: boolean;
+    displayOrder: number;
+    metadata: any;
+    hasClientSecret: boolean;
+    createdAt: string;
+  };
+}
+
+export interface EnabledProvider {
+  id: string;
+  name: string;
+  slug: string;
+  type: IdentityProviderType;
+  iconUrl: string | null;
+  displayOrder: number;
+}
+
+export interface GetEnabledProvidersResponse {
+  data: EnabledProvider[];
+}
+
 // ─── Column Filters ──────────────────────────────────────────────
 
 export interface ColumnFilter {

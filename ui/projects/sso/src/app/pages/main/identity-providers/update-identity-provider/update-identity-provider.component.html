@@ -1,0 +1,107 @@
+<ui-base-overlay [title]="'Update Identity Provider'">
+  <div body>
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4" (submit)="onSubmit()">
+      <app-text-input
+        [label]="'Provider Name'"
+        [fullWidth]="true"
+        [placeholder]="'e.g. Google'"
+        [formField]="providerForm.name"
+      ></app-text-input>
+
+      <app-single-selection-field
+        [title]="'Provider Type'"
+        [items]="typeOptions"
+        [display]="'name'"
+        [value]="'id'"
+        [formField]="providerForm.type"
+      ></app-single-selection-field>
+
+      <app-text-input
+        [label]="'Client ID'"
+        [fullWidth]="true"
+        [placeholder]="'OAuth Client ID'"
+        [formField]="providerForm.clientId"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Client Secret'"
+        [fullWidth]="true"
+        [placeholder]="'Leave blank to keep existing secret'"
+        [formField]="providerForm.clientSecret"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Authorization URL'"
+        [fullWidth]="true"
+        [placeholder]="'https://accounts.google.com/o/oauth2/v2/auth'"
+        [formField]="providerForm.authorizationUrl"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Token URL'"
+        [fullWidth]="true"
+        [placeholder]="'https://oauth2.googleapis.com/token'"
+        [formField]="providerForm.tokenUrl"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'User Info URL'"
+        [fullWidth]="true"
+        [placeholder]="'https://www.googleapis.com/oauth2/v3/userinfo'"
+        [formField]="providerForm.userInfoUrl"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Redirect URL'"
+        [fullWidth]="true"
+        [placeholder]="'https://api.example.com/auth/google/callback'"
+        [formField]="providerForm.redirectUrl"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Scopes'"
+        [fullWidth]="true"
+        [placeholder]="'openid profile email'"
+        [formField]="providerForm.scopes"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Icon URL'"
+        [fullWidth]="true"
+        [placeholder]="'/icons/google.svg or https://...'"
+        [formField]="providerForm.iconUrl"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Display Order'"
+        [fullWidth]="true"
+        [placeholder]="'0'"
+        [formField]="providerForm.displayOrder"
+      ></app-text-input>
+
+      <div class="flex items-center gap-3 py-1">
+        <ui-checkbox-field
+          [label]="'Enabled'"
+          [value]="providerModel().isEnabled"
+          (valueChange)="providerModel.update(m => ({ ...m, isEnabled: $event }))"
+        ></ui-checkbox-field>
+      </div>
+
+      <div class="md:col-span-2">
+        <app-text-input
+          [label]="'Metadata (JSON)'"
+          [fullWidth]="true"
+          placeholder="Optional JSON object"
+          [formField]="providerForm.metadata"
+        ></app-text-input>
+        <p class="mt-1 text-xs text-neutral-500">
+          Provider-specific configuration as JSON. Used for custom provider types (e.g., NDI webhook URLs).
+        </p>
+      </div>
+
+      <div class="md:col-span-2 flex justify-center pt-2">
+        <ui-button [loading]="updateMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

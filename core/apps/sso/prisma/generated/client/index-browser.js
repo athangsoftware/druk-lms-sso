@@ -198,6 +198,30 @@ exports.Prisma.PostLogoutRedirectURLScalarFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.IdentityProviderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  type: 'type',
+  clientId: 'clientId',
+  clientSecret: 'clientSecret',
+  authorizationUrl: 'authorizationUrl',
+  tokenUrl: 'tokenUrl',
+  userInfoUrl: 'userInfoUrl',
+  redirectUrl: 'redirectUrl',
+  scopes: 'scopes',
+  iconUrl: 'iconUrl',
+  isEnabled: 'isEnabled',
+  displayOrder: 'displayOrder',
+  metadata: 'metadata',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedAt: 'updatedAt',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -349,6 +373,24 @@ exports.Prisma.PostLogoutRedirectURLOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.IdentityProviderOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  clientId: 'clientId',
+  clientSecret: 'clientSecret',
+  authorizationUrl: 'authorizationUrl',
+  tokenUrl: 'tokenUrl',
+  userInfoUrl: 'userInfoUrl',
+  redirectUrl: 'redirectUrl',
+  scopes: 'scopes',
+  iconUrl: 'iconUrl',
+  createdBy: 'createdBy',
+  createdIp: 'createdIp',
+  updatedBy: 'updatedBy',
+  updatedIp: 'updatedIp'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -399,6 +441,11 @@ exports.ClientType = exports.$Enums.ClientType = {
   CONFIDENTIAL: 'CONFIDENTIAL'
 };
 
+exports.IdentityProviderType = exports.$Enums.IdentityProviderType = {
+  OIDC: 'OIDC',
+  CUSTOM: 'CUSTOM'
+};
+
 exports.Role = exports.$Enums.Role = {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
@@ -413,6 +460,7 @@ exports.Prisma.ModelName = {
   AuthorizationCode: 'AuthorizationCode',
   RedirectURL: 'RedirectURL',
   PostLogoutRedirectURL: 'PostLogoutRedirectURL',
+  IdentityProvider: 'IdentityProvider',
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   RefreshToken: 'RefreshToken',

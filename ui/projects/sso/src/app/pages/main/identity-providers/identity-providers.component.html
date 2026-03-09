@@ -1,0 +1,26 @@
+<div class="w-full sm:px-4 h-full flex flex-col gap-4">
+
+  <!-- Page Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-neutral-800">Identity Providers</h1>
+    </div>
+    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Add Provider</ui-button>
+  </div>
+
+  <!-- Table -->
+  <div class="flex-1 min-h-0">
+    <ui-data-table
+      class="block h-full"
+      [columnGroups]="columnGroups"
+      [data]="providerList.value()?.data ?? []"
+      [totalCount]="providerList.value()?.totalCount ?? 0"
+      [hasError]="!!providerList.error()"
+      (action)="onAction($event)"
+      (stateChange)="onTableStateChanged($event)"
+      [initialValue]="store.tableState()"
+      (rowClick)="onRowClicked($event)"
+    ></ui-data-table>
+  </div>
+
+</div>

@@ -47,10 +47,20 @@ import { UpdateUserController } from './user/update-user/update-user.controller'
 // Dashboard
 import { DashboardController } from './dashboard/dashboard.controller';
 
+// Identity Provider
+import { GetIdentityProviderListController } from './identity-provider/get-identity-provider-list/get-identity-provider-list.controller';
+import { GetIdentityProviderController } from './identity-provider/get-identity-provider/get-identity-provider.controller';
+import { CreateIdentityProviderController } from './identity-provider/create-identity-provider/create-identity-provider.controller';
+import { UpdateIdentityProviderController } from './identity-provider/update-identity-provider/update-identity-provider.controller';
+import { DeleteIdentityProviderController } from './identity-provider/delete-identity-provider/delete-identity-provider.controller';
+import { ToggleIdentityProviderController } from './identity-provider/toggle-identity-provider/toggle-identity-provider.controller';
+import { GetEnabledProvidersController } from './identity-provider/get-enabled-providers/get-enabled-providers.controller';
+
 // Services
 import { OAuthService } from './auth.service';
 import { BhutanNdiService } from './bhutan-ndi.service';
 import { LogoutService } from './oidc/logout/logout.service';
+import { IdentityProviderService } from './identity-provider.service';
 
 const CONTROLLERS = [
   // Client
@@ -93,9 +103,17 @@ const CONTROLLERS = [
   UpdateUserController,
   // Dashboard
   DashboardController,
+  // Identity Provider
+  GetEnabledProvidersController,
+  GetIdentityProviderListController,
+  GetIdentityProviderController,
+  CreateIdentityProviderController,
+  UpdateIdentityProviderController,
+  DeleteIdentityProviderController,
+  ToggleIdentityProviderController,
 ];
 
-const SERVICES = [OAuthService, BhutanNdiService, LogoutService];
+const SERVICES = [OAuthService, BhutanNdiService, LogoutService, IdentityProviderService];
 
 @Module({
   imports: [HttpModule],

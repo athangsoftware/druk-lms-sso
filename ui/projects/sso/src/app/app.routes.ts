@@ -65,6 +65,13 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: ['modrator'] },
       },
+      {
+        path: 'identity-providers',
+        loadComponent: () =>
+          import('./pages/main/identity-providers/identity-providers.component').then((m) => m.IdentityProvidersComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
     ],
   },
   {

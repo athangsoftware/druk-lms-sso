@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { HttpService } from '@nestjs/axios';
 import * as crypto from 'crypto';
 import appConfig, { type AppConfig } from '../../../../config';
+import { IdentityProviderService } from '../../identity-provider.service';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -16,6 +17,7 @@ export class GoogleSignInCallbackController {
     private readonly prismaService: PrismaService,
     private readonly httpService: HttpService,
     @Inject(appConfig.KEY) private readonly appConfig: AppConfig,
+    private readonly idpService: IdentityProviderService,
   ) {}
 
   @Get('google/callback')
@@ -35,12 +37,28 @@ export class GoogleSignInCallbackController {
       throw new BadRequestException('Missing OIDC session data');
     }
 
+    // Load Google provider config from DB, fall back to env vars
+    const provider = await this.idpService.getProviderBySlug('google');
+    const useDbConfig = provider?.isEnabled;
+
+    const googleClientId = useDbConfig ? provider.clientId : this.appConfig.googleClientId;
+    const googleClientSecret = useDbConfig
+      ? this.idpService.decryptProviderSecret(provider)
+      : this.appConfig.googleClientSecret;
+    const googleRedirectUri = useDbConfig ? provider.redirectUrl : this.appConfig.redirectUri;
+    const tokenUrl = useDbConfig && provider.tokenUrl
+      ? provider.tokenUrl
+      : 'https://oauth2.googleapis.com/token';
+    const userInfoUrl = useDbConfig && provider.userInfoUrl
+      ? provider.userInfoUrl
+      : 'https://www.googleapis.com/oauth2/v3/userinfo';
+
     const tokenResponse = await firstValueFrom(
-      this.httpService.post('https://oauth2.googleapis.com/token', {
+      this.httpService.post(tokenUrl, {
         code,
-        client_id: this.appConfig.googleClientId,
-        client_secret: this.appConfig.googleClientSecret,
-        redirect_uri: this.appConfig.redirectUri,
+        client_id: googleClientId,
+        client_secret: googleClientSecret,
+        redirect_uri: googleRedirectUri,
         grant_type: 'authorization_code',
       }),
     );
@@ -48,7 +66,7 @@ export class GoogleSignInCallbackController {
     const { access_token } = tokenResponse.data;
 
     const userInfoResponse = await firstValueFrom(
-      this.httpService.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+      this.httpService.get(userInfoUrl, {
         headers: { Authorization: `Bearer ${access_token}` },
       }),
     );
