@@ -23,7 +23,7 @@
     "prisma:push:report": "PRISMA_SCHEMA=report prisma db push",
     "prisma:format:sso": "PRISMA_SCHEMA=sso prisma format",
     "prisma:format:report": "PRISMA_SCHEMA=report prisma format",
-    "prisma:seed:sso": "ts-node libs/prisma-sso/schema/seeds/seed.ts",
+    "prisma:seed:sso": "ts-node apps/sso/prisma/schema/seeds/seed.ts",
     "start": "nest start",
     "start:sso": "nest start sso",
     "start:report": "nest start report",
@@ -129,7 +129,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/prisma(|/.*)$": "<rootDir>/libs/prisma/src/$1",
+      "^@app/prisma-sso(|/.*)$": "<rootDir>/apps/sso/prisma/src/$1",
+      "^@app/prisma-report(|/.*)$": "<rootDir>/apps/report/prisma/src/$1",
       "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   }

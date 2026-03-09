@@ -20,8 +20,8 @@ module.exports = function (options) {
         {
           test: /\.ts$/,
           include: [
-            path.resolve(__dirname, 'libs/prisma-sso/generated'),
-            path.resolve(__dirname, 'libs/prisma-report/generated'),
+            path.resolve(__dirname, 'apps/sso/prisma/generated'),
+            path.resolve(__dirname, 'apps/report/prisma/generated'),
           ],
           use: [
             {

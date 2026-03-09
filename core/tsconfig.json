@@ -23,16 +23,16 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@app/prisma-sso": [
-        "libs/prisma-sso/src"
+        "apps/sso/prisma/src"
       ],
       "@app/prisma-sso/*": [
-        "libs/prisma-sso/src/*"
+        "apps/sso/prisma/src/*"
       ],
       "@app/prisma-report": [
-        "libs/prisma-report/src"
+        "apps/report/prisma/src"
       ],
       "@app/prisma-report/*": [
-        "libs/prisma-report/src/*"
+        "apps/report/prisma/src/*"
       ],
       "@app/shared": [
         "libs/shared/src"
