@@ -118,14 +118,18 @@ export class IdentityProvidersComponent {
           sortKey: 'type',
           badgeConfig: {
             properties: [
-              { data: 'OIDC', displayText: 'OIDC', backgroundColorClass: 'bg-blue-50', borderColorClass: 'border-blue-200', textColorClass: 'text-blue-700', indicatorColorClass: 'bg-blue-500' },
+              { data: 'GOOGLE', displayText: 'Google', backgroundColorClass: 'bg-red-50', borderColorClass: 'border-red-200', textColorClass: 'text-red-700', indicatorColorClass: 'bg-red-500' },
+              { data: 'NDI', displayText: 'NDI', backgroundColorClass: 'bg-amber-50', borderColorClass: 'border-amber-200', textColorClass: 'text-amber-700', indicatorColorClass: 'bg-amber-500' },
+              { data: 'OIDC', displayText: 'Other OIDC', backgroundColorClass: 'bg-blue-50', borderColorClass: 'border-blue-200', textColorClass: 'text-blue-700', indicatorColorClass: 'bg-blue-500' },
               { data: 'CUSTOM', displayText: 'Custom', backgroundColorClass: 'bg-purple-50', borderColorClass: 'border-purple-200', textColorClass: 'text-purple-700', indicatorColorClass: 'bg-purple-500' },
             ],
           },
           filterConfig: {
             type: 'select',
             options: [
-              { value: 'OIDC', label: 'OIDC' },
+              { value: 'GOOGLE', label: 'Google' },
+              { value: 'NDI', label: 'NDI' },
+              { value: 'OIDC', label: 'Other OIDC' },
               { value: 'CUSTOM', label: 'Custom' },
             ],
           },

@@ -16,7 +16,11 @@ export class CreateIdentityProviderRequest {
   })
   slug?: string;
 
-  @ApiPropertyOptional({ enum: ['OIDC', 'CUSTOM'], example: 'OIDC', description: 'Provider type' })
+  @ApiPropertyOptional({
+    enum: ['GOOGLE', 'NDI', 'OIDC', 'CUSTOM'],
+    example: 'OIDC',
+    description: 'Provider type',
+  })
   @IsOptional()
   @IsString({ message: ErrorMessages.string('type') })
   type?: string;

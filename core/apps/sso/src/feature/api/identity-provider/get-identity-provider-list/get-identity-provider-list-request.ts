@@ -51,7 +51,7 @@ export class GetIdentityProviderListRequest {
   @IsString({ message: ErrorMessages.string('slug operation') })
   slugOperation: 'contains' | 'exact';
 
-  @ApiPropertyOptional({ enum: ['OIDC', 'CUSTOM'] })
+  @ApiPropertyOptional({ enum: ['GOOGLE', 'NDI', 'OIDC', 'CUSTOM'] })
   @IsOptional()
   @IsString({ message: ErrorMessages.string('type value') })
   @Transform(({ value }) => (value === '' || value === 'undefined' ? undefined : value))

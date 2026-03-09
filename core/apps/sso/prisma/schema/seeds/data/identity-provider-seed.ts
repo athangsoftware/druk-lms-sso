@@ -10,7 +10,7 @@ export const identityProviderSeeds: IdentityProviderSeed[] = [
     id: 'idp-google',
     name: 'Google',
     slug: 'google',
-    type: 'OIDC' as IdentityProviderType,
+    type: 'GOOGLE' as IdentityProviderType,
     clientId: process.env.GOOGLE_OAUTH_CLIENT_ID ?? 'REPLACE_WITH_GOOGLE_OAUTH_CLIENT_ID',
     clientSecret:
       process.env.GOOGLE_OAUTH_CLIENT_SECRET ?? 'REPLACE_WITH_GOOGLE_OAUTH_CLIENT_SECRET',
@@ -28,7 +28,7 @@ export const identityProviderSeeds: IdentityProviderSeed[] = [
     id: 'idp-bhutan-ndi',
     name: 'Bhutan NDI',
     slug: 'bhutan-ndi',
-    type: 'CUSTOM' as IdentityProviderType,
+    type: 'NDI' as IdentityProviderType,
     clientId: process.env.NDI_CLIENT_ID ?? 'REPLACE_WITH_NDI_CLIENT_ID',
     clientSecret: process.env.NDI_CLIENT_SECRET ?? 'REPLACE_WITH_NDI_CLIENT_SECRET',
     authorizationUrl: 'https://staging.bhutanndi.com/authentication/v1/authenticate',

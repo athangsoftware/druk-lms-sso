@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button, OverlayStore, TextInputComponent, httpMutation, httpQuery } from '@projects/shared-lib';
@@ -28,6 +28,22 @@ export class LoginComponent {
   overlayService = inject(OverlayStore);
 
   enabledProviders = signal<EnabledProvider[]>([]);
+
+  googleProviders = computed(() =>
+    this.enabledProviders().filter((provider) => provider.type === 'GOOGLE' || provider.slug === 'google'),
+  );
+
+  ndiProviders = computed(() =>
+    this.enabledProviders().filter((provider) => provider.type === 'NDI' || provider.slug === 'bhutan-ndi'),
+  );
+
+  otherOidcProviders = computed(() =>
+    this.enabledProviders().filter((provider) => {
+      const isGoogle = provider.type === 'GOOGLE' || provider.slug === 'google';
+      const isNdi = provider.type === 'NDI' || provider.slug === 'bhutan-ndi';
+      return !isGoogle && !isNdi && (provider.type === 'OIDC' || provider.type === 'CUSTOM');
+    }),
+  );
 
   providersQuery = httpQuery<GetEnabledProvidersResponse>({
     request: () => `${environment.apiUrl}/identity-providers/enabled`,
@@ -82,7 +98,7 @@ export class LoginComponent {
   }
 
   loginWithProvider(provider: EnabledProvider): void {
-    if (provider.slug === 'bhutan-ndi') {
+    if (provider.type === 'NDI' || provider.slug === 'bhutan-ndi') {
       this.overlayService.openModal(BhutanNdiComponent, { disableClose: false });
     } else {
       this.authService.initiateProviderLogin(provider.slug);
