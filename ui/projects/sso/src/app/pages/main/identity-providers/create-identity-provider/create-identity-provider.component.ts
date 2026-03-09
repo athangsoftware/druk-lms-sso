@@ -50,8 +50,9 @@ export class CreateIdentityProviderComponent {
   dialogRef = inject(DialogRef);
 
   typeOptions = [
-    { id: 'OIDC', name: 'OIDC (Standard OAuth2/OpenID Connect)' },
-    { id: 'CUSTOM', name: 'Custom (Provider-specific flow)' },
+    { id: 'GOOGLE', name: 'Google' },
+    { id: 'NDI', name: 'NDI' },
+    { id: 'OIDC', name: 'Other OIDC' },
   ];
 
   providerModel = signal<CreateIdentityProviderData>({

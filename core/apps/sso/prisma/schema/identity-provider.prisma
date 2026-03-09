@@ -1,8 +1,10 @@
 // External identity provider configuration (Google, Bhutan NDI, etc.)
 
 enum IdentityProviderType {
-  OIDC   // Standard OAuth2/OIDC provider (e.g. Google, Apple, Facebook)
-  CUSTOM // Provider with non-standard flow requiring code-level integration (e.g. Bhutan NDI)
+  GOOGLE // Dedicated Google provider
+  NDI    // Dedicated Bhutan NDI provider
+  OIDC   // Other standard OAuth2/OIDC providers
+  CUSTOM // Legacy/custom provider with non-standard flow
 }
 
 model IdentityProvider {

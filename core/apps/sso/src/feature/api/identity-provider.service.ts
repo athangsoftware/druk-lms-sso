@@ -102,12 +102,36 @@ export class IdentityProviderService {
       });
     });
 
-    this.cache.set(cacheKey, { data: providers, expiresAt: Date.now() + this.CACHE_TTL });
-    return providers;
+    const normalizedProviders = providers.map((provider) => this.normalizeProvider(provider));
+    this.cache.set(cacheKey, { data: normalizedProviders, expiresAt: Date.now() + this.CACHE_TTL });
+    return normalizedProviders;
   }
 
   decryptProviderSecret(provider: any): string | null {
     if (!provider?.clientSecret) return null;
     return this.decrypt(provider.clientSecret);
+  }
+
+  normalizeProviderType(provider: { slug?: string; type?: string }): string {
+    if (provider.slug === 'google') {
+      return 'GOOGLE';
+    }
+
+    if (provider.slug === 'bhutan-ndi') {
+      return 'NDI';
+    }
+
+    if (provider.type === 'GOOGLE' || provider.type === 'NDI' || provider.type === 'OIDC') {
+      return provider.type;
+    }
+
+    return provider.type ?? 'OIDC';
+  }
+
+  normalizeProvider<T extends { slug?: string; type?: string }>(provider: T): T {
+    return {
+      ...provider,
+      type: this.normalizeProviderType(provider),
+    };
   }
 }

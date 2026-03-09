@@ -454,7 +454,7 @@ export interface GoogleCallbackParams {
 
 // ─── Identity Provider ───────────────────────────────────────────
 
-export type IdentityProviderType = 'OIDC' | 'CUSTOM';
+export type IdentityProviderType = 'GOOGLE' | 'NDI' | 'OIDC' | 'CUSTOM';
 
 export interface CreateIdentityProviderRequest {
   name: string;

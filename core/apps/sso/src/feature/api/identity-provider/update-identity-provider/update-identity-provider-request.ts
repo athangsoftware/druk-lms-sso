@@ -8,7 +8,7 @@ export class UpdateIdentityProviderRequest {
   @IsString({ message: ErrorMessages.string('name') })
   name?: string;
 
-  @ApiPropertyOptional({ enum: ['OIDC', 'CUSTOM'], description: 'Provider type' })
+  @ApiPropertyOptional({ enum: ['GOOGLE', 'NDI', 'OIDC', 'CUSTOM'], description: 'Provider type' })
   @IsOptional()
   @IsString({ message: ErrorMessages.string('type') })
   type?: string;

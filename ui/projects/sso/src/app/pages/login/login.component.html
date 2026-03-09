@@ -73,18 +73,62 @@
           </div>
         </div>
 
-        <!-- Social Login Buttons -->
-        <div class="grid gap-6" [class]="enabledProviders().length === 1 ? 'grid-cols-1' : 'grid-cols-2'">
-          @for (provider of enabledProviders(); track provider.id) {
-          <button
-            (click)="loginWithProvider(provider)"
-            class="flex items-center justify-center px-6 py-4 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 shadow-sm hover:shadow-md group"
-            [title]="'Sign in with ' + provider.name">
-            @if (provider.iconUrl) {
-            <img [src]="provider.iconUrl" [alt]="provider.name" class="w-6 h-6 mr-3 rounded-sm" />
-            }
-            <span class="font-medium">{{ provider.name }}</span>
-          </button>
+        <div class="space-y-6">
+          @if (googleProviders().length > 0) {
+          <div class="space-y-3">
+            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Google</p>
+            <div class="grid gap-4" [class]="googleProviders().length === 1 ? 'grid-cols-1' : 'grid-cols-2'">
+              @for (provider of googleProviders(); track provider.id) {
+              <button
+                (click)="loginWithProvider(provider)"
+                class="flex items-center justify-center px-6 py-4 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                [title]="'Sign in with ' + provider.name">
+                @if (provider.iconUrl) {
+                <img [src]="provider.iconUrl" [alt]="provider.name" class="w-6 h-6 mr-3 rounded-sm" />
+                }
+                <span class="font-medium">{{ provider.name }}</span>
+              </button>
+              }
+            </div>
+          </div>
+          }
+
+          @if (ndiProviders().length > 0) {
+          <div class="space-y-3">
+            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">NDI</p>
+            <div class="grid gap-4" [class]="ndiProviders().length === 1 ? 'grid-cols-1' : 'grid-cols-2'">
+              @for (provider of ndiProviders(); track provider.id) {
+              <button
+                (click)="loginWithProvider(provider)"
+                class="flex items-center justify-center px-6 py-4 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                [title]="'Sign in with ' + provider.name">
+                @if (provider.iconUrl) {
+                <img [src]="provider.iconUrl" [alt]="provider.name" class="w-6 h-6 mr-3 rounded-sm" />
+                }
+                <span class="font-medium">{{ provider.name }}</span>
+              </button>
+              }
+            </div>
+          </div>
+          }
+
+          @if (otherOidcProviders().length > 0) {
+          <div class="space-y-3">
+            <p class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Other OIDC</p>
+            <div class="grid gap-4" [class]="otherOidcProviders().length === 1 ? 'grid-cols-1' : 'grid-cols-2'">
+              @for (provider of otherOidcProviders(); track provider.id) {
+              <button
+                (click)="loginWithProvider(provider)"
+                class="flex items-center justify-center px-6 py-4 border border-gray-300 rounded-xl bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 shadow-sm hover:shadow-md group"
+                [title]="'Sign in with ' + provider.name">
+                @if (provider.iconUrl) {
+                <img [src]="provider.iconUrl" [alt]="provider.name" class="w-6 h-6 mr-3 rounded-sm" />
+                }
+                <span class="font-medium">{{ provider.name }}</span>
+              </button>
+              }
+            </div>
+          </div>
           }
         </div>
         }

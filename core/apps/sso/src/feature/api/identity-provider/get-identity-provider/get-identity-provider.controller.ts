@@ -4,12 +4,16 @@ import { Authorize } from '@app/shared';
 import { PrismaService, Role } from '@app/prisma-sso';
 import { GetIdentityProviderResponse } from './get-identity-provider-response';
 import { SuccessMessages } from '../../../../core/models/message';
+import { IdentityProviderService } from '../../identity-provider.service';
 
 @ApiTags('Identity Provider')
 @ApiBearerAuth()
 @Controller('/identity-providers')
 export class GetIdentityProviderController {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly idpService: IdentityProviderService,
+  ) {}
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
@@ -30,7 +34,7 @@ export class GetIdentityProviderController {
           id: provider.id,
           name: provider.name,
           slug: provider.slug,
-          type: provider.type,
+          type: this.idpService.normalizeProviderType(provider),
           clientId: provider.clientId,
           authorizationUrl: provider.authorizationUrl,
           tokenUrl: provider.tokenUrl,
