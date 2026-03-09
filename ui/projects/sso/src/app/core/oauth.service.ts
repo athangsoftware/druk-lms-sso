@@ -28,14 +28,12 @@ export class OAuthService {
   private oidcConfig = signal<OIDCConfiguration | null>(null);
 
   private apiUrl = environment.apiUrl;
-  private googleAuthUrl = `${this.apiUrl}/auth/google`;
-  private ndiAuthUrl = `${this.apiUrl}/auth/ndi`;
 
   constructor() {
     this.checkAuthStatus();
   }
 
-  async initiateGoogleLogin(): Promise<void> {
+  async initiateProviderLogin(slug: string): Promise<void> {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const clientId = urlParams.get('client_id');
@@ -56,11 +54,15 @@ export class OAuthService {
         code_challenge: codeChallenge,
         code_challenge_method: 'S256',
       });
-      window.location.href = `${this.googleAuthUrl}?${queryParams.toString()}`;
+      window.location.href = `${this.apiUrl}/auth/${slug}?${queryParams.toString()}`;
     } catch (error) {
-      console.error('Failed to initiate Google login:', error);
-      this.authError.set('Unable to start Google authentication');
+      console.error(`Failed to initiate ${slug} login:`, error);
+      this.authError.set(`Unable to start ${slug} authentication`);
     }
+  }
+
+  async initiateGoogleLogin(): Promise<void> {
+    return this.initiateProviderLogin('google');
   }
 
   async initiateNdiLogin(): Promise<any> {
@@ -80,7 +82,7 @@ export class OAuthService {
       });
 
       const response = await firstValueFrom(
-        this.http.get<any>(`${this.ndiAuthUrl}?${queryParams.toString()}`).pipe(
+        this.http.get<any>(`${this.apiUrl}/auth/ndi?${queryParams.toString()}`).pipe(
           tap((res) => console.log('NDI auth response:', res)),
         ),
       );

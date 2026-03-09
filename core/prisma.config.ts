@@ -6,11 +6,11 @@ const target = process.env.PRISMA_SCHEMA || 'sso';
 
 const schemas: Record<string, { path: string; url: ReturnType<typeof env> }> = {
   sso: {
-    path: path.join(__dirname, 'libs/prisma-sso/schema'),
+    path: path.join(__dirname, 'apps/sso/prisma/schema'),
     url: env('DATABASE_URL_SSO'),
   },
   report: {
-    path: path.join(__dirname, 'libs/prisma-report/schema'),
+    path: path.join(__dirname, 'apps/report/prisma/schema'),
     url: env('DATABASE_URL_REPORT'),
   },
 };

@@ -16,11 +16,11 @@ RUN --mount=type=secret,id=npm_token \
          && npm ci \
          && rm -f .npmrc'
 
-COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js ./
+COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.config.ts ./
 COPY apps ./apps
 COPY libs ./libs
 
-RUN npx prisma generate --schema=libs/prisma/schema
+RUN PRISMA_SCHEMA=report npx prisma generate
 RUN npm run build:report
 
 # Production stage
@@ -44,8 +44,8 @@ RUN --mount=type=secret,id=npm_token \
          && rm -f .npmrc'
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/libs/prisma/schema ./libs/prisma/schema
-COPY --from=builder /app/libs/prisma/generated ./libs/prisma/generated
+COPY --from=builder /app/apps/report/prisma/schema ./apps/report/prisma/schema
+COPY --from=builder /app/apps/report/prisma/generated ./apps/report/prisma/generated
 
 RUN chown -R nestjs:nodejs /app
 

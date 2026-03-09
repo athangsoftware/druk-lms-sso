@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { AppConfig } from '../../config';
+import { IdentityProviderService } from './identity-provider.service';
 
 interface NdiConfig {
   clientId: string;
@@ -24,9 +25,28 @@ export class BhutanNdiService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly idpService: IdentityProviderService,
   ) {}
 
-  private getNdiConfig(): NdiConfig {
+  private async getNdiConfig(): Promise<NdiConfig> {
+    // Try to load from DB first
+    const provider = await this.idpService.getProviderBySlug('bhutan-ndi');
+    if (provider?.isEnabled) {
+      const metadata = (provider.metadata as any) ?? {};
+      const clientSecret = this.idpService.decryptProviderSecret(provider) ?? '';
+      return {
+        clientId: provider.clientId ?? '',
+        clientSecret,
+        fixedAccessToken: metadata.fixedAccessToken ?? '',
+        webhookUrl: metadata.webhookUrl ?? '',
+        authUrl: provider.authorizationUrl ?? metadata.authUrl ?? '',
+        verifierUrl: metadata.verifierUrl ?? '',
+        webhookRegisterUrl: metadata.webhookRegisterUrl ?? '',
+        webhookSubscribeUrl: metadata.webhookSubscribeUrl ?? '',
+      };
+    }
+
+    // Fall back to env vars
     const config = this.configService.get<AppConfig>('app');
     if (!config || !config.ndiConfig) {
       this.logger.error('NDI configuration is missing');
@@ -43,7 +63,7 @@ export class BhutanNdiService {
   }
 
   async authenticate(): Promise<string> {
-    const config = this.getNdiConfig();
+    const config = await this.getNdiConfig();
     const payload = {
       client_id: config.clientId,
       client_secret: config.clientSecret,
@@ -70,7 +90,7 @@ export class BhutanNdiService {
   }
 
   async createProofRequest(accessToken: string): Promise<any> {
-    const config = this.getNdiConfig();
+    const config = await this.getNdiConfig();
     const payload = {
       proofName: 'Verify Foundational ID',
       proofAttributes: [
@@ -119,7 +139,7 @@ export class BhutanNdiService {
   }
 
   async registerWebhook(accessToken: string): Promise<any> {
-    const config = this.getNdiConfig();
+    const config = await this.getNdiConfig();
     const payload = {
       webhookId: 'WEBHOOK_DEMO_DEV_1',
       webhookURL: config.webhookUrl,
@@ -172,7 +192,7 @@ export class BhutanNdiService {
   }
 
   async subscribeWebhook(accessToken: string, threadId: string, webhookId: string): Promise<any> {
-    const config = this.getNdiConfig();
+    const config = await this.getNdiConfig();
     const payload = { webhookId, threadId };
 
     this.logger.log('Subscribing webhook with payload:', payload);

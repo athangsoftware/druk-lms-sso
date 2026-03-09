@@ -52,7 +52,8 @@ junit.xml
 test-results/
 
 # Prisma
-libs/prisma/generated/
+apps/sso/prisma/generated/
+apps/report/prisma/generated/
 
 # Uploads (user-generated content)
 uploads/

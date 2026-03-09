@@ -1,11 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Button, OverlayStore, TextInputComponent, httpMutation } from '@projects/shared-lib';
-import { LoginResponse } from '@core/api/model';
+import { Button, OverlayStore, TextInputComponent, httpMutation, httpQuery } from '@projects/shared-lib';
+import { LoginResponse, EnabledProvider, GetEnabledProvidersResponse } from '@core/api/model';
 import { ApiService } from '@core/api/api.service';
 import { OAuthService } from '@core/oauth.service';
 import { BhutanNdiComponent } from './bhutan-ndi/bhutan-ndi.component';
+import { environment } from '@environments/environment';
 
 interface LoginData {
   username: string;
@@ -25,6 +26,17 @@ export class LoginComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   overlayService = inject(OverlayStore);
+
+  enabledProviders = signal<EnabledProvider[]>([]);
+
+  providersQuery = httpQuery<GetEnabledProvidersResponse>({
+    request: () => `${environment.apiUrl}/identity-providers/enabled`,
+    handleSuccess: false,
+    handleError: false,
+    onSuccess: (response) => {
+      this.enabledProviders.set(response.data ?? []);
+    },
+  });
 
   loginModel = signal<LoginData>({ username: '', password: '' });
 
@@ -69,11 +81,11 @@ export class LoginComponent {
     await this.loginMutation.trigger();
   }
 
-  loginWithGoogle(): void {
-    this.authService.initiateGoogleLogin();
-  }
-
-  loginWithBhutanNDI(): void {
-    this.overlayService.openModal(BhutanNdiComponent, { disableClose: false });
+  loginWithProvider(provider: EnabledProvider): void {
+    if (provider.slug === 'bhutan-ndi') {
+      this.overlayService.openModal(BhutanNdiComponent, { disableClose: false });
+    } else {
+      this.authService.initiateProviderLogin(provider.slug);
+    }
   }
 }

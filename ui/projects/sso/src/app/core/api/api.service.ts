@@ -36,6 +36,16 @@ import type {
   GetClientListResponse,
   GetClientResponse,
   DashboardStatsResponse,
+  CreateIdentityProviderRequest,
+  CreateIdentityProviderResponse,
+  UpdateIdentityProviderRequest,
+  UpdateIdentityProviderResponse,
+  DeleteIdentityProviderResponse,
+  ToggleIdentityProviderResponse,
+  GetIdentityProviderListParams,
+  GetIdentityProviderListResponse,
+  GetIdentityProviderResponse,
+  GetEnabledProvidersResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -166,5 +176,37 @@ export class ApiService {
 
   getDashboardStats(): Observable<DashboardStatsResponse> {
     return this.http.get<DashboardStatsResponse>(`${this.apiUrl}/dashboard/stats`);
+  }
+
+  // ─── Identity Provider ─────────────────────────────────────────
+
+  getIdentityProviderList(params?: GetIdentityProviderListParams): Observable<GetIdentityProviderListResponse> {
+    return this.http.get<GetIdentityProviderListResponse>(`${this.apiUrl}/identity-providers`, {
+      params: params as Record<string, string>,
+    });
+  }
+
+  createIdentityProvider(request: CreateIdentityProviderRequest): Observable<CreateIdentityProviderResponse> {
+    return this.http.post<CreateIdentityProviderResponse>(`${this.apiUrl}/identity-providers`, request);
+  }
+
+  getIdentityProvider(id: string): Observable<GetIdentityProviderResponse> {
+    return this.http.get<GetIdentityProviderResponse>(`${this.apiUrl}/identity-providers/${id}`);
+  }
+
+  updateIdentityProvider(id: string, request: UpdateIdentityProviderRequest): Observable<UpdateIdentityProviderResponse> {
+    return this.http.put<UpdateIdentityProviderResponse>(`${this.apiUrl}/identity-providers/${id}`, request);
+  }
+
+  deleteIdentityProvider(id: string): Observable<DeleteIdentityProviderResponse> {
+    return this.http.delete<DeleteIdentityProviderResponse>(`${this.apiUrl}/identity-providers/${id}`);
+  }
+
+  toggleIdentityProvider(id: string): Observable<ToggleIdentityProviderResponse> {
+    return this.http.put<ToggleIdentityProviderResponse>(`${this.apiUrl}/identity-providers/${id}/toggle`, undefined);
+  }
+
+  getEnabledProviders(): Observable<GetEnabledProvidersResponse> {
+    return this.http.get<GetEnabledProvidersResponse>(`${this.apiUrl}/identity-providers/enabled`);
   }
 }

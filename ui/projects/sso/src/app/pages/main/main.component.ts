@@ -41,6 +41,13 @@ export class MainComponent {
         iconPath: 'icons/application.svg',
         isEnabled: true,
       },
+      {
+        id: 'identity-providers',
+        label: 'Identity Providers',
+        link: '/main/identity-providers',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
     ];
 
     if (this.authService.isMember()) {

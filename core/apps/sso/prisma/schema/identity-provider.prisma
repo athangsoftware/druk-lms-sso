@@ -1,0 +1,33 @@
+// External identity provider configuration (Google, Bhutan NDI, etc.)
+
+enum IdentityProviderType {
+  OIDC   // Standard OAuth2/OIDC provider (e.g. Google, Apple, Facebook)
+  CUSTOM // Provider with non-standard flow requiring code-level integration (e.g. Bhutan NDI)
+}
+
+model IdentityProvider {
+  id               String                @id @default(uuid())
+  name             String                // Display name shown on login screen
+  slug             String                @unique // Unique key e.g. "google", "bhutan-ndi"
+  type             IdentityProviderType  @default(OIDC)
+  clientId         String?               @map("client_id")
+  clientSecret     String?               @map("client_secret") @db.Text // Encrypted at rest
+  authorizationUrl String?               @map("authorization_url")
+  tokenUrl         String?               @map("token_url")
+  userInfoUrl      String?               @map("user_info_url")
+  redirectUrl      String?               @map("redirect_url")
+  scopes           String?               // Space-separated scopes e.g. "openid profile email"
+  iconUrl          String?               @map("icon_url")
+  isEnabled        Boolean               @default(true) @map("is_enabled")
+  displayOrder     Int                   @default(0) @map("display_order")
+  metadata         Json?                 // Provider-specific config (e.g. NDI webhook URLs)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("idp_identity_providers")
+}

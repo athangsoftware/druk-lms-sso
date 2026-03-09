@@ -20,12 +20,12 @@ RUN --mount=type=secret,id=npm_token \
          && rm -f .npmrc' 
 
 # Copy source code and configuration files
-COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js ./
+COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.config.ts ./
 COPY apps ./apps
 COPY libs ./libs
 
 # Generate Prisma client
-RUN npx prisma generate --schema=libs/prisma/schema
+RUN PRISMA_SCHEMA=sso npx prisma generate
 
 # Build the application
 RUN npm run build:sso
@@ -63,8 +63,8 @@ RUN --mount=type=secret,id=npm_token \
 COPY --from=builder /app/dist ./dist
 
 # Copy Prisma schema and generated client
-COPY --from=builder /app/libs/prisma/schema ./libs/prisma/schema
-COPY --from=builder /app/libs/prisma/generated ./libs/prisma/generated
+COPY --from=builder /app/apps/sso/prisma/schema ./apps/sso/prisma/schema
+COPY --from=builder /app/apps/sso/prisma/generated ./apps/sso/prisma/generated
 
 # Create uploads directory
 RUN mkdir -p uploads && chown -R nestjs:nodejs uploads

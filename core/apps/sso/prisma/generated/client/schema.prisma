@@ -1,0 +1,258 @@
+// Audit log model for tracking all data changes
+
+model AuditLog {
+  id        String    @id @default(uuid())
+  action    String?
+  operation String?
+  tableName String?   @map("table_name")
+  recordId  String?   @map("record_id")
+  oldValue  Json?     @map("old_value")
+  newValue  Json?     @map("new_value")
+  createdBy String?   @map("created_by")
+  createdAt DateTime? @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+
+  @@map("_audit_logs")
+}
+
+// Metadata model for system configuration
+model MetaData {
+  id   String  @id
+  name String
+  desc String?
+  type String
+
+  @@map("pub_meta_data")
+}
+
+// OAuth/OIDC client and authorization related models
+
+enum ClientType {
+  PUBLIC // Mobile apps, SPAs - use PKCE
+  CONFIDENTIAL // Backend services - use client_secret
+}
+
+model Client {
+  id                         String     @id @default(uuid())
+  name                       String
+  clientId                   String     @unique
+  clientSecret               String?
+  clientType                 ClientType @default(PUBLIC) @map("client_type")
+  disableStrictUrlValidation Boolean    @default(false) @map("disable_strict_url_validation")
+
+  refreshTokens          RefreshToken[]
+  authorizationCodes     AuthorizationCode[]
+  redirectUrls           RedirectURL[]
+  postLogoutRedirectUrls PostLogoutRedirectURL[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@unique([clientId, clientSecret])
+  @@map("cli_clients")
+}
+
+model AuthorizationCode {
+  id                  String   @id @default(uuid())
+  code                String   @unique
+  clientId            String
+  userId              String?
+  redirectUri         String   @map("redirect_uri")
+  codeChallenge       String?  @map("code_challenge")
+  codeChallengeMethod String?  @map("code_challenge_method")
+  state               String?
+  expiresAt           DateTime @map("expires_at")
+  isUsed              Boolean  @default(false) @map("is_used")
+
+  client Client @relation(fields: [clientId], references: [id])
+  user   User?  @relation(fields: [userId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_authorization_codes")
+}
+
+model RedirectURL {
+  id       String @id @default(uuid())
+  url      String
+  clientId String
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_redirect_urls")
+}
+
+/// OIDC RP-Initiated Logout: RFC 8904
+/// Post-logout redirect URIs that are pre-registered for each client
+model PostLogoutRedirectURL {
+  id       String @id @default(uuid())
+  url      String
+  clientId String @map("client_id")
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("cli_post_logout_redirect_urls")
+}
+
+// External identity provider configuration (Google, Bhutan NDI, etc.)
+
+enum IdentityProviderType {
+  OIDC // Standard OAuth2/OIDC provider (e.g. Google, Apple, Facebook)
+  CUSTOM // Provider with non-standard flow requiring code-level integration (e.g. Bhutan NDI)
+}
+
+model IdentityProvider {
+  id               String               @id @default(uuid())
+  name             String // Display name shown on login screen
+  slug             String               @unique // Unique key e.g. "google", "bhutan-ndi"
+  type             IdentityProviderType @default(OIDC)
+  clientId         String?              @map("client_id")
+  clientSecret     String?              @map("client_secret") @db.Text // Encrypted at rest
+  authorizationUrl String?              @map("authorization_url")
+  tokenUrl         String?              @map("token_url")
+  userInfoUrl      String?              @map("user_info_url")
+  redirectUrl      String?              @map("redirect_url")
+  scopes           String? // Space-separated scopes e.g. "openid profile email"
+  iconUrl          String?              @map("icon_url")
+  isEnabled        Boolean              @default(true) @map("is_enabled")
+  displayOrder     Int                  @default(0) @map("display_order")
+  metadata         Json? // Provider-specific config (e.g. NDI webhook URLs)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("idp_identity_providers")
+}
+
+// Main schema configuration file for SSO database
+
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../generated/client"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// User and authentication related models
+
+enum Role {
+  MEMBER
+  MODRATOR
+  DEV
+  SUPER_ADMIN
+}
+
+model User {
+  id            String  @id @default(uuid())
+  firstName     String  @map("first_name")
+  lastName      String? @map("last_name")
+  email         String
+  phoneNumber   String? @map("phone_number")
+  username      String  @unique
+  ndiIdentifier String? @unique @map("ndi_identifier")
+  password      String?
+  role          Role    @default(MEMBER)
+  isVerified    Boolean @default(false) @map("is_verified")
+  isActive      Boolean @default(true) @map("is_active")
+
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  authorizationCodes  AuthorizationCode[]
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("usr_users")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @db.LongText
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  isUsed    Boolean  @default(false) @map("is_used")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("usr_password_reset_tokens")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique @db.VarChar(768)
+  userId    String
+  clientId  String
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+
+  user   User   @relation(fields: [userId], references: [id])
+  client Client @relation(fields: [clientId], references: [id])
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("usr_refresh_tokens")
+}
+
+// Webhook logging model for NDI integration
+
+model WebhookLog {
+  id             String   @id @default(uuid())
+  proofRequestId String   @unique @map("proof_request_id")
+  payload        String   @db.LongText
+  processedAt    DateTime @default(now()) @map("processed_at")
+
+  createdBy String?   @map("created_by")
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdIp String?   @map("created_ip")
+  updatedBy String?   @map("updated_by")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  updatedIp String?   @map("updated_ip")
+
+  @@map("wbh_webhook_logs")
+}
