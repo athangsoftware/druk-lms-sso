@@ -4,9 +4,17 @@ export interface ColumnInfo {
   isNullable: boolean;
 }
 
+export interface ForeignKeyInfo {
+  columnName: string;
+  referencedTableName: string;
+  referencedColumnName: string;
+}
+
 export interface TableInfo {
   tableName: string;
   columns: ColumnInfo[];
+  primaryKeys?: string[];
+  foreignKeys?: ForeignKeyInfo[];
 }
 
 export interface SchemaMetadata {
