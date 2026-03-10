@@ -6,19 +6,42 @@ import { userSeeds } from './data/users-seed';
 import { clientSeeds } from './data/client-seed';
 import { identityProviderSeeds } from './data/identity-provider-seed';
 
-const databaseUrl = process.env.DATABASE_URL;
+// decide which database URL to use based on PRISMA_SCHEMA.
+// this lets us read a single {DATABASE_URL_SSO, DATABASE_URL_REPORT} from
+// a top-level .env file instead of passing the same URL twice on the CLI.
+const schema = (process.env.PRISMA_SCHEMA || 'sso').toUpperCase();
+const envVar = `DATABASE_URL_${schema}`;
+const databaseUrl = process.env[envVar] || process.env.DATABASE_URL;
 if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is required for seeding.');
+  throw new Error(
+    `Environment variable ${envVar} (or DATABASE_URL) is required for seeding.`
+  );
 }
 
 const url = new URL(databaseUrl);
-const adapter = new PrismaMariaDb({
+// build adapter config from URL, including optional query parameters
+const adapterConfig: any = {
   host: url.hostname,
   port: parseInt(url.port) || 3306,
   user: url.username,
   password: url.password,
   database: url.pathname.slice(1),
-});
+};
+
+// support extra connection options via query params
+if (url.searchParams.has('allowPublicKeyRetrieval')) {
+  adapterConfig.allowPublicKeyRetrieval =
+    url.searchParams.get('allowPublicKeyRetrieval') === 'true';
+}
+if (url.searchParams.has('useSSL')) {
+  const sslVal = url.searchParams.get('useSSL');
+  // mysql2 expects ssl object when true
+  if (sslVal === 'true') {
+    adapterConfig.ssl = { rejectUnauthorized: false };
+  }
+}
+
+const adapter = new PrismaMariaDb(adapterConfig);
 
 const prisma = new PrismaClient({ adapter });
 

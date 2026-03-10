@@ -20,6 +20,13 @@ COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.co
 COPY apps ./apps
 COPY libs ./libs
 
+# generate Prisma client with dummy URLs to satisfy config
+# accept them as build args so callers can provide real values if they
+# really need to (though they usually won't during build).
+ARG DATABASE_URL_SSO="mysql://localhost:3306/placeholder"
+ARG DATABASE_URL_REPORT="mysql://localhost:3306/placeholder"
+ENV DATABASE_URL_SSO=${DATABASE_URL_SSO}
+ENV DATABASE_URL_REPORT=${DATABASE_URL_REPORT}
 RUN PRISMA_SCHEMA=report npx prisma generate
 RUN npm run build:report
 
