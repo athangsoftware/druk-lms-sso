@@ -20,7 +20,10 @@ COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.co
 COPY apps ./apps
 COPY libs ./libs
 
-RUN PRISMA_SCHEMA=report npx prisma generate
+# Generate Prisma client (dummy URL for build — real one comes from .env at runtime)
+RUN echo 'DATABASE_URL="mysql://localhost:3306/placeholder"' > apps/report/.env \
+    && PRISMA_SCHEMA=report npx prisma generate \
+    && rm apps/report/.env
 RUN npm run build:report
 
 # Production stage

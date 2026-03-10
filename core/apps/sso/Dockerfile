@@ -24,8 +24,10 @@ COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.co
 COPY apps ./apps
 COPY libs ./libs
 
-# Generate Prisma client
-RUN PRISMA_SCHEMA=sso npx prisma generate
+# Generate Prisma client (dummy URL for build — real one comes from .env at runtime)
+RUN echo 'DATABASE_URL="mysql://localhost:3306/placeholder"' > apps/sso/.env \
+    && PRISMA_SCHEMA=sso npx prisma generate \
+    && rm apps/sso/.env
 
 # Build the application
 RUN npm run build:sso

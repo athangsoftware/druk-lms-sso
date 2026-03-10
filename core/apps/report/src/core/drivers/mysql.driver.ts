@@ -91,6 +91,52 @@ export class MySqlDriver extends DatabaseDriver {
     try {
       conn = await this.getConnection();
 
+      const [pkRows] = await conn.query<any[]>(
+        `SELECT k.TABLE_NAME, k.COLUMN_NAME
+         FROM information_schema.TABLE_CONSTRAINTS t
+         JOIN information_schema.KEY_COLUMN_USAGE k
+           ON t.CONSTRAINT_NAME = k.CONSTRAINT_NAME
+          AND t.TABLE_SCHEMA = k.TABLE_SCHEMA
+          AND t.TABLE_NAME = k.TABLE_NAME
+         WHERE t.TABLE_SCHEMA = ?
+           AND t.CONSTRAINT_TYPE = 'PRIMARY KEY'
+         ORDER BY k.TABLE_NAME, k.ORDINAL_POSITION`,
+        [this.params.databaseName],
+      );
+
+      const [fkRows] = await conn.query<any[]>(
+        `SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
+         FROM information_schema.KEY_COLUMN_USAGE
+         WHERE TABLE_SCHEMA = ?
+           AND REFERENCED_TABLE_NAME IS NOT NULL
+         ORDER BY TABLE_NAME, ORDINAL_POSITION`,
+        [this.params.databaseName],
+      );
+
+      const primaryKeysByTable = new Map<string, string[]>();
+      for (const row of pkRows) {
+        const tableName: string = row['TABLE_NAME'];
+        const columnName: string = row['COLUMN_NAME'];
+        const current = primaryKeysByTable.get(tableName) ?? [];
+        current.push(columnName);
+        primaryKeysByTable.set(tableName, current);
+      }
+
+      const foreignKeysByTable = new Map<
+        string,
+        { columnName: string; referencedTableName: string; referencedColumnName: string }[]
+      >();
+      for (const row of fkRows) {
+        const tableName: string = row['TABLE_NAME'];
+        const current = foreignKeysByTable.get(tableName) ?? [];
+        current.push({
+          columnName: row['COLUMN_NAME'],
+          referencedTableName: row['REFERENCED_TABLE_NAME'],
+          referencedColumnName: row['REFERENCED_COLUMN_NAME'],
+        });
+        foreignKeysByTable.set(tableName, current);
+      }
+
       const [tableRows] = await conn.query<any[]>(
         `SELECT TABLE_NAME FROM information_schema.TABLES
          WHERE TABLE_SCHEMA = ? AND TABLE_TYPE = 'BASE TABLE'
@@ -118,6 +164,8 @@ export class MySqlDriver extends DatabaseDriver {
             dataType: col['DATA_TYPE'],
             isNullable: col['IS_NULLABLE'] === 'YES',
           })),
+          primaryKeys: primaryKeysByTable.get(tableName) ?? [],
+          foreignKeys: foreignKeysByTable.get(tableName) ?? [],
         });
       }
 

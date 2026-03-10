@@ -21,7 +21,10 @@ import { SuccessMessages } from '../../../../core/models/message';
 import { AiService } from '../../../../core/ai/ai.service';
 import { decrypt } from '../../../../core/utils/encryption.util';
 import { createDatabaseDriver } from '../../../../core/drivers/database-driver.factory';
-import { validateQuery } from '../../../../core/utils/query-validator.util';
+import {
+  validateQuery,
+  validateSqlTablesAgainstSchema,
+} from '../../../../core/utils/query-validator.util';
 
 @ApiTags('Charts')
 @ApiBearerAuth()
@@ -63,6 +66,7 @@ export class GenerateChartController {
 
     try {
       validateQuery(aiResult.sql);
+      validateSqlTablesAgainstSchema(aiResult.sql, schema);
     } catch (error: any) {
       throw new BadRequestException(
         `AI generated an invalid query: ${error.message}`,

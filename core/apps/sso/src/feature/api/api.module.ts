@@ -20,7 +20,9 @@ import { LoginController } from './auth/login/login.controller';
 
 // External
 import { CreateUserExternalController } from './external/create-user-external/create-user-external.controller';
+import { DeleteUserExternalController } from './external/delete-user-external/delete-user-external.controller';
 import { GenerateSetPasswordLinkController } from './external/generate-set-password-link/generate-set-password-link.controller';
+import { UpdateUserExternalController } from './external/update-user-external/update-user-external.controller';
 
 // OIDC
 import { AuthorizeController } from './oidc/authorize/authorize.controller';
@@ -80,6 +82,8 @@ const CONTROLLERS = [
   LoginController,
   // External
   CreateUserExternalController,
+  UpdateUserExternalController,
+  DeleteUserExternalController,
   GenerateSetPasswordLinkController,
   // OIDC
   AuthorizeController,

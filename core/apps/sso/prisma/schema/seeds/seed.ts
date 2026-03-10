@@ -1,5 +1,10 @@
-import 'dotenv/config';
+import path from 'node:path';
+import dotenv from 'dotenv';
 import * as crypto from 'crypto';
+
+// Load DATABASE_URL from the app's own .env (no duplication needed)
+dotenv.config({ path: path.join(__dirname, '../../../.env') });
+
 import { PrismaClient } from '../../generated/client/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { userSeeds } from './data/users-seed';
@@ -12,13 +17,29 @@ if (!databaseUrl) {
 }
 
 const url = new URL(databaseUrl);
-const adapter = new PrismaMariaDb({
+// build adapter config from URL, including optional query parameters
+const adapterConfig: any = {
   host: url.hostname,
   port: parseInt(url.port) || 3306,
   user: url.username,
   password: url.password,
   database: url.pathname.slice(1),
-});
+};
+
+// support extra connection options via query params
+if (url.searchParams.has('allowPublicKeyRetrieval')) {
+  adapterConfig.allowPublicKeyRetrieval =
+    url.searchParams.get('allowPublicKeyRetrieval') === 'true';
+}
+if (url.searchParams.has('useSSL')) {
+  const sslVal = url.searchParams.get('useSSL');
+  // mysql2 expects ssl object when true
+  if (sslVal === 'true') {
+    adapterConfig.ssl = { rejectUnauthorized: false };
+  }
+}
+
+const adapter = new PrismaMariaDb(adapterConfig);
 
 const prisma = new PrismaClient({ adapter });
 
