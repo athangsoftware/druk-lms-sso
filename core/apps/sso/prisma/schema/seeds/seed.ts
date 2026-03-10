@@ -1,21 +1,19 @@
-import 'dotenv/config';
+import path from 'node:path';
+import dotenv from 'dotenv';
 import * as crypto from 'crypto';
+
+// Load DATABASE_URL from the app's own .env (no duplication needed)
+dotenv.config({ path: path.join(__dirname, '../../../.env') });
+
 import { PrismaClient } from '../../generated/client/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { userSeeds } from './data/users-seed';
 import { clientSeeds } from './data/client-seed';
 import { identityProviderSeeds } from './data/identity-provider-seed';
 
-// decide which database URL to use based on PRISMA_SCHEMA.
-// this lets us read a single {DATABASE_URL_SSO, DATABASE_URL_REPORT} from
-// a top-level .env file instead of passing the same URL twice on the CLI.
-const schema = (process.env.PRISMA_SCHEMA || 'sso').toUpperCase();
-const envVar = `DATABASE_URL_${schema}`;
-const databaseUrl = process.env[envVar] || process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
-  throw new Error(
-    `Environment variable ${envVar} (or DATABASE_URL) is required for seeding.`
-  );
+  throw new Error('DATABASE_URL environment variable is required for seeding.');
 }
 
 const url = new URL(databaseUrl);

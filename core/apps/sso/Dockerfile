@@ -24,14 +24,10 @@ COPY tsconfig.json tsconfig.build.json nest-cli.json webpack.config.js prisma.co
 COPY apps ./apps
 COPY libs ./libs
 
-# Generate Prisma client (needs a URL but it can be fake).
-# we accept values through build args so they can be overridden without
-# hardcoding. defaults point at a harmless placeholder.
-ARG DATABASE_URL_SSO="mysql://localhost:3306/placeholder"
-ARG DATABASE_URL_REPORT="mysql://localhost:3306/placeholder"
-ENV DATABASE_URL_SSO=${DATABASE_URL_SSO}
-ENV DATABASE_URL_REPORT=${DATABASE_URL_REPORT}
-RUN PRISMA_SCHEMA=sso npx prisma generate
+# Generate Prisma client (dummy URL for build — real one comes from .env at runtime)
+RUN echo 'DATABASE_URL="mysql://localhost:3306/placeholder"' > apps/sso/.env \
+    && PRISMA_SCHEMA=sso npx prisma generate \
+    && rm apps/sso/.env
 
 # Build the application
 RUN npm run build:sso

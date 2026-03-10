@@ -1,17 +1,17 @@
 import path from 'node:path';
-import { defineConfig, env } from 'prisma/config';
-import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
+import dotenv from 'dotenv';
 
 const target = process.env.PRISMA_SCHEMA || 'sso';
 
-const schemas: Record<string, { path: string; url: ReturnType<typeof env> }> = {
+const schemas: Record<string, { schemaPath: string; envPath: string }> = {
   sso: {
-    path: path.join(__dirname, 'apps/sso/prisma/schema'),
-    url: env('DATABASE_URL_SSO'),
+    schemaPath: path.join(__dirname, 'apps/sso/prisma/schema'),
+    envPath: path.join(__dirname, 'apps/sso/.env'),
   },
   report: {
-    path: path.join(__dirname, 'apps/report/prisma/schema'),
-    url: env('DATABASE_URL_REPORT'),
+    schemaPath: path.join(__dirname, 'apps/report/prisma/schema'),
+    envPath: path.join(__dirname, 'apps/report/.env'),
   },
 };
 
@@ -19,13 +19,23 @@ const selected = schemas[target];
 
 if (!selected) {
   throw new Error(
-    `Unknown PRISMA_SCHEMA: "${target}". Use "sso" or "report".`
+    `Unknown PRISMA_SCHEMA: "${target}". Use "sso" or "report".`,
+  );
+}
+
+// Load DATABASE_URL from the selected app's .env file
+dotenv.config({ path: selected.envPath });
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error(
+    `DATABASE_URL is not set. Check ${selected.envPath}`,
   );
 }
 
 export default defineConfig({
-  schema: selected.path,
+  schema: selected.schemaPath,
   datasource: {
-    url: selected.url,
+    url: databaseUrl,
   },
 });
