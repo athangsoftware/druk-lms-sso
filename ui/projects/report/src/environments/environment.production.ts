@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  apiUrl: 'https://druk-lms-report-api.mythimphu.com',
+  apiUrl: 'api',
   oidc: {
     issuer: 'https://druk-lms-sso-api.mythimphu.com',
     clientId: 'report',
