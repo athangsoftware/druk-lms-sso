@@ -10,16 +10,7 @@ async function bootstrap() {
 
   app.set('trust proxy', 1);
 
-  setupSwagger(
-    'Report',
-    ['/', '/common/'],
-    'API',
-    `
-  <h3>📌 Welcome to the <strong>Report</strong> 🚀</h3>
-  `,
-    'docs',
-    app,
-  );
+  
 
   app.enableCors({
     origin: true,
@@ -42,6 +33,17 @@ async function bootstrap() {
   app.useGlobalFilters(new AppExceptionFilter());
 
   app.use(cookieParser());
+
+  setupSwagger(
+    'Report',
+    ['/', '/common/'],
+    'API',
+    `
+  <h3>📌 Welcome to the <strong>Report</strong> 🚀</h3>
+  `,
+    'docs',
+    app,
+  );
 
   const port = process.env.PORT || 4002;
   await app.listen(port);
