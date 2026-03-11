@@ -20,6 +20,8 @@ import { LoginController } from './auth/login/login.controller';
 
 // External
 import { CreateUserExternalController } from './external/create-user-external/create-user-external.controller';
+import { CreateUserWithPasswordExternalController } from './external/create-user-with-password-external/create-user-with-password-external.controller';
+import { ChangePasswordExternalController } from './external/change-password-external/change-password-external.controller';
 import { DeleteUserExternalController } from './external/delete-user-external/delete-user-external.controller';
 import { GenerateSetPasswordLinkController } from './external/generate-set-password-link/generate-set-password-link.controller';
 import { UpdateUserExternalController } from './external/update-user-external/update-user-external.controller';
@@ -82,6 +84,8 @@ const CONTROLLERS = [
   LoginController,
   // External
   CreateUserExternalController,
+  CreateUserWithPasswordExternalController,
+  ChangePasswordExternalController,
   UpdateUserExternalController,
   DeleteUserExternalController,
   GenerateSetPasswordLinkController,
