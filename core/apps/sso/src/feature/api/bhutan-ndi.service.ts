@@ -145,7 +145,7 @@ export class BhutanNdiService {
   async registerWebhook(accessToken: string): Promise<any> {
     const config = await this.getNdiConfig();
     const payload = {
-      webhookId: 'WEBHOOK_DEMO_DEV_1',
+      webhookId: 'WEBHOOK_DEMO_DEV_2',
       webhookURL: config.webhookUrl,
       authentication: {
         type: 'OAuth2',

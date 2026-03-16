@@ -54,7 +54,7 @@ export class BhutanNdiSignInController {
         });
       });
 
-      await this.bhutanNdiService.subscribeWebhook(accessToken, threadId, 'WEBHOOK_DEMO_DEV');
+      await this.bhutanNdiService.subscribeWebhook(accessToken, threadId, 'WEBHOOK_DEMO_DEV_2');
 
       return res.json(proofResponse);
     } catch (error) {
