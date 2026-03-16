@@ -76,7 +76,15 @@ export class GoogleSignInCallbackController {
     const redirectUrl = await this.prismaService.client(async ({ dbContext }) => {
       let user = await dbContext.user.findFirst({ where: { email } });
       if (!user) {
-        throw new BadRequestException('User not authenticated');
+        const loginUrl = new URL(this.appConfig.ssoLoginUrl);
+        // Preserve the original OAuth params so the user can retry after being registered
+        if (oidcParams.client_id) loginUrl.searchParams.set('client_id', oidcParams.client_id);
+        if (oidcParams.redirect_uri) loginUrl.searchParams.set('redirect_uri', oidcParams.redirect_uri);
+        if (oidcParams.code_challenge) loginUrl.searchParams.set('code_challenge', oidcParams.code_challenge);
+        if (oidcParams.code_challenge_method) loginUrl.searchParams.set('code_challenge_method', oidcParams.code_challenge_method);
+        if (oidcParams.state) loginUrl.searchParams.set('state', oidcParams.state);
+        loginUrl.searchParams.set('error', `No account found for ${email}. Please contact your administrator to get access.`);
+        return loginUrl.toString();
       }
 
       req.session.userId = user.id;

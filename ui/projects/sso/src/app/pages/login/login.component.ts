@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button, OverlayStore, TextInputComponent, httpMutation, httpQuery } from '@projects/shared-lib';
@@ -20,13 +20,14 @@ interface LoginData {
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private apiService = inject(ApiService);
   private authService = inject(OAuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   overlayService = inject(OverlayStore);
 
+  errorMessage = signal<string | null>(null);
   enabledProviders = signal<EnabledProvider[]>([]);
 
   googleProviders = computed(() =>
@@ -95,6 +96,17 @@ export class LoginComponent {
     event.preventDefault();
     if (!this.isFormValid()) return;
     await this.loginMutation.trigger();
+  }
+
+  ngOnInit(): void {
+    const error = this.route.snapshot.queryParamMap.get('error');
+    if (error) {
+      this.errorMessage.set(error);
+    }
+  }
+
+  dismissError(): void {
+    this.errorMessage.set(null);
   }
 
   loginWithProvider(provider: EnabledProvider): void {
