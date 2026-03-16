@@ -93,6 +93,7 @@ export class BhutanNdiService {
     const config = await this.getNdiConfig();
     const payload = {
       proofName: 'Verify Foundational ID',
+      purpose: 'login',
       proofAttributes: [
         {
           name: 'ID Number',
@@ -130,9 +131,12 @@ export class BhutanNdiService {
       this.logger.log('Proof request created successfully:', response.data);
       return response.data;
     } catch (error) {
-      this.logger.error('Failed to create proof request:', error.message);
+      const axiosError = error as AxiosError;
+      this.logger.error('Failed to create proof request:', axiosError.message);
+      this.logger.error('Proof request error response:', JSON.stringify(axiosError.response?.data));
+      this.logger.error('Proof request error status:', axiosError.response?.status);
       throw new HttpException(
-        'Failed to create proof request: ' + error.message,
+        'Failed to create proof request: ' + axiosError.message,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Query, Res, BadRequestException, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, HttpCode, Query, Res, BadRequestException, UseInterceptors, Logger } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BhutanNdiService } from '../../bhutan-ndi.service';
 import { PrismaService } from '@app/prisma-sso';
@@ -11,6 +11,8 @@ import * as crypto from 'crypto';
 @ApiBearerAuth()
 @Controller('auth/ndi')
 export class BhutanNdiSignInController {
+  private readonly logger = new Logger(BhutanNdiSignInController.name);
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly bhutanNdiService: BhutanNdiService,
@@ -56,7 +58,9 @@ export class BhutanNdiSignInController {
 
       return res.json(proofResponse);
     } catch (error) {
-      throw new BadRequestException('Failed to initiate NDI authentication');
+      this.logger.error('NDI authentication initiation failed', error?.message ?? error, error?.stack);
+      const message = error?.response?.message ?? error?.message ?? 'Failed to initiate NDI authentication';
+      throw new BadRequestException(message);
     }
   }
 }

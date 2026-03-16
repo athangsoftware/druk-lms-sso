@@ -41,7 +41,7 @@ export const identityProviderSeeds: IdentityProviderSeed[] = [
     displayOrder: 1,
     metadata: {
       fixedAccessToken: process.env.NDI_FIXED_ACCESS_TOKEN ?? 'REPLACE_WITH_NDI_FIXED_ACCESS_TOKEN',
-      webhookUrl: 'https://api.sso.one.athang.com/ndi/callback',
+      webhookUrl: 'https://druk-lms-sso-api.mythimphu.com/ndi/callback',
       verifierUrl: 'https://demo-client.bhutanndi.com/verifier',
       webhookRegisterUrl: 'https://demo-client.bhutanndi.com/webhook/v1/register',
       webhookSubscribeUrl: 'https://demo-client.bhutanndi.com/webhook/v1/subscribe',
