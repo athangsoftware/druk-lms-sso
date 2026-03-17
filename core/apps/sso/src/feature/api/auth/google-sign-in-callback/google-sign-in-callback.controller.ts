@@ -83,7 +83,7 @@ export class GoogleSignInCallbackController {
         if (oidcParams.code_challenge) loginUrl.searchParams.set('code_challenge', oidcParams.code_challenge);
         if (oidcParams.code_challenge_method) loginUrl.searchParams.set('code_challenge_method', oidcParams.code_challenge_method);
         if (oidcParams.state) loginUrl.searchParams.set('state', oidcParams.state);
-        loginUrl.searchParams.set('error', `No account found for ${email}. Please contact your administrator to get access.`);
+        loginUrl.searchParams.set('error', `No account found for ${email}. Please register first.`);
         return loginUrl.toString();
       }
 
