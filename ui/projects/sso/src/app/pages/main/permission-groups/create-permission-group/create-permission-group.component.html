@@ -1,0 +1,23 @@
+<ui-base-overlay [title]="'Create Permission Group'">
+  <div body>
+    <form class="grid grid-cols-1 gap-y-4" (submit)="onSubmit()">
+      <app-text-input
+        [label]="'Group Name'"
+        [fullWidth]="true"
+        [placeholder]="'e.g. User Management'"
+        [formField]="groupForm.name"
+      ></app-text-input>
+
+      <app-text-input
+        [label]="'Description (optional)'"
+        [fullWidth]="true"
+        [placeholder]="'e.g. Permissions related to user operations'"
+        [formField]="groupForm.description"
+      ></app-text-input>
+
+      <div class="flex justify-center pt-2">
+        <ui-button [loading]="createGroupMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

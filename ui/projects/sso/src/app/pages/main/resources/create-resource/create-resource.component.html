@@ -1,0 +1,16 @@
+<ui-base-overlay [title]="'Create Resource'">
+  <div body>
+    <form class="grid grid-cols-1 gap-y-4" (submit)="onSubmit()">
+      <app-text-input
+        [label]="'Resource Name'"
+        [fullWidth]="true"
+        [placeholder]="'e.g. user'"
+        [formField]="resourceForm.name"
+      ></app-text-input>
+
+      <div class="flex justify-center pt-2">
+        <ui-button [loading]="createResourceMutation.isLoading()" type="submit">Submit</ui-button>
+      </div>
+    </form>
+  </div>
+</ui-base-overlay>

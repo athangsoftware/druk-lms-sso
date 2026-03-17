@@ -4,7 +4,7 @@ import { Authorize, BcryptService } from '@app/shared';
 import { CreateUserRequest } from './create-user-request';
 import { CreateUserResponse } from './create-user-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -19,7 +19,7 @@ export class CreateUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User successfully created', type: CreateUserResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Body() body: CreateUserRequest): Promise<CreateUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existingUser = await dbContext.user.findFirst({ where: { email: body.email } });
@@ -38,7 +38,7 @@ export class CreateUserController {
           phoneNumber: body.phoneNumber,
           username: body.username ?? body.email,
           password: hashedPassword,
-          role: body.role ?? Role.MEMBER,
+          userType: body.role ?? UserType.MEMBER,
         },
       });
 
@@ -50,7 +50,7 @@ export class CreateUserController {
           lastName: user.lastName,
           email: user.email,
           phoneNumber: user.phoneNumber,
-          role: user.role,
+          role: user.userType,
         },
       };
     });

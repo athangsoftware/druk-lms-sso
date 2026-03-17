@@ -48,6 +48,41 @@ export class MainComponent {
         iconPath: 'icons/application.svg',
         isEnabled: true,
       },
+      {
+        id: 'roles',
+        label: 'Roles',
+        link: '/main/roles',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
+      {
+        id: 'permissions',
+        label: 'Permissions',
+        link: '/main/permissions',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
+      {
+        id: 'permission-groups',
+        label: 'Permission Groups',
+        link: '/main/permission-groups',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
+      {
+        id: 'resources',
+        label: 'Resources',
+        link: '/main/resources',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
+      {
+        id: 'actions',
+        label: 'Actions',
+        link: '/main/actions',
+        iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
     ];
 
     if (this.authService.isMember()) {

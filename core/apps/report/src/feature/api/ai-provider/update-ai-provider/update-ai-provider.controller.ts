@@ -11,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
 import { UpdateAiProviderRequest } from './update-ai-provider-request';
@@ -32,7 +32,7 @@ export class UpdateAiProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateAiProvider' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateAiProviderResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateAiProviderRequest,

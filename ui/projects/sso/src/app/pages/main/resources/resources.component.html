@@ -1,0 +1,24 @@
+<div class="w-full sm:px-4 h-full flex flex-col gap-4">
+
+  <!-- Page Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-neutral-800">Resources</h1>
+    </div>
+    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Resource</ui-button>
+  </div>
+
+  <!-- Table -->
+  <div class="flex-1 min-h-0">
+    <ui-data-table
+      class="block h-full"
+      [columnGroups]="columnGroups"
+      [data]="resourceList.value()?.data ?? []"
+      [totalCount]="resourceList.value()?.data?.length ?? 0"
+      [hasError]="!!resourceList.error()"
+      (action)="onAction($event)"
+      (rowClick)="onRowClicked($event)"
+    ></ui-data-table>
+  </div>
+
+</div>

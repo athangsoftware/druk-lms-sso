@@ -4,7 +4,7 @@ import { ResetPasswordRequest } from './reset-password-request';
 import { ResetPasswordResponse } from './reset-password-response';
 import { PrismaService } from '@app/prisma-sso';
 import { Authorize, BcryptService } from '@app/shared';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -19,7 +19,7 @@ export class ResetPasswordController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'resetPassword' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Password successfully reset', type: ResetPasswordResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Body() body: ResetPasswordRequest): Promise<ResetPasswordResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const resetToken = await dbContext.passwordResetToken.findFirst({
@@ -35,7 +35,7 @@ export class ResetPasswordController {
         throw new HttpException('Token has expired', HttpStatus.BAD_REQUEST);
       }
 
-      if (resetToken.user.role !== Role.MEMBER) {
+      if (resetToken.user.userType !== UserType.MEMBER) {
         throw new HttpException('Can only reset passwords for MEMBER users', HttpStatus.FORBIDDEN);
       }
 

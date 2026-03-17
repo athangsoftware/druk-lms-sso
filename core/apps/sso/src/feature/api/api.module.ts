@@ -63,6 +63,31 @@ import { NdiRegisterWebhookController } from './identity-provider/ndi-register-w
 import { NdiTestConnectionController } from './identity-provider/ndi-test-connection/ndi-test-connection.controller';
 import { NdiWebhookStatusController } from './identity-provider/ndi-webhook-status/ndi-webhook-status.controller';
 
+// RBAC
+import { CreateResourceController } from './rbac/resource/create-resource/create-resource.controller';
+import { UpdateResourceController } from './rbac/resource/update-resource/update-resource.controller';
+import { DeleteResourceController } from './rbac/resource/delete-resource/delete-resource.controller';
+import { GetResourceListController as GetRbacResourceListController } from './rbac/resource/get-resource-list/get-resource-list.controller';
+import { CreateActionController } from './rbac/action/create-action/create-action.controller';
+import { UpdateActionController } from './rbac/action/update-action/update-action.controller';
+import { DeleteActionController } from './rbac/action/delete-action/delete-action.controller';
+import { GetActionListController } from './rbac/action/get-action-list/get-action-list.controller';
+import { CreatePermissionController } from './rbac/permission/create-permission/create-permission.controller';
+import { GetPermissionListController } from './rbac/permission/get-permission-list/get-permission-list.controller';
+import { CreatePermissionGroupController } from './rbac/permission-group/create-permission-group/create-permission-group.controller';
+import { UpdatePermissionGroupController } from './rbac/permission-group/update-permission-group/update-permission-group.controller';
+import { GetPermissionGroupController } from './rbac/permission-group/get-permission-group/get-permission-group.controller';
+import { GetPermissionGroupListController } from './rbac/permission-group/get-permission-group-list/get-permission-group-list.controller';
+import { CreateRoleController } from './rbac/role/create-role/create-role.controller';
+import { UpdateRoleController } from './rbac/role/update-role/update-role.controller';
+import { GetRoleController } from './rbac/role/get-role/get-role.controller';
+import { GetRoleListController as GetRbacRoleListController } from './rbac/role/get-role-list/get-role-list.controller';
+import { AssignRolePermissionsController } from './rbac/role/assign-role-permissions/assign-role-permissions.controller';
+import { AssignUserRolesController } from './rbac/user-role/assign-user-roles/assign-user-roles.controller';
+import { GetUserRoleListController } from './rbac/user-role/get-user-role-list/get-user-role-list.controller';
+import { RbacService } from './rbac/rbac.service';
+import { PermissionGuard } from './rbac/permission.guard';
+
 // Services
 import { OAuthService } from './auth.service';
 import { BhutanNdiService } from './bhutan-ndi.service';
@@ -125,9 +150,31 @@ const CONTROLLERS = [
   UpdateIdentityProviderController,
   DeleteIdentityProviderController,
   ToggleIdentityProviderController,
+  // RBAC
+  CreateResourceController,
+  UpdateResourceController,
+  DeleteResourceController,
+  GetRbacResourceListController,
+  CreateActionController,
+  UpdateActionController,
+  DeleteActionController,
+  GetActionListController,
+  CreatePermissionController,
+  GetPermissionListController,
+  CreatePermissionGroupController,
+  UpdatePermissionGroupController,
+  GetPermissionGroupController,
+  GetPermissionGroupListController,
+  CreateRoleController,
+  UpdateRoleController,
+  GetRoleController,
+  GetRbacRoleListController,
+  AssignRolePermissionsController,
+  AssignUserRolesController,
+  GetUserRoleListController,
 ];
 
-const SERVICES = [OAuthService, BhutanNdiService, LogoutService, IdentityProviderService];
+const SERVICES = [OAuthService, BhutanNdiService, LogoutService, IdentityProviderService, RbacService, PermissionGuard];
 
 @Module({
   imports: [HttpModule],

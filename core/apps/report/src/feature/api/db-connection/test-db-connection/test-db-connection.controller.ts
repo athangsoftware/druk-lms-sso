@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
 import { TestDbConnectionResponse } from './test-db-connection-response';
@@ -30,7 +30,7 @@ export class TestDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'testDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: TestDbConnectionResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<TestDbConnectionResponse> {
     const connection = await this.prismaService.client(
       async ({ dbContext }) => {

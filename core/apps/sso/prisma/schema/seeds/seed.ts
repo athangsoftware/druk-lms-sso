@@ -10,6 +10,7 @@ import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { userSeeds } from './data/users-seed';
 import { clientSeeds } from './data/client-seed';
 import { identityProviderSeeds } from './data/identity-provider-seed';
+import { resourceSeeds, actionSeeds, permissionSeeds, roleSeeds, permissionGroupSeeds, permissionGroupMapping } from './data/rbac-seed';
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -88,12 +89,99 @@ async function main() {
     }
     console.log('✅ Identity providers seeded successfully\n');
 
+    // RBAC Seeding
+    console.log('🔐 Seeding RBAC resources...');
+    for (const resource of resourceSeeds) {
+      await (prisma as any).resource.upsert({
+        where: { name: resource.name },
+        update: {},
+        create: resource,
+      });
+    }
+    console.log('✅ Resources seeded successfully\n');
+
+    console.log('⚡ Seeding RBAC actions...');
+    for (const action of actionSeeds) {
+      await (prisma as any).action.upsert({
+        where: { name: action.name },
+        update: {},
+        create: action,
+      });
+    }
+    console.log('✅ Actions seeded successfully\n');
+
+    console.log('� Seeding RBAC permission groups...');
+    const groupMap = new Map<string, string>();
+    for (const group of permissionGroupSeeds) {
+      const result = await (prisma as any).permissionGroup.upsert({
+        where: { name: group.name },
+        update: { description: group.description },
+        create: group,
+      });
+      groupMap.set(group.name, result.id);
+    }
+    console.log('✅ Permission groups seeded successfully\n');
+
+    console.log('🔑 Seeding RBAC permissions...');
+    for (const perm of permissionSeeds) {
+      const [resourceName, actionName] = perm.split('.');
+      const resource = await (prisma as any).resource.findUnique({ where: { name: resourceName } });
+      const action = await (prisma as any).action.findUnique({ where: { name: actionName } });
+      if (resource && action) {
+        const groupName = permissionGroupMapping[resourceName];
+        const groupId = groupName ? groupMap.get(groupName) ?? null : null;
+        await (prisma as any).permission.upsert({
+          where: { resourceId_actionId: { resourceId: resource.id, actionId: action.id } },
+          update: { groupId },
+          create: { resourceId: resource.id, actionId: action.id, groupId },
+        });
+      }
+    }
+    console.log('✅ Permissions seeded successfully\n');
+
+    console.log('👑 Seeding RBAC roles with hierarchy...');
+    const roleMap = new Map<string, string>();
+    for (const roleSeed of roleSeeds) {
+      const parentRoleId = roleSeed.parentRoleName ? roleMap.get(roleSeed.parentRoleName) ?? null : null;
+      const role = await (prisma as any).role.upsert({
+        where: { name: roleSeed.name },
+        update: { parentRoleId },
+        create: { name: roleSeed.name, parentRoleId },
+      });
+      roleMap.set(roleSeed.name, role.id);
+
+      // Assign permissions to role
+      for (const perm of roleSeed.permissions) {
+        const [resourceName, actionName] = perm.split('.');
+        const resource = await (prisma as any).resource.findUnique({ where: { name: resourceName } });
+        const action = await (prisma as any).action.findUnique({ where: { name: actionName } });
+        if (resource && action) {
+          const permission = await (prisma as any).permission.findUnique({
+            where: { resourceId_actionId: { resourceId: resource.id, actionId: action.id } },
+          });
+          if (permission) {
+            await (prisma as any).rolePermission.upsert({
+              where: { roleId_permissionId: { roleId: role.id, permissionId: permission.id } },
+              update: {},
+              create: { roleId: role.id, permissionId: permission.id },
+            });
+          }
+        }
+      }
+      console.log(`   ✅ ${roleSeed.name}${roleSeed.parentRoleName ? ` (inherits ${roleSeed.parentRoleName})` : ''}`);
+    }
+    console.log('✅ Roles seeded successfully\n');
+
     const userCount = await prisma.user.count();
     const clientCount = await (prisma as any).client.count();
     const idpCount = await (prisma as any).identityProvider.count();
+    const roleCount = await (prisma as any).role.count();
+    const permissionCount = await (prisma as any).permission.count();
     console.log(`📊 Users in database: ${userCount}`);
     console.log(`📊 Clients in database: ${clientCount}`);
     console.log(`📊 Identity providers in database: ${idpCount}`);
+    console.log(`📊 Roles in database: ${roleCount}`);
+    console.log(`📊 Permissions in database: ${permissionCount}`);
     console.log('\n✨ Seed completed successfully!');
   } catch (error) {
     console.error('❌ Error seeding data:', error);

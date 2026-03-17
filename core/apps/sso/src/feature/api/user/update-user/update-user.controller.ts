@@ -4,7 +4,7 @@ import { Authorize } from '@app/shared';
 import { UpdateUserRequest } from './update-user-request';
 import { UpdateUserResponse } from './update-user-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -15,7 +15,7 @@ export class UpdateUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User successfully updated', type: UpdateUserResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Param('id') id: string, @Body() body: UpdateUserRequest): Promise<UpdateUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id } });
@@ -31,7 +31,7 @@ export class UpdateUserController {
           lastName: body.lastName,
           email: body.email,
           phoneNumber: body.phoneNumber,
-          role: body.role,
+          userType: body.role,
         },
       });
 

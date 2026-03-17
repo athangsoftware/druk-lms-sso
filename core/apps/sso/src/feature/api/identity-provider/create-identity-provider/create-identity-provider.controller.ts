@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma-sso';
+import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateIdentityProviderRequest } from './create-identity-provider-request';
 import { CreateIdentityProviderResponse } from './create-identity-provider-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -30,7 +30,7 @@ export class CreateIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Identity provider successfully created', type: CreateIdentityProviderResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Body() body: CreateIdentityProviderRequest): Promise<CreateIdentityProviderResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const slug = body.slug ?? toSlug(body.name);

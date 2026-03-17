@@ -11,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { UpdateDashboardFilterRequest } from './update-dashboard-filter-request';
 import { UpdateDashboardFilterResponse } from './update-dashboard-filter-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -28,7 +28,7 @@ export class UpdateDashboardFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateDashboardFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateDashboardFilterResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('id') dashboardId: string,
     @Param('filterId') filterId: string,

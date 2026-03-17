@@ -18,6 +18,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { TableCellEnableDisableComponent } from './table-cell-enable-disable/table-cell-enable-disable.component';
 import { UserListStore } from './user-list.store';
+import { AssignUserRolesComponent } from '../user-roles/assign-user-roles/assign-user-roles.component';
 
 @Component({
   selector: 'app-user-list',
@@ -167,10 +168,12 @@ export class UserListComponent {
                 ? [
                     { label: 'Disable', iconPath: 'icons/delete.svg', actionKey: 'disable' },
                     { label: 'Edit', iconPath: 'icons/edit.svg', actionKey: 'edit' },
+                    { label: 'Assign Roles', iconPath: 'icons/edit.svg', actionKey: 'assign-roles' },
                   ]
                 : [
                     { label: 'Enable', iconPath: 'icons/account.svg', actionKey: 'enable' },
                     { label: 'Edit', iconPath: 'icons/edit.svg', actionKey: 'edit' },
+                    { label: 'Assign Roles', iconPath: 'icons/edit.svg', actionKey: 'assign-roles' },
                   ];
             },
           },
@@ -208,6 +211,13 @@ export class UserListComponent {
         break;
       case 'edit':
         this.overlayService.openModal(UpdateUserComponent, {
+          disableClose: true,
+          data: item,
+          onClose: () => this.userList.refetch(),
+        });
+        break;
+      case 'assign-roles':
+        this.overlayService.openModal(AssignUserRolesComponent, {
           disableClose: true,
           data: item,
           onClose: () => this.userList.refetch(),

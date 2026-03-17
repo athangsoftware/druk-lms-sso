@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { BhutanNdiService } from '../../bhutan-ndi.service';
 
 @ApiTags('Identity Provider')
@@ -16,7 +16,7 @@ export class NdiTestConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiTestConnection' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Tests NDI connection by authenticating' })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(): Promise<{ successMessage: string; data: { connected: boolean } }> {
     this.logger.log('Admin triggered NDI connection test');
 

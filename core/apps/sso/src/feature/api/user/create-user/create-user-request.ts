@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { ErrorMessages } from '../../../../core/models/message';
 
 export class CreateUserRequest {
@@ -35,7 +35,7 @@ export class CreateUserRequest {
   @MinLength(6, { message: ErrorMessages.minSize('password', 6) })
   password?: string;
 
-  @ApiPropertyOptional({ enum: Role, example: Role.MEMBER, description: 'Role of the user' })
+  @ApiPropertyOptional({ enum: UserType, example: UserType.MEMBER, description: 'Role of the user' })
   @IsOptional()
-  role?: Role;
+  role?: UserType;
 }

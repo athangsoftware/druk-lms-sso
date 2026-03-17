@@ -1,5 +1,5 @@
 // Re-export generated SSO client types
-export { PrismaClient, Prisma, Role, ClientType } from '../generated/client/client';
+export { PrismaClient, Prisma, UserType, ClientType } from '../generated/client/client';
 export type {
     User,
     PasswordResetToken,
@@ -11,6 +11,13 @@ export type {
     WebhookLog,
     AuditLog,
     MetaData,
+    Resource,
+    Action,
+    Permission,
+    PermissionGroup,
+    Role,
+    RolePermission,
+    UserRole,
 } from '../generated/client/client';
 
 // Re-export shared Prisma infrastructure

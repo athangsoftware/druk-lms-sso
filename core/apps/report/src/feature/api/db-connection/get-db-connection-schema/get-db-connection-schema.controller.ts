@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
 import { GetDbConnectionSchemaResponse } from './get-db-connection-schema-response';
@@ -30,7 +30,7 @@ export class GetDbConnectionSchemaController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDbConnectionSchema' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDbConnectionSchemaResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<GetDbConnectionSchemaResponse> {
     const connection = await this.prismaService.client(
       async ({ dbContext }) => {

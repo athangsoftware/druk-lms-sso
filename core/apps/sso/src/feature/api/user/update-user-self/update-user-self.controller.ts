@@ -4,7 +4,7 @@ import { Authorize, CurrentUser } from '@app/shared';
 import { UpdateUserSelfRequest } from './update-user-self-request';
 import { UpdateUserSelfResponse } from './update-user-self-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -14,7 +14,7 @@ export class UpdateUserSelfController {
   @Put()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: UpdateUserSelfResponse })
   @ApiOperation({ operationId: 'updateUserSelf' })
-  @Authorize(Role.MODRATOR, Role.MEMBER)
+  @Authorize(UserType.MODRATOR, UserType.MEMBER)
   @HttpCode(200)
   async execute(@CurrentUser() currentUser: any, @Body() body: UpdateUserSelfRequest): Promise<UpdateUserSelfResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {

@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService, Prisma } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { GetDashboardListRequest } from './get-dashboard-list-request';
 import { GetDashboardListResponse } from './get-dashboard-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -17,7 +17,7 @@ export class GetDashboardListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboardList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDashboardListResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Query() request: GetDashboardListRequest,
   ): Promise<GetDashboardListResponse> {

@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Prisma, Role } from '@app/prisma-sso';
+import { PrismaService, Prisma, UserType } from '@app/prisma-sso';
 import { GetClientListRequest } from './get-client-list-request';
 import { GetClientListResponse } from './get-client-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -16,7 +16,7 @@ export class GetClientListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getClientList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetClientListResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Query() request: GetClientListRequest): Promise<GetClientListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const whereCondition: Prisma.ClientWhereInput = { AND: [] };

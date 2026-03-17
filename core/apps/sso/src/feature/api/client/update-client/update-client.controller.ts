@@ -1,7 +1,7 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma-sso';
+import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdateClientRequest } from './update-client-request';
 import { UpdateClientResponse } from './update-client-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -16,7 +16,7 @@ export class UpdateClientController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateClient' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Client successfully updated', type: UpdateClientResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Param('id') id: string, @Body() body: UpdateClientRequest): Promise<UpdateClientResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const client = await dbContext.client.findUnique({ where: { id } });

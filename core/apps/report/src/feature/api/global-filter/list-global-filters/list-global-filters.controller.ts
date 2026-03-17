@@ -7,7 +7,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ListGlobalFiltersResponse } from './list-global-filters-response';
 import { SuccessMessages } from '../../../../core/models/message';
 
@@ -21,7 +21,7 @@ export class ListGlobalFiltersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'listGlobalFilters' })
   @ApiResponse({ status: HttpStatus.OK, type: ListGlobalFiltersResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(): Promise<ListGlobalFiltersResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {

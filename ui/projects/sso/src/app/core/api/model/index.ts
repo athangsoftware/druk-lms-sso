@@ -607,6 +607,276 @@ export interface GetEnabledProvidersResponse {
   data: EnabledProvider[];
 }
 
+// ─── RBAC Resource ────────────────────────────────────────────────
+
+export interface CreateRbacResourceRequest {
+  name: string;
+}
+
+export interface CreateRbacResourceResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+}
+
+export interface RbacResourceItem {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface GetRbacResourceListResponse {
+  successMessage: string;
+  data: RbacResourceItem[];
+}
+
+export interface UpdateRbacResourceRequest {
+  name?: string;
+}
+
+export interface UpdateRbacResourceResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+}
+
+export interface DeleteRbacResourceResponse {
+  successMessage: string;
+}
+
+// ─── RBAC Action ──────────────────────────────────────────────────
+
+export interface CreateRbacActionRequest {
+  name: string;
+}
+
+export interface CreateRbacActionResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+}
+
+export interface RbacActionItem {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface GetRbacActionListResponse {
+  successMessage: string;
+  data: RbacActionItem[];
+}
+
+export interface UpdateRbacActionRequest {
+  name?: string;
+}
+
+export interface UpdateRbacActionResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    createdAt: string;
+  };
+}
+
+export interface DeleteRbacActionResponse {
+  successMessage: string;
+}
+
+// ─── RBAC Permission ─────────────────────────────────────────────
+
+export interface CreateRbacPermissionRequest {
+  resourceId: string;
+  actionId: string;
+  groupId?: string;
+}
+
+export interface RbacPermissionItem {
+  id: string;
+  resourceId: string;
+  actionId: string;
+  groupId: string | null;
+  resourceName: string;
+  actionName: string;
+  groupName: string | null;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface CreateRbacPermissionResponse {
+  successMessage: string;
+  data?: RbacPermissionItem;
+}
+
+export interface GetRbacPermissionListResponse {
+  successMessage: string;
+  data: RbacPermissionItem[];
+}
+
+// ─── RBAC Permission Group ───────────────────────────────────────
+
+export interface CreatePermissionGroupRequest {
+  name: string;
+  description?: string;
+}
+
+export interface CreatePermissionGroupResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    description: string | null;
+    createdAt: string;
+  };
+}
+
+export interface UpdatePermissionGroupRequest {
+  name?: string;
+  description?: string;
+}
+
+export interface UpdatePermissionGroupResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    description: string | null;
+    createdAt: string;
+  };
+}
+
+export interface PermissionGroupPermissionItem {
+  id: string;
+  resourceId: string;
+  actionId: string;
+  groupId: string | null;
+  resourceName: string;
+  actionName: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface PermissionGroupItem {
+  id: string;
+  name: string;
+  description: string | null;
+  permissions: PermissionGroupPermissionItem[];
+  createdAt: string;
+}
+
+export interface GetPermissionGroupListResponse {
+  successMessage: string;
+  data: PermissionGroupItem[];
+}
+
+export interface GetPermissionGroupResponse {
+  successMessage: string;
+  data?: PermissionGroupItem;
+}
+
+// ─── RBAC Role ────────────────────────────────────────────────────
+
+export interface CreateRbacRoleRequest {
+  name: string;
+  parentRoleId?: string;
+}
+
+export interface RbacRoleChildItem {
+  id: string;
+  name: string;
+  parentRoleId: string | null;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface RbacRoleItem {
+  id: string;
+  name: string;
+  parentRoleId: string | null;
+  parentRoleName: string | null;
+  isActive: boolean;
+  createdAt: string;
+  permissions: string[];
+  children: RbacRoleChildItem[];
+}
+
+export interface CreateRbacRoleResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    parentRoleId: string | null;
+    parentRoleName: string | null;
+    isActive: boolean;
+    createdAt: string;
+  };
+}
+
+export interface UpdateRbacRoleRequest {
+  name?: string;
+  parentRoleId?: string | null;
+  isActive?: boolean;
+}
+
+export interface UpdateRbacRoleResponse {
+  successMessage: string;
+  data?: {
+    id: string;
+    name: string;
+    parentRoleId: string | null;
+    parentRoleName: string | null;
+    isActive: boolean;
+    createdAt: string;
+  };
+}
+
+export interface GetRbacRoleListResponse {
+  successMessage: string;
+  data: RbacRoleItem[];
+}
+
+export interface GetRbacRoleResponse {
+  successMessage: string;
+  data?: RbacRoleItem;
+}
+
+export interface AssignRolePermissionsRequest {
+  permissionIds: string[];
+}
+
+export interface AssignRolePermissionsResponse {
+  successMessage: string;
+}
+
+// ─── RBAC User Role ──────────────────────────────────────────────
+
+export interface AssignUserRolesRequest {
+  roleIds: string[];
+}
+
+export interface AssignUserRolesResponse {
+  successMessage: string;
+}
+
+export interface GetUserRoleListResponse {
+  successMessage: string;
+  data?: {
+    userId: string;
+    roles: string[];
+    permissions: string[];
+  };
+}
+
 // ─── Column Filters ──────────────────────────────────────────────
 
 export interface ColumnFilter {

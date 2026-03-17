@@ -49,6 +49,38 @@ import type {
   NdiRegisterWebhookResponse,
   NdiTestConnectionResponse,
   NdiWebhookStatusResponse,
+  CreateRbacResourceRequest,
+  CreateRbacResourceResponse,
+  GetRbacResourceListResponse,
+  UpdateRbacResourceRequest,
+  UpdateRbacResourceResponse,
+  DeleteRbacResourceResponse,
+  CreateRbacActionRequest,
+  CreateRbacActionResponse,
+  GetRbacActionListResponse,
+  UpdateRbacActionRequest,
+  UpdateRbacActionResponse,
+  DeleteRbacActionResponse,
+  CreateRbacPermissionRequest,
+  CreateRbacPermissionResponse,
+  GetRbacPermissionListResponse,
+  CreatePermissionGroupRequest,
+  CreatePermissionGroupResponse,
+  UpdatePermissionGroupRequest,
+  UpdatePermissionGroupResponse,
+  GetPermissionGroupListResponse,
+  GetPermissionGroupResponse,
+  CreateRbacRoleRequest,
+  CreateRbacRoleResponse,
+  UpdateRbacRoleRequest,
+  UpdateRbacRoleResponse,
+  GetRbacRoleListResponse,
+  GetRbacRoleResponse,
+  AssignRolePermissionsRequest,
+  AssignRolePermissionsResponse,
+  AssignUserRolesRequest,
+  AssignUserRolesResponse,
+  GetUserRoleListResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -225,5 +257,101 @@ export class ApiService {
 
   getEnabledProviders(): Observable<GetEnabledProvidersResponse> {
     return this.http.get<GetEnabledProvidersResponse>(`${this.apiUrl}/identity-providers/enabled`);
+  }
+
+  // ─── RBAC Resource ────────────────────────────────────────────────
+
+  getRbacResourceList(): Observable<GetRbacResourceListResponse> {
+    return this.http.get<GetRbacResourceListResponse>(`${this.apiUrl}/rbac/resources`);
+  }
+
+  createRbacResource(request: CreateRbacResourceRequest): Observable<CreateRbacResourceResponse> {
+    return this.http.post<CreateRbacResourceResponse>(`${this.apiUrl}/rbac/resources`, request);
+  }
+
+  updateRbacResource(id: string, request: UpdateRbacResourceRequest): Observable<UpdateRbacResourceResponse> {
+    return this.http.put<UpdateRbacResourceResponse>(`${this.apiUrl}/rbac/resources/${id}`, request);
+  }
+
+  deleteRbacResource(id: string): Observable<DeleteRbacResourceResponse> {
+    return this.http.delete<DeleteRbacResourceResponse>(`${this.apiUrl}/rbac/resources/${id}`);
+  }
+
+  // ─── RBAC Action ──────────────────────────────────────────────────
+
+  getRbacActionList(): Observable<GetRbacActionListResponse> {
+    return this.http.get<GetRbacActionListResponse>(`${this.apiUrl}/rbac/actions`);
+  }
+
+  createRbacAction(request: CreateRbacActionRequest): Observable<CreateRbacActionResponse> {
+    return this.http.post<CreateRbacActionResponse>(`${this.apiUrl}/rbac/actions`, request);
+  }
+
+  updateRbacAction(id: string, request: UpdateRbacActionRequest): Observable<UpdateRbacActionResponse> {
+    return this.http.put<UpdateRbacActionResponse>(`${this.apiUrl}/rbac/actions/${id}`, request);
+  }
+
+  deleteRbacAction(id: string): Observable<DeleteRbacActionResponse> {
+    return this.http.delete<DeleteRbacActionResponse>(`${this.apiUrl}/rbac/actions/${id}`);
+  }
+
+  // ─── RBAC Permission ─────────────────────────────────────────────
+
+  getRbacPermissionList(): Observable<GetRbacPermissionListResponse> {
+    return this.http.get<GetRbacPermissionListResponse>(`${this.apiUrl}/rbac/permissions`);
+  }
+
+  createRbacPermission(request: CreateRbacPermissionRequest): Observable<CreateRbacPermissionResponse> {
+    return this.http.post<CreateRbacPermissionResponse>(`${this.apiUrl}/rbac/permissions`, request);
+  }
+
+  // ─── RBAC Permission Group ────────────────────────────────────────
+
+  getPermissionGroupList(): Observable<GetPermissionGroupListResponse> {
+    return this.http.get<GetPermissionGroupListResponse>(`${this.apiUrl}/rbac/permission-groups`);
+  }
+
+  getPermissionGroup(id: string): Observable<GetPermissionGroupResponse> {
+    return this.http.get<GetPermissionGroupResponse>(`${this.apiUrl}/rbac/permission-groups/${id}`);
+  }
+
+  createPermissionGroup(request: CreatePermissionGroupRequest): Observable<CreatePermissionGroupResponse> {
+    return this.http.post<CreatePermissionGroupResponse>(`${this.apiUrl}/rbac/permission-groups`, request);
+  }
+
+  updatePermissionGroup(id: string, request: UpdatePermissionGroupRequest): Observable<UpdatePermissionGroupResponse> {
+    return this.http.put<UpdatePermissionGroupResponse>(`${this.apiUrl}/rbac/permission-groups/${id}`, request);
+  }
+
+  // ─── RBAC Role ────────────────────────────────────────────────────
+
+  getRbacRoleList(): Observable<GetRbacRoleListResponse> {
+    return this.http.get<GetRbacRoleListResponse>(`${this.apiUrl}/rbac/roles`);
+  }
+
+  getRbacRole(id: string): Observable<GetRbacRoleResponse> {
+    return this.http.get<GetRbacRoleResponse>(`${this.apiUrl}/rbac/roles/${id}`);
+  }
+
+  createRbacRole(request: CreateRbacRoleRequest): Observable<CreateRbacRoleResponse> {
+    return this.http.post<CreateRbacRoleResponse>(`${this.apiUrl}/rbac/roles`, request);
+  }
+
+  updateRbacRole(id: string, request: UpdateRbacRoleRequest): Observable<UpdateRbacRoleResponse> {
+    return this.http.put<UpdateRbacRoleResponse>(`${this.apiUrl}/rbac/roles/${id}`, request);
+  }
+
+  assignRolePermissions(roleId: string, request: AssignRolePermissionsRequest): Observable<AssignRolePermissionsResponse> {
+    return this.http.post<AssignRolePermissionsResponse>(`${this.apiUrl}/rbac/roles/${roleId}/permissions`, request);
+  }
+
+  // ─── RBAC User Role ──────────────────────────────────────────────
+
+  getUserRoleList(userId: string): Observable<GetUserRoleListResponse> {
+    return this.http.get<GetUserRoleListResponse>(`${this.apiUrl}/rbac/users/${userId}/roles`);
+  }
+
+  assignUserRoles(userId: string, request: AssignUserRolesRequest): Observable<AssignUserRolesResponse> {
+    return this.http.post<AssignUserRolesResponse>(`${this.apiUrl}/rbac/users/${userId}/roles`, request);
   }
 }

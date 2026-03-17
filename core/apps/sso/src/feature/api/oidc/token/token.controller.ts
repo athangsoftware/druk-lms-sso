@@ -5,6 +5,7 @@ import { TokenResponse } from './token-response';
 import { PrismaService } from '@app/prisma-sso';
 import { AuthService } from '@app/shared';
 import { TokenRequest } from './token-request';
+import { RbacService } from '../../rbac/rbac.service';
 
 @ApiTags('OIDC')
 @Controller('protocol/openid-connect/token')
@@ -12,6 +13,7 @@ export class TokenController {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly authService: AuthService,
+    private readonly rbacService: RbacService,
   ) {}
 
   @Post()
@@ -75,8 +77,9 @@ export class TokenController {
           throw new BadRequestException('User not found');
         }
 
-        const accessToken = await this.authService.sign({ sub: user.id, role: user.role });
-        const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.role, type: 'refresh' });
+        const permissions = await this.rbacService.getUserPermissions(user.id);
+        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, permissions });
+        const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.userType, type: 'refresh' });
 
         await dbContext.refreshToken.create({
           data: {
@@ -137,8 +140,9 @@ export class TokenController {
           throw new BadRequestException('Invalid token type');
         }
 
-        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.role });
-        const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.role, type: 'refresh' });
+        const refreshPermissions = await this.rbacService.getUserPermissions(storedToken.user.id);
+        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, permissions: refreshPermissions });
+        const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, type: 'refresh' });
 
         await dbContext.refreshToken.update({
           where: { id: storedToken.id },

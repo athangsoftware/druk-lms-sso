@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService, Prisma } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { GetDbConnectionListRequest } from './get-db-connection-list-request';
 import { GetDbConnectionListResponse } from './get-db-connection-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -17,7 +17,7 @@ export class GetDbConnectionListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDbConnectionList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDbConnectionListResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Query() request: GetDbConnectionListRequest,
   ): Promise<GetDbConnectionListResponse> {

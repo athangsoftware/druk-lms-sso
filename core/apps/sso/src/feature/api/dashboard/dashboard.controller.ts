@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { DashboardStatsResponse } from './dashboard-response';
 
 @ApiTags('Dashboard')
@@ -15,7 +15,7 @@ export class DashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboardStats', summary: 'Get aggregated dashboard statistics' })
   @ApiResponse({ status: HttpStatus.OK, type: DashboardStatsResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async getStats(): Promise<DashboardStatsResponse> {
     return this.prismaService.client(async ({ dbContext }) => {
       // ─── User counts ────────────────────────────────────────
@@ -40,14 +40,14 @@ export class DashboardController {
 
       // ─── Users grouped by role ──────────────────────────────
       const usersByRoleRaw = await dbContext.user.groupBy({
-        by: ['role'],
-        _count: { role: true },
-        orderBy: { role: 'asc' },
+        by: ['userType'],
+        _count: { userType: true },
+        orderBy: { userType: 'asc' },
       });
 
       const usersByRole = usersByRoleRaw.map((r) => ({
-        role: r.role as string,
-        count: r._count.role,
+        role: r.userType as string,
+        count: r._count.userType,
       }));
 
       // ─── Login activity last 7 days ─────────────────────────
@@ -91,7 +91,7 @@ export class DashboardController {
           firstName: true,
           lastName: true,
           email: true,
-          role: true,
+          userType: true,
           isActive: true,
           isVerified: true,
           createdAt: true,
@@ -103,7 +103,7 @@ export class DashboardController {
         firstName: u.firstName,
         lastName: u.lastName ?? '',
         email: u.email,
-        role: u.role as string,
+        role: u.userType as string,
         isActive: u.isActive,
         isVerified: u.isVerified,
         createdAt: u.createdAt,

@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService, Prisma } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { GetChartListRequest } from './get-chart-list-request';
 import { GetChartListResponse } from './get-chart-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -17,7 +17,7 @@ export class GetChartListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getChartList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetChartListResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Query() request: GetChartListRequest,
   ): Promise<GetChartListResponse> {

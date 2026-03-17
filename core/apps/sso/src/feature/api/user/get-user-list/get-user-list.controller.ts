@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-sso';
-import { Prisma, Role } from '@app/prisma-sso';
+import { Prisma, UserType } from '@app/prisma-sso';
 import { GetUserListRequest } from './get-user-list-request';
 import { GetUserListResponse } from './get-user-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -15,7 +15,7 @@ export class GetUserListController {
   @Get()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetUserListResponse })
   @ApiOperation({ operationId: 'getUserList' })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   @HttpCode(200)
   async execute(@Query() request: GetUserListRequest): Promise<GetUserListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
@@ -48,7 +48,7 @@ export class GetUserListController {
       }
       if (request.roleIdValue?.length) {
         (whereCondition.AND as Prisma.UserWhereInput[]).push({
-          role: { in: request.roleIdValue as Role[] },
+          userType: { in: request.roleIdValue as UserType[] },
         });
       }
       if (request.phoneNumberValue) {
@@ -95,8 +95,8 @@ export class GetUserListController {
           phoneNumber: x.phoneNumber || '',
           createdDate: x.createdAt,
           isActive: x.isActive,
-          roleId: x.role,
-          roleName: x.role,
+          roleId: x.userType,
+          roleName: x.userType,
         })),
       };
     });

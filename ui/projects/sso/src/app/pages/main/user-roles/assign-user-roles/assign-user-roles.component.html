@@ -1,0 +1,30 @@
+<ui-base-overlay [title]="'Assign Roles to ' + data.firstName + ' ' + data.lastName">
+  <div body>
+    <div class="flex flex-col gap-4">
+      <p class="text-sm text-neutral-600">Select roles to assign to this user.</p>
+
+      <div class="max-h-96 overflow-y-auto border border-neutral-200 rounded-lg divide-y divide-neutral-100">
+        @for (role of allRoles(); track role.id) {
+          <label class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 cursor-pointer">
+            <input
+              type="checkbox"
+              class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
+              [checked]="isSelected(role.id)"
+              (change)="toggleRole(role.id)"
+            />
+            <div class="flex flex-col">
+              <span class="text-sm font-medium text-neutral-800">{{ role.name }}</span>
+              @if (role.parentRoleName) {
+                <span class="text-xs text-neutral-500">Parent: {{ role.parentRoleName }}</span>
+              }
+            </div>
+          </label>
+        }
+      </div>
+
+      <div class="flex justify-center pt-2">
+        <ui-button [loading]="assignMutation.isLoading()" type="button" (click)="onSubmit()">Save</ui-button>
+      </div>
+    </div>
+  </div>
+</ui-base-overlay>

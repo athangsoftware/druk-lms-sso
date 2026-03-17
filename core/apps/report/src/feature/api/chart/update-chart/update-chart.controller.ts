@@ -11,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { UpdateChartRequest } from './update-chart-request';
 import { UpdateChartResponse } from './update-chart-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -27,7 +27,7 @@ export class UpdateChartController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateChart' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateChartResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateChartRequest,

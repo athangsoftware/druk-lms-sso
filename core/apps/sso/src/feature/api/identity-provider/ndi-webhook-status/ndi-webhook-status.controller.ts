@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Logger, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma-sso';
+import { PrismaService, UserType } from '@app/prisma-sso';
 
 @ApiTags('Identity Provider')
 @ApiBearerAuth()
@@ -15,7 +15,7 @@ export class NdiWebhookStatusController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiWebhookStatus' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns NDI webhook status and recent logs' })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(
     @Query('limit') limit?: string,
   ): Promise<{

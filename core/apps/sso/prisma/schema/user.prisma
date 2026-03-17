@@ -1,6 +1,6 @@
 // User and authentication related models
 
-enum Role {
+enum UserType {
   MEMBER
   MODRATOR
   DEV
@@ -8,21 +8,22 @@ enum Role {
 }
 
 model User {
-  id            String  @id @default(uuid())
-  firstName     String  @map("first_name")
-  lastName      String? @map("last_name")
+  id            String   @id @default(uuid())
+  firstName     String   @map("first_name")
+  lastName      String?  @map("last_name")
   email         String
-  phoneNumber   String? @map("phone_number")
-  username      String  @unique
-  ndiIdentifier String? @unique @map("ndi_identifier")
+  phoneNumber   String?  @map("phone_number")
+  username      String   @unique
+  ndiIdentifier String?  @unique @map("ndi_identifier")
   password      String?
-  role          Role    @default(MEMBER)
+  userType      UserType @default(MEMBER) @map("role")
   isVerified    Boolean @default(false) @map("is_verified")
   isActive      Boolean @default(true) @map("is_active")
 
   refreshTokens      RefreshToken[]
   passwordResetTokens PasswordResetToken[]
   authorizationCodes AuthorizationCode[]
+  userRoles          UserRole[]
 
   createdBy String?   @map("created_by")
   createdAt DateTime  @default(now()) @map("created_at")

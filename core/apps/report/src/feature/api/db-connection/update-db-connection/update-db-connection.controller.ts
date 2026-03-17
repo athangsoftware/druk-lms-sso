@@ -11,7 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../../../../config';
 import { UpdateDbConnectionRequest } from './update-db-connection-request';
@@ -32,7 +32,7 @@ export class UpdateDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateDbConnectionResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateDbConnectionRequest,

@@ -1,6 +1,6 @@
 import { ErrorMessages } from '../../../../core/models/message';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { IsOptional, IsString, IsEmail, IsEnum } from 'class-validator';
 
 export class UpdateUserRequest {
@@ -27,6 +27,6 @@ export class UpdateUserRequest {
   @ApiPropertyOptional({ example: 'johndoe', description: 'Role of the user' })
   @IsOptional()
   @IsString({ message: ErrorMessages.string('role') })
-  @IsEnum(Role, { message: ErrorMessages.enum('role', Role) })
-  role: Role;
+  @IsEnum(UserType, { message: ErrorMessages.enum('role', UserType) })
+  role: UserType;
 }

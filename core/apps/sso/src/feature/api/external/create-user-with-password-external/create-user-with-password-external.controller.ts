@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserWithPasswordExternalRequest } from './create-user-with-password-external-request';
 import { CreateUserWithPasswordExternalResponse } from './create-user-with-password-external-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { BcryptService, ApiKeyAuthorization } from '@app/shared';
 
 @ApiTags('External')
@@ -50,7 +50,7 @@ export class CreateUserWithPasswordExternalController {
           phoneNumber: body.phoneNumber,
           username: body.email,
           password: hashedPassword,
-          role: Role.MEMBER,
+          userType: UserType.MEMBER,
           ndiIdentifier: body.ndiIdentifier,
           isVerified: true,
         },
@@ -65,7 +65,7 @@ export class CreateUserWithPasswordExternalController {
           email: user.email,
           phoneNumber: user.phoneNumber,
           username: user.username,
-          role: user.role,
+          role: user.userType,
           ndiIdentifier: user.ndiIdentifier,
           isVerified: user.isVerified,
           isActive: user.isActive,

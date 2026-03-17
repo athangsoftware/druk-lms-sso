@@ -72,6 +72,41 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: ['modrator'] },
       },
+      {
+        path: 'roles',
+        loadComponent: () =>
+          import('./pages/main/roles/roles.component').then((m) => m.RolesComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
+      {
+        path: 'permissions',
+        loadComponent: () =>
+          import('./pages/main/permissions/permissions.component').then((m) => m.PermissionsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
+      {
+        path: 'permission-groups',
+        loadComponent: () =>
+          import('./pages/main/permission-groups/permission-groups.component').then((m) => m.PermissionGroupsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
+      {
+        path: 'resources',
+        loadComponent: () =>
+          import('./pages/main/resources/resources.component').then((m) => m.ResourcesComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
+      {
+        path: 'actions',
+        loadComponent: () =>
+          import('./pages/main/actions/actions.component').then((m) => m.ActionsComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['modrator'] },
+      },
     ],
   },
   {

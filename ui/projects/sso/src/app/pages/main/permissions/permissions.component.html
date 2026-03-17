@@ -1,0 +1,23 @@
+<div class="w-full sm:px-4 h-full flex flex-col gap-4">
+
+  <!-- Page Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-neutral-800">Permissions</h1>
+    </div>
+    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Permission</ui-button>
+  </div>
+
+  <!-- Table -->
+  <div class="flex-1 min-h-0">
+    <ui-data-table
+      class="block h-full"
+      [columnGroups]="columnGroups"
+      [data]="permissionList.value()?.data ?? []"
+      [totalCount]="permissionList.value()?.data?.length ?? 0"
+      [hasError]="!!permissionList.error()"
+      (rowClick)="onRowClicked($event)"
+    ></ui-data-table>
+  </div>
+
+</div>

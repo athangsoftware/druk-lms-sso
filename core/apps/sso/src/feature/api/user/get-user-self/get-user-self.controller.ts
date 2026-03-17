@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { Authorize, CurrentUser } from '@app/shared';
 import { GetUserSelfResponse, GetUserSelfResponseData } from './get-user-self-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -14,7 +14,7 @@ export class GetUserSelfController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUserSelf' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns user by ID', type: GetUserSelfResponse })
-  @Authorize(Role.MODRATOR, Role.MEMBER)
+  @Authorize(UserType.MODRATOR, UserType.MEMBER)
   async execute(@CurrentUser() currentUser: any): Promise<GetUserSelfResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id: currentUser.sub } });
@@ -30,7 +30,7 @@ export class GetUserSelfController {
         email: user.email,
         phoneNumber: user.phoneNumber || null,
         username: user.username,
-        role: user.role,
+        role: user.userType,
         isActive: user.isActive,
         createdAt: user.createdAt.toISOString(),
       };

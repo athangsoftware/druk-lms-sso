@@ -9,7 +9,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { DeleteChartResponse } from './delete-chart-response';
 import { SuccessMessages } from '../../../../core/models/message';
 
@@ -23,7 +23,7 @@ export class DeleteChartController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteChart' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteChartResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(@Param('id') id: string): Promise<DeleteChartResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.chart.findUnique({ where: { id } });

@@ -1,4 +1,4 @@
-import { Role, User } from '@prisma/client';
+import { UserType, User } from '../../../generated/client';
 
 type UserSeed = Omit<
   User,
@@ -17,7 +17,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MODRATOR,
+    userType: UserType.MODRATOR,
   },
   {
     id: '69ab003f197f713f0f929b69',
@@ -30,7 +30,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab00a2197f713f0f929c0a',
@@ -43,7 +43,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab00f6197f713f0f929d0d',
@@ -56,7 +56,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab012e197f713f0f929d51',
@@ -69,7 +69,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab016d197f713f0f929df3',
@@ -82,7 +82,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab01ac197f713f0f929e96',
@@ -95,7 +95,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab01ec197f713f0f929f36',
@@ -108,7 +108,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab022f197f713f0f929fd9',
@@ -121,7 +121,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab029a197f713f0f92a07b',
@@ -134,7 +134,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69ab02f4197f713f0f92a1dd',
@@ -147,7 +147,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69acf26d197f713f0f92b543',
@@ -160,7 +160,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69acf2a6197f713f0f92b561',
@@ -173,7 +173,7 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
   {
     id: '69acf2e4197f713f0f92b57c',
@@ -186,6 +186,6 @@ export const userSeeds: UserSeed[] = [
     ndiIdentifier: null,
     isVerified: true,
     isActive: true,
-    role: Role.MEMBER,
+    userType: UserType.MEMBER,
   },
 ];

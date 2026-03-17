@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma-sso';
+import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateClientRequest } from './create-client-request';
 import { CreateClientResponse } from './create-client-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -27,7 +27,7 @@ export class CreateClientController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createClient' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Client successfully created', type: CreateClientResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Body() body: CreateClientRequest): Promise<CreateClientResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const clientId = body.clientId ?? toOidcClientId(body.name);

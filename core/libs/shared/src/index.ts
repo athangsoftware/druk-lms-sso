@@ -8,7 +8,7 @@ export type { AuthorizeGuardConfig } from './auth/authorize.guard';
 export { CurrentUser } from './auth/current-user';
 export { JwtAuthGuard } from './auth/jwt/jwt.guard';
 export { JwtAuthStrategy } from './auth/jwt/jwt.strategy';
-export { Role } from './auth/roles';
+export { UserType } from './auth/roles';
 
 // API Key
 export { ApiKeyModule } from './api-key/api-key.module';

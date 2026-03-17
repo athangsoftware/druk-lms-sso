@@ -10,7 +10,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { UpdateChartLayoutRequest } from './update-chart-layout-request';
 import { UpdateChartLayoutResponse } from './update-chart-layout-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -25,7 +25,7 @@ export class UpdateChartLayoutController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateChartLayout' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateChartLayoutResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('dashboardId') dashboardId: string,
     @Param('chartId') chartId: string,

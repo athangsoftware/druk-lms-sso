@@ -222,6 +222,53 @@ exports.Prisma.IdentityProviderScalarFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.ResourceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ActionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PermissionScalarFieldEnum = {
+  id: 'id',
+  resourceId: 'resourceId',
+  actionId: 'actionId',
+  groupId: 'groupId',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PermissionGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentRoleId: 'parentRoleId',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RolePermissionScalarFieldEnum = {
+  roleId: 'roleId',
+  permissionId: 'permissionId'
+};
+
+exports.Prisma.UserRoleScalarFieldEnum = {
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -231,7 +278,7 @@ exports.Prisma.UserScalarFieldEnum = {
   username: 'username',
   ndiIdentifier: 'ndiIdentifier',
   password: 'password',
-  role: 'role',
+  userType: 'userType',
   isVerified: 'isVerified',
   isActive: 'isActive',
   createdBy: 'createdBy',
@@ -391,6 +438,45 @@ exports.Prisma.IdentityProviderOrderByRelevanceFieldEnum = {
   updatedIp: 'updatedIp'
 };
 
+exports.Prisma.ResourceOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.ActionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.PermissionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  resourceId: 'resourceId',
+  actionId: 'actionId',
+  groupId: 'groupId'
+};
+
+exports.Prisma.PermissionGroupOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.RoleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  parentRoleId: 'parentRoleId'
+};
+
+exports.Prisma.RolePermissionOrderByRelevanceFieldEnum = {
+  roleId: 'roleId',
+  permissionId: 'permissionId'
+};
+
+exports.Prisma.UserRoleOrderByRelevanceFieldEnum = {
+  userId: 'userId',
+  roleId: 'roleId'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -448,7 +534,7 @@ exports.IdentityProviderType = exports.$Enums.IdentityProviderType = {
   CUSTOM: 'CUSTOM'
 };
 
-exports.Role = exports.$Enums.Role = {
+exports.UserType = exports.$Enums.UserType = {
   MEMBER: 'MEMBER',
   MODRATOR: 'MODRATOR',
   DEV: 'DEV',
@@ -463,6 +549,13 @@ exports.Prisma.ModelName = {
   RedirectURL: 'RedirectURL',
   PostLogoutRedirectURL: 'PostLogoutRedirectURL',
   IdentityProvider: 'IdentityProvider',
+  Resource: 'Resource',
+  Action: 'Action',
+  Permission: 'Permission',
+  PermissionGroup: 'PermissionGroup',
+  Role: 'Role',
+  RolePermission: 'RolePermission',
+  UserRole: 'UserRole',
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   RefreshToken: 'RefreshToken',

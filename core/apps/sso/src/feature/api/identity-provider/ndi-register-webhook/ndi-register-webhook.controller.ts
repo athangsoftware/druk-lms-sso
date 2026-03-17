@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 import { BhutanNdiService } from '../../bhutan-ndi.service';
 
 @ApiTags('Identity Provider')
@@ -16,7 +16,7 @@ export class NdiRegisterWebhookController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiRegisterWebhook' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Registers the NDI webhook' })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(): Promise<{ successMessage: string; data?: any }> {
     this.logger.log('Admin triggered NDI webhook registration');
 

@@ -1,8 +1,8 @@
 /**
- * User roles for authorization across all apps.
- * Mirrors the Prisma Role enum from the SSO schema.
+ * User type enum for authorization across all apps.
+ * Mirrors the Prisma UserType enum from the SSO schema.
  */
-export enum Role {
+export enum UserType {
     MEMBER = 'MEMBER',
     MODRATOR = 'MODRATOR',
     DEV = 'DEV',

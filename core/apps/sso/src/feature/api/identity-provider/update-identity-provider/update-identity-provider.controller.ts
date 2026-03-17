@@ -1,7 +1,7 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Role } from '@app/prisma-sso';
+import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdateIdentityProviderRequest } from './update-identity-provider-request';
 import { UpdateIdentityProviderResponse } from './update-identity-provider-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -20,7 +20,7 @@ export class UpdateIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Identity provider successfully updated', type: UpdateIdentityProviderResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateIdentityProviderRequest,

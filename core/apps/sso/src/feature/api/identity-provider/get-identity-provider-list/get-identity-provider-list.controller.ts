@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
-import { PrismaService, Prisma, Role } from '@app/prisma-sso';
+import { PrismaService, Prisma, UserType } from '@app/prisma-sso';
 import { GetIdentityProviderListRequest } from './get-identity-provider-list-request';
 import { GetIdentityProviderListResponse } from './get-identity-provider-list-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -20,7 +20,7 @@ export class GetIdentityProviderListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getIdentityProviderList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetIdentityProviderListResponse })
-  @Authorize(Role.MODRATOR)
+  @Authorize(UserType.MODRATOR)
   async execute(@Query() request: GetIdentityProviderListRequest): Promise<GetIdentityProviderListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const whereCondition: Prisma.IdentityProviderWhereInput = { AND: [] };

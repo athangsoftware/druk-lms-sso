@@ -1,19 +1,19 @@
-import { Role } from '@app/prisma-sso';
+import { UserType } from '@app/prisma-sso';
 
-export function getRole(status: Role): string {
-  const statusMap: Record<keyof typeof Role, string> = {
-    [Role.MEMBER]: 'Member',
-    [Role.MODRATOR]: 'Moderator',
-    [Role.DEV]: 'Developer',
-    [Role.SUPER_ADMIN]: 'Super Admin',
+export function getUserType(status: UserType): string {
+  const statusMap: Record<keyof typeof UserType, string> = {
+    [UserType.MEMBER]: 'Member',
+    [UserType.MODRATOR]: 'Moderator',
+    [UserType.DEV]: 'Developer',
+    [UserType.SUPER_ADMIN]: 'Super Admin',
   };
 
   return statusMap[status] || 'Unknown Status';
 }
 
-export const roles = [
-  { id: Role.MEMBER, name: 'Member' },
-  { id: Role.MODRATOR, name: 'Modrator' },
-  { id: Role.DEV, name: 'Developer' },
-  { id: Role.SUPER_ADMIN, name: 'Super Admin' },
+export const userTypes = [
+  { id: UserType.MEMBER, name: 'Member' },
+  { id: UserType.MODRATOR, name: 'Modrator' },
+  { id: UserType.DEV, name: 'Developer' },
+  { id: UserType.SUPER_ADMIN, name: 'Super Admin' },
 ];

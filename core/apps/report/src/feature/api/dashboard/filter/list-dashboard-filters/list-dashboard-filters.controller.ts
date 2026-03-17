@@ -9,7 +9,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authorize } from '@app/shared';
 import { PrismaService } from '@app/prisma-report';
-import { Role } from '@app/shared';
+import { UserType } from '@app/shared';
 import { ListDashboardFiltersResponse } from './list-dashboard-filters-response';
 import { SuccessMessages } from '../../../../../core/models/message';
 
@@ -23,7 +23,7 @@ export class ListDashboardFiltersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'listDashboardFilters' })
   @ApiResponse({ status: HttpStatus.OK, type: ListDashboardFiltersResponse })
-  @Authorize(Role.MEMBER, Role.MODRATOR, Role.DEV, Role.SUPER_ADMIN)
+  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
   async execute(
     @Param('id') dashboardId: string,
   ): Promise<ListDashboardFiltersResponse> {

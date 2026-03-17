@@ -1,0 +1,97 @@
+import { Component, inject } from '@angular/core';
+import { ApiService } from '@core/api/api.service';
+import {
+  GetRbacResourceListResponse,
+  RbacResourceItem,
+} from '@core/api/model';
+import {
+  ColumnGroup,
+  TableActionEvent,
+  DataTable,
+  ContextMenuActionConfig,
+  OverlayStore,
+  Button,
+  httpQuery,
+} from '@projects/shared-lib';
+import { environment } from '@environments/environment';
+import { CreateResourceComponent } from './create-resource/create-resource.component';
+import { UpdateResourceComponent } from './update-resource/update-resource.component';
+
+@Component({
+  selector: 'app-resources',
+  standalone: true,
+  imports: [DataTable, Button],
+  templateUrl: './resources.component.html',
+})
+export class ResourcesComponent {
+  private apiService = inject(ApiService);
+  overlayService = inject(OverlayStore);
+
+  resourceList = httpQuery<GetRbacResourceListResponse>({
+    request: () => ({ url: `${environment.apiUrl}/rbac/resources` }),
+    handleSuccess: false,
+    handleError: true,
+  });
+
+  onCreate() {
+    this.overlayService.openModal(CreateResourceComponent, {
+      disableClose: true,
+      onClose: () => this.resourceList.refetch(),
+    });
+  }
+
+  columnGroups: ColumnGroup[] = [
+    {
+      title: 'Manage Resources',
+      children: [
+        {
+          title: 'Name',
+          type: 'text',
+          alignment: 'left',
+          displayTemplate: '$name',
+          sortKey: 'name',
+        },
+        {
+          title: 'Created At',
+          type: 'text',
+          alignment: 'left',
+          displayTemplate: '$createdAt',
+          sortKey: 'createdAt',
+        },
+        {
+          title: 'Actions',
+          type: 'actions',
+          alignment: 'center',
+          actionsConfig: {
+            threeDotMenuActions: (_item: RbacResourceItem): ContextMenuActionConfig[] => [
+              { label: 'Edit', iconPath: 'icons/edit.svg', actionKey: 'edit' },
+              { label: 'Delete', iconPath: 'icons/delete.svg', actionKey: 'delete' },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
+  onRowClicked(_item: any) {}
+
+  async onAction(event: TableActionEvent) {
+    const item: RbacResourceItem = event.item;
+    switch (event.actionKey) {
+      case 'edit':
+        this.overlayService.openModal(UpdateResourceComponent, {
+          disableClose: true,
+          data: item,
+          onClose: () => this.resourceList.refetch(),
+        });
+        break;
+      case 'delete':
+        if (confirm(`Are you sure you want to delete resource "${item.name}"?`)) {
+          this.apiService.deleteRbacResource(item.id).subscribe({
+            next: () => this.resourceList.refetch(),
+          });
+        }
+        break;
+    }
+  }
+}
