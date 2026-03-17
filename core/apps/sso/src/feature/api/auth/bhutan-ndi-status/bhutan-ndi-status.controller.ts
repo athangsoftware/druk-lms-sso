@@ -2,6 +2,7 @@ import { Controller, Get, Query, HttpException, HttpStatus, Inject, Logger } fro
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PrismaService } from '@app/prisma-sso';
 import appConfig, { type AppConfig } from '../../../../config';
+import * as crypto from 'crypto';
 
 @ApiTags('Ndi')
 @Controller('ndi')
@@ -41,7 +42,7 @@ export class NdiStatusController {
       throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST);
     }
 
-    const redirectUrl = this.appConfig.ssoCallbackUrl;
+    const redirectUrl = authCodeRecord.redirectUri || this.appConfig.ssoCallbackUrl;
     const state = authCodeRecord.state || crypto.randomUUID();
     const redirectUrlWithParams = `${redirectUrl}?code=${threadId}&state=${state}`;
 

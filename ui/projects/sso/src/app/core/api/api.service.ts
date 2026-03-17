@@ -46,6 +46,9 @@ import type {
   GetIdentityProviderListResponse,
   GetIdentityProviderResponse,
   GetEnabledProvidersResponse,
+  NdiRegisterWebhookResponse,
+  NdiTestConnectionResponse,
+  NdiWebhookStatusResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -136,6 +139,20 @@ export class ApiService {
   getNdiStatus(params: GetNdiStatusParams): Observable<any> {
     return this.http.get(`${this.apiUrl}/ndi/status`, {
       params: params as unknown as Record<string, string>,
+    });
+  }
+
+  ndiRegisterWebhook(): Observable<NdiRegisterWebhookResponse> {
+    return this.http.post<NdiRegisterWebhookResponse>(`${this.apiUrl}/identity-providers/ndi/register-webhook`, {});
+  }
+
+  ndiTestConnection(): Observable<NdiTestConnectionResponse> {
+    return this.http.post<NdiTestConnectionResponse>(`${this.apiUrl}/identity-providers/ndi/test-connection`, {});
+  }
+
+  ndiWebhookStatus(limit = 10): Observable<NdiWebhookStatusResponse> {
+    return this.http.get<NdiWebhookStatusResponse>(`${this.apiUrl}/identity-providers/ndi/webhook-status`, {
+      params: { limit: limit.toString() },
     });
   }
 

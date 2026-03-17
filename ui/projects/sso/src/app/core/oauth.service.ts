@@ -68,13 +68,15 @@ export class OAuthService {
   async initiateNdiLogin(): Promise<any> {
     try {
       const urlParams = new URLSearchParams(window.location.search);
+      const clientId = urlParams.get('client_id') ?? environment.oidc.clientId;
+      const redirectUri = urlParams.get('redirect_uri') ?? environment.oidc.redirectUri;
       const state = urlParams.get('state') ?? '';
       const codeChallenge = urlParams.get('code_challenge') ?? '';
 
       const queryParams = new URLSearchParams({
         response_type: 'code',
-        client_id: environment.oidc.clientId,
-        redirect_uri: environment.oidc.redirectUri,
+        client_id: clientId,
+        redirect_uri: redirectUri,
         scope: 'openid profile',
         state,
         code_challenge: codeChallenge,
