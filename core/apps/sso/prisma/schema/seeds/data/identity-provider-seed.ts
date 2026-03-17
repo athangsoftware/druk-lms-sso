@@ -17,7 +17,7 @@ export const identityProviderSeeds: IdentityProviderSeed[] = [
     authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenUrl: 'https://oauth2.googleapis.com/token',
     userInfoUrl: 'https://www.googleapis.com/oauth2/v3/userinfo',
-    redirectUrl: 'http://localhost:3000/auth/google/callback',
+    redirectUrl: process.env.GOOGLE_CALLBACK_URL ?? 'https://druk-lms-sso-api.mythimphu.com/auth/google/callback',
     scopes: 'openid profile email',
     iconUrl: 'https://www.svgrepo.com/show/475656/google-color.svg',
     isEnabled: true,
