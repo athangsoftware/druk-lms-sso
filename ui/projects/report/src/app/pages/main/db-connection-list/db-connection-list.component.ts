@@ -132,12 +132,24 @@ export class DbConnectionListComponent {
   testMutation = httpMutation<TestDbConnectionResponse>({
     request: () => this.api.testDbConnection(this.targetId()),
     handleSuccess: false,
+    handleError: false,
     onSuccess: (res) => {
       if (res.data.isConnected) {
-        this.toast.success('Connection test successful ✅');
+        this.toast.success(res.successMessage ?? 'Connection test successful ✅');
       } else {
-        this.toast.error('Connection test failed. Please check your credentials ❌');
+        // Show alert dialog for failed connection tests so the user can acknowledge the issue.
+        this.overlay.openAlert(
+          'Connection test failed',
+          res.successMessage ?? 'Connection test failed. Please check your credentials ❌'
+        );
       }
+    },
+    onFailed: (err) => {
+      console.error('[DB Test] onFailed', err);
+      const message =
+        (err.error as any)?.message || err.message ||
+        'Connection test failed. Please check your network and credentials.';
+      this.overlay.openAlert('Connection test failed', message);
     },
   });
 
