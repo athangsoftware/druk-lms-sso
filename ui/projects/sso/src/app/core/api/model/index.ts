@@ -270,6 +270,31 @@ export interface BhutanNdiCallbackResponse {
   [key: string]: unknown;
 }
 
+export interface NdiRegisterWebhookResponse {
+  successMessage: string;
+  data?: any;
+}
+
+export interface NdiTestConnectionResponse {
+  successMessage: string;
+  data: { connected: boolean };
+}
+
+export interface NdiWebhookLogItem {
+  id: string;
+  proofRequestId: string;
+  processedAt: string;
+  createdAt: string;
+}
+
+export interface NdiWebhookStatusResponse {
+  successMessage: string;
+  data: {
+    totalWebhookLogs: number;
+    recentLogs: NdiWebhookLogItem[];
+  };
+}
+
 // ─── External ─────────────────────────────────────────────────────
 
 export interface CreateUserExternalRequest {

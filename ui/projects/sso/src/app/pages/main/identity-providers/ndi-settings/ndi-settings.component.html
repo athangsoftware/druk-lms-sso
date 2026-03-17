@@ -1,0 +1,137 @@
+<ui-base-overlay [title]="'NDI Webhook Settings'">
+  <div body class="flex flex-col gap-6">
+
+    <!-- Provider Info -->
+    <div class="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+          <svg class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a48.667 48.667 0 00-6.471 12.355M11.25 3.354c4.776.505 8.683 3.904 9.739 8.395M18.118 12.006c.091.518.141 1.052.141 1.594a48.702 48.702 0 01-12.207 7.747" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-neutral-800">{{ data.name }}</p>
+          <p class="text-xs text-neutral-500">{{ data.slug }} · {{ data.type }}</p>
+        </div>
+        <span class="ml-auto inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"
+          [class]="data.isEnabled
+            ? 'bg-green-50 text-green-700 border border-green-200'
+            : 'bg-red-50 text-red-700 border border-red-200'">
+          <span class="h-1.5 w-1.5 rounded-full" [class]="data.isEnabled ? 'bg-green-500' : 'bg-red-500'"></span>
+          {{ data.isEnabled ? 'Enabled' : 'Disabled' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Test Connection -->
+    <div class="rounded-lg border border-neutral-200 p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800">Test Connection</h3>
+          <p class="mt-0.5 text-xs text-neutral-500">Verify that the NDI credentials are valid and the service is reachable.</p>
+        </div>
+        <ui-button
+          [loading]="testConnectionMutation.isLoading()"
+          (click)="onTestConnection()"
+          type="button">
+          Test
+        </ui-button>
+      </div>
+
+      @if (connectionStatus() === 'success') {
+        <div class="mt-3 flex items-center gap-2 rounded-md bg-green-50 px-3 py-2 text-xs text-green-700 border border-green-200">
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Connection successful — NDI service is reachable.
+        </div>
+      }
+
+      @if (connectionStatus() === 'error') {
+        <div class="mt-3 flex items-center gap-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700 border border-red-200">
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+          Connection failed — check your NDI credentials and configuration.
+        </div>
+      }
+    </div>
+
+    <!-- Register Webhook -->
+    <div class="rounded-lg border border-neutral-200 p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800">Register Webhook</h3>
+          <p class="mt-0.5 text-xs text-neutral-500">Register or re-register the webhook endpoint with the NDI service to receive verification callbacks.</p>
+        </div>
+        <ui-button
+          [loading]="registerWebhookMutation.isLoading()"
+          (click)="onRegisterWebhook()"
+          type="button">
+          Register
+        </ui-button>
+      </div>
+
+      @if (registerStatus() === 'success') {
+        <div class="mt-3 flex items-center gap-2 rounded-md bg-green-50 px-3 py-2 text-xs text-green-700 border border-green-200">
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Webhook registered successfully.
+        </div>
+      }
+
+      @if (registerStatus() === 'error') {
+        <div class="mt-3 flex items-center gap-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700 border border-red-200">
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+          Webhook registration failed — check NDI configuration.
+        </div>
+      }
+    </div>
+
+    <!-- Webhook Logs -->
+    <div class="rounded-lg border border-neutral-200 p-4">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h3 class="text-sm font-semibold text-neutral-800">Recent Webhook Activity</h3>
+          <p class="mt-0.5 text-xs text-neutral-500">
+            @if (webhookStatus.value(); as ws) {
+              {{ ws.data.totalWebhookLogs }} total webhook{{ ws.data.totalWebhookLogs !== 1 ? 's' : '' }} received
+            }
+          </p>
+        </div>
+        <ui-button (click)="webhookStatus.refetch()" type="button">Refresh</ui-button>
+      </div>
+
+      @if (webhookStatus.isLoading()) {
+        <div class="flex justify-center py-4"><ui-spinner></ui-spinner></div>
+      }
+
+      @if (webhookStatus.value(); as ws) {
+        @if (ws.data.recentLogs.length === 0) {
+          <div class="rounded-md bg-neutral-50 px-4 py-6 text-center text-xs text-neutral-500">
+            No webhook activity recorded yet.
+          </div>
+        } @else {
+          <div class="overflow-hidden rounded-md border border-neutral-200">
+            <table class="w-full text-xs">
+              <thead class="bg-neutral-50">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium text-neutral-600">Proof Request ID</th>
+                  <th class="px-3 py-2 text-left font-medium text-neutral-600">Processed</th>
+                  <th class="px-3 py-2 text-left font-medium text-neutral-600">Received</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-neutral-100">
+                @for (log of ws.data.recentLogs; track log.id) {
+                  <tr class="hover:bg-neutral-50">
+                    <td class="px-3 py-2 font-mono text-neutral-700 truncate max-w-[200px]" [title]="log.proofRequestId">
+                      {{ log.proofRequestId.length > 20 ? log.proofRequestId.slice(0, 20) + '…' : log.proofRequestId }}
+                    </td>
+                    <td class="px-3 py-2 text-neutral-600">{{ log.processedAt | date:'short' }}</td>
+                    <td class="px-3 py-2 text-neutral-600">{{ log.createdAt | date:'short' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+    </div>
+
+  </div>
+</ui-base-overlay>

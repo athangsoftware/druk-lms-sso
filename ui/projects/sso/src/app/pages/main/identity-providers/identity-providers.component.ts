@@ -20,6 +20,7 @@ import {
 import { environment } from '@environments/environment';
 import { CreateIdentityProviderComponent } from './create-identity-provider/create-identity-provider.component';
 import { UpdateIdentityProviderComponent } from './update-identity-provider/update-identity-provider.component';
+import { NdiSettingsComponent } from './ndi-settings/ndi-settings.component';
 import { IdentityProviderListStore } from './identity-providers.store';
 
 @Component({
@@ -159,6 +160,7 @@ export class IdentityProvidersComponent {
           alignment: 'center',
           actionsConfig: {
             threeDotMenuActions: (item: GetIdentityProviderListItem): ContextMenuActionConfig[] => [
+              ...(item.type === 'NDI' ? [{ label: 'NDI Settings', iconPath: 'icons/edit.svg', actionKey: 'ndi-settings' }] : []),
               { label: item.isEnabled ? 'Disable' : 'Enable', iconPath: item.isEnabled ? 'icons/delete.svg' : 'icons/edit.svg', actionKey: 'toggle' },
               { label: 'Edit', iconPath: 'icons/edit.svg', actionKey: 'edit' },
               { label: 'Delete', iconPath: 'icons/delete.svg', actionKey: 'delete' },
@@ -178,6 +180,12 @@ export class IdentityProvidersComponent {
   async onAction(event: TableActionEvent) {
     const item: GetIdentityProviderListItem = event.item;
     switch (event.actionKey) {
+      case 'ndi-settings':
+        this.overlayService.openModal(NdiSettingsComponent, {
+          disableClose: false,
+          data: item,
+        });
+        break;
       case 'edit':
         this.overlayService.openModal(UpdateIdentityProviderComponent, {
           disableClose: true,

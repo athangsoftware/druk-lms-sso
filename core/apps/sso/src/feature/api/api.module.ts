@@ -59,6 +59,9 @@ import { UpdateIdentityProviderController } from './identity-provider/update-ide
 import { DeleteIdentityProviderController } from './identity-provider/delete-identity-provider/delete-identity-provider.controller';
 import { ToggleIdentityProviderController } from './identity-provider/toggle-identity-provider/toggle-identity-provider.controller';
 import { GetEnabledProvidersController } from './identity-provider/get-enabled-providers/get-enabled-providers.controller';
+import { NdiRegisterWebhookController } from './identity-provider/ndi-register-webhook/ndi-register-webhook.controller';
+import { NdiTestConnectionController } from './identity-provider/ndi-test-connection/ndi-test-connection.controller';
+import { NdiWebhookStatusController } from './identity-provider/ndi-webhook-status/ndi-webhook-status.controller';
 
 // Services
 import { OAuthService } from './auth.service';
@@ -113,6 +116,9 @@ const CONTROLLERS = [
   DashboardController,
   // Identity Provider
   GetEnabledProvidersController,
+  NdiRegisterWebhookController,
+  NdiTestConnectionController,
+  NdiWebhookStatusController,
   GetIdentityProviderListController,
   GetIdentityProviderController,
   CreateIdentityProviderController,
