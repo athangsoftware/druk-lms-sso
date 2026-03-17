@@ -45,7 +45,7 @@ export class GoogleSignInCallbackController {
     const googleClientSecret = useDbConfig
       ? this.idpService.decryptProviderSecret(provider)
       : this.appConfig.googleClientSecret;
-    const googleRedirectUri = useDbConfig ? provider.redirectUrl : this.appConfig.redirectUri;
+    const googleRedirectUri = this.appConfig.redirectUri || (useDbConfig ? provider.redirectUrl : null);
     const tokenUrl = useDbConfig && provider.tokenUrl
       ? provider.tokenUrl
       : 'https://oauth2.googleapis.com/token';

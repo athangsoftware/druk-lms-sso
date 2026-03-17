@@ -34,7 +34,7 @@ export class GoogleSignInController {
     const provider = await this.idpService.getProviderBySlug('google');
 
     const googleClientId = provider?.isEnabled ? provider.clientId : this.appConfig.googleClientId;
-    const googleRedirectUri = provider?.isEnabled ? provider.redirectUrl : this.appConfig.redirectUri;
+    const googleRedirectUri = this.appConfig.redirectUri || (provider?.isEnabled ? provider.redirectUrl : null);
     const authorizationUrl = provider?.isEnabled && provider.authorizationUrl
       ? provider.authorizationUrl
       : 'https://accounts.google.com/o/oauth2/v2/auth';
