@@ -64,7 +64,9 @@ export class ContextMenuButton implements OnDestroy {
     this.subscription()?.unsubscribe();
   }
 
-  protected onMenuClick(): void {
+  protected onMenuClick(event: MouseEvent): void {
+    event.stopPropagation();
+
     const positionMappings: any = {
       // BOTTOM POSITIONS
       bottomRight: [{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 }],
@@ -116,7 +118,12 @@ export class ContextMenuButton implements OnDestroy {
       })
     );
   }
+
+  protected onMenuPointerDown(event: PointerEvent): void {
+    event.stopPropagation();
+  }
 }
+
 
 export interface ContextMenuButtonAction {
   iconPath?: string;
