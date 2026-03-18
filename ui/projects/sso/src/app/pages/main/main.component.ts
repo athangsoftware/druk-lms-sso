@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Nav, OverlayStore, SideMenuItem } from '@projects/shared-lib';
+import { Nav, OverlayStore, SideMenuItem, NavMode } from '@projects/shared-lib';
 import { AuthHelperService } from '@core/auth-helper.service';
 import { AccountSettingComponent } from './account-setting/account-setting.component';
 
@@ -17,6 +17,7 @@ export class MainComponent {
   @ViewChild('accountSetting', { static: true }) accountSetting!: ElementRef;
 
   navMenus: SideMenuItem[] = this.buildNavMenus();
+  navMode: NavMode = this.navMenus.filter(m => !m.isSeparator && !m.groupHeading).length > 5 ? 'vertical' : 'horizontal';
 
   private buildNavMenus(): SideMenuItem[] {
     const allMenus: SideMenuItem[] = [
@@ -25,6 +26,13 @@ export class MainComponent {
         label: 'Dashboard',
         link: '/main/dashboard',
         iconPath: 'icons/dashboard.svg',
+        isEnabled: true,
+      },
+      // ── User Management ──
+      {
+        id: 'sep-users',
+        label: 'Users',
+        isSeparator: true,
         isEnabled: true,
       },
       {
@@ -46,6 +54,13 @@ export class MainComponent {
         label: 'Identity Providers',
         link: '/main/identity-providers',
         iconPath: 'icons/application.svg',
+        isEnabled: true,
+      },
+      // ── Access Control ──
+      {
+        id: 'sep-rbac',
+        label: 'Access Control',
+        isSeparator: true,
         isEnabled: true,
       },
       {

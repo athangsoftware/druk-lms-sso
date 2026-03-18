@@ -56,7 +56,8 @@ export class RolesComponent {
           title: 'Parent Role',
           type: 'text',
           alignment: 'left',
-          displayTemplate: '$parentRoleName',
+          key: 'parentRoleName',
+          formatter: (value) => value ?? '-',
         },
         {
           title: 'Status',

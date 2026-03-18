@@ -877,6 +877,16 @@ export interface GetUserRoleListResponse {
   };
 }
 
+// ─── RBAC Me ─────────────────────────────────────────────────────
+
+export interface GetMyPermissionsResponse {
+  successMessage: string;
+  data: {
+    roles: string[];
+    permissions: string[];
+  };
+}
+
 // ─── Column Filters ──────────────────────────────────────────────
 
 export interface ColumnFilter {

@@ -77,8 +77,8 @@ export class TokenController {
           throw new BadRequestException('User not found');
         }
 
-        const permissions = await this.rbacService.getUserPermissions(user.id);
-        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, permissions });
+        const roles = await this.rbacService.getUserRoleNames(user.id);
+        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, roles });
         const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.userType, type: 'refresh' });
 
         await dbContext.refreshToken.create({
@@ -140,8 +140,8 @@ export class TokenController {
           throw new BadRequestException('Invalid token type');
         }
 
-        const refreshPermissions = await this.rbacService.getUserPermissions(storedToken.user.id);
-        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, permissions: refreshPermissions });
+        const refreshRoles = await this.rbacService.getUserRoleNames(storedToken.user.id);
+        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, roles: refreshRoles });
         const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, type: 'refresh' });
 
         await dbContext.refreshToken.update({

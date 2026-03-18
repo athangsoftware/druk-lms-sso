@@ -81,6 +81,7 @@ import type {
   AssignUserRolesRequest,
   AssignUserRolesResponse,
   GetUserRoleListResponse,
+  GetMyPermissionsResponse,
 } from './model';
 
 @Injectable({ providedIn: 'root' })
@@ -353,5 +354,11 @@ export class ApiService {
 
   assignUserRoles(userId: string, request: AssignUserRolesRequest): Observable<AssignUserRolesResponse> {
     return this.http.post<AssignUserRolesResponse>(`${this.apiUrl}/rbac/users/${userId}/roles`, request);
+  }
+
+  // ─── RBAC Me ────────────────────────────────────────────────────────
+
+  getMyPermissions(): Observable<GetMyPermissionsResponse> {
+    return this.http.get<GetMyPermissionsResponse>(`${this.apiUrl}/rbac/me/permissions`);
   }
 }

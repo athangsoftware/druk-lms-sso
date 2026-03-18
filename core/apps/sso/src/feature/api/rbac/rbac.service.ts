@@ -41,6 +41,22 @@ export class RbacService {
   }
 
   /**
+   * Get all active role names directly assigned to a user.
+   */
+  async getUserRoleNames(userId: string): Promise<string[]> {
+    return await this.prismaService.client<string[]>(async ({ dbContext }) => {
+      const userRoles = await dbContext.userRole.findMany({
+        where: { userId },
+        include: { role: true },
+      });
+
+      return userRoles
+        .filter((ur) => ur.role.isActive)
+        .map((ur) => ur.role.name);
+    });
+  }
+
+  /**
    * Resolve role hierarchy by walking up parent roles.
    */
   private async resolveRoleHierarchy(roleIds: string[], dbContext: any): Promise<string[]> {

@@ -85,6 +85,7 @@ import { GetRoleListController as GetRbacRoleListController } from './rbac/role/
 import { AssignRolePermissionsController } from './rbac/role/assign-role-permissions/assign-role-permissions.controller';
 import { AssignUserRolesController } from './rbac/user-role/assign-user-roles/assign-user-roles.controller';
 import { GetUserRoleListController } from './rbac/user-role/get-user-role-list/get-user-role-list.controller';
+import { GetMyPermissionsController } from './rbac/me/get-my-permissions/get-my-permissions.controller';
 import { RbacService } from './rbac/rbac.service';
 import { PermissionGuard } from './rbac/permission.guard';
 
@@ -172,6 +173,7 @@ const CONTROLLERS = [
   AssignRolePermissionsController,
   AssignUserRolesController,
   GetUserRoleListController,
+  GetMyPermissionsController,
 ];
 
 const SERVICES = [OAuthService, BhutanNdiService, LogoutService, IdentityProviderService, RbacService, PermissionGuard];

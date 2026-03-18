@@ -89,7 +89,7 @@ export function resolveTemplateWithObject(
         value = value[k as keyof typeof value];
       }
 
-      if (value === undefined) return fallback; // Return fallback if key not found
+      if (value === undefined || value === null) return fallback; // Return fallback if key not found or null
     }
 
     return value;

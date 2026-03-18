@@ -34,3 +34,6 @@ export { AssignRolePermissionsController } from './role/assign-role-permissions/
 // User Role
 export { AssignUserRolesController } from './user-role/assign-user-roles/assign-user-roles.controller';
 export { GetUserRoleListController } from './user-role/get-user-role-list/get-user-role-list.controller';
+
+// Me
+export { GetMyPermissionsController } from './me/get-my-permissions/get-my-permissions.controller';
