@@ -15,7 +15,7 @@ export class GetMyPermissionsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getMyPermissions' })
   @ApiResponse({ status: HttpStatus.OK, type: GetMyPermissionsResponse })
-  @RequirePermission('permission.read')
+  @RequirePermission('permission.list')
   async execute(@CurrentUser() user: any): Promise<GetMyPermissionsResponse> {
     const [roles, permissions] = await Promise.all([
       this.rbacService.getUserRoleNames(user.sub),

@@ -3,49 +3,94 @@
     <div class="flex flex-col gap-4">
       <p class="text-sm text-neutral-600">Select permissions to assign to this role.</p>
 
-      <input
-        type="text"
-        class="w-full px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Search permissions..."
-        [value]="searchTerm()"
-        (input)="searchTerm.set($any($event.target).value)"
-      />
+      <div class="flex gap-3">
+        <input
+          type="text"
+          class="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Search permissions..."
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+        />
+        <select
+          class="px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [value]="selectedClientFilter()"
+          (change)="selectedClientFilter.set($any($event.target).value)"
+        >
+          <option value="">All Clients</option>
+          @for (client of clientNames(); track client.name) {
+            <option [value]="client.id ?? ''">{{ client.name }}</option>
+          }
+        </select>
+      </div>
 
       <div class="max-h-96 overflow-y-auto border border-neutral-200 rounded-lg">
-        @for (group of groupedPermissions(); track group.name) {
-          <!-- Group Header -->
-          <div class="sticky top-0 z-10 bg-neutral-50 border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between">
+        <!-- Access All (*) Header -->
+        <div class="sticky top-0 z-30 bg-indigo-50 border-b border-indigo-200 px-4 py-2.5 flex items-center justify-between">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              class="h-4 w-4 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500"
+              [checked]="isAccessAllSelected()"
+              [indeterminate]="isAccessAllPartial()"
+              (change)="toggleAccessAll()"
+            />
+            <span class="text-sm font-bold text-indigo-800">Access All (*)</span>
+          </label>
+        </div>
+
+        @for (clientGroup of clientGroupedPermissions(); track clientGroup.clientName) {
+          <!-- Client Header -->
+          <div class="sticky top-0 z-20 bg-blue-50 border-b border-blue-200 px-4 py-2.5 flex items-center justify-between">
             <label class="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
-                class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
-                [checked]="isGroupAllSelected(group)"
-                [indeterminate]="isGroupPartiallySelected(group)"
-                (change)="toggleGroup(group)"
+                class="h-4 w-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500"
+                [checked]="isClientAllSelected(clientGroup)"
+                [indeterminate]="isClientPartiallySelected(clientGroup)"
+                (change)="toggleClient(clientGroup)"
               />
-              <span class="text-sm font-semibold text-neutral-700">{{ group.name }}</span>
+              <span class="text-sm font-bold text-blue-800">{{ clientGroup.clientName }}</span>
             </label>
-            <span class="text-xs text-neutral-500">
-              {{ groupSelectedCount(group) }}/{{ group.permissions.length }}
+            <span class="text-xs font-medium text-blue-600">
+              {{ clientSelectedCount(clientGroup) }}/{{ clientGroup.allPermissions.length }}
             </span>
           </div>
 
-          <!-- Group Permissions -->
-          <div class="divide-y divide-neutral-100">
-            @for (permission of group.permissions; track permission.id) {
-              <label class="flex items-center gap-3 px-4 py-2.5 pl-10 hover:bg-neutral-50 cursor-pointer">
+          @for (group of clientGroup.groups; track group.name) {
+            <!-- Group Header -->
+            <div class="sticky top-[41px] z-10 bg-neutral-50 border-b border-neutral-200 px-4 py-2.5 pl-8 flex items-center justify-between">
+              <label class="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
-                  [checked]="isSelected(permission.id)"
-                  (change)="togglePermission(permission.id)"
+                  [checked]="isGroupAllSelected(group)"
+                  [indeterminate]="isGroupPartiallySelected(group)"
+                  (change)="toggleGroup(group)"
                 />
-                <span class="text-sm text-neutral-800">
-                  {{ permission.resourceName }}:{{ permission.actionName }}
-                </span>
+                <span class="text-sm font-semibold text-neutral-700">{{ group.name }}</span>
               </label>
-            }
-          </div>
+              <span class="text-xs text-neutral-500">
+                {{ groupSelectedCount(group) }}/{{ group.permissions.length }}
+              </span>
+            </div>
+
+            <!-- Group Permissions -->
+            <div class="divide-y divide-neutral-100">
+              @for (permission of group.permissions; track permission.id) {
+                <label class="flex items-center gap-3 px-4 py-2.5 pl-14 hover:bg-neutral-50 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500"
+                    [checked]="isSelected(permission.id)"
+                    (change)="togglePermission(permission.id)"
+                  />
+                  <span class="text-sm text-neutral-800">
+                    {{ permission.resourceName }}:{{ permission.actionName }}
+                  </span>
+                </label>
+              }
+            </div>
+          }
         }
       </div>
 

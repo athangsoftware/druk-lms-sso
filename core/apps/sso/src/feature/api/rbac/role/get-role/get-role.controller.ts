@@ -16,7 +16,7 @@ export class GetRoleController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getRole' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetRoleResponse })
-  @RequirePermission('role.read')
+  @RequirePermission('role.list')
   async execute(@Param('id') id: string): Promise<GetRoleResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const role = await dbContext.role.findUnique({
@@ -48,6 +48,7 @@ export class GetRoleController {
           permissions: role.permissions.map(
             (rp) => `${rp.permission.resource.name}.${rp.permission.action.name}`,
           ),
+          permissionIds: role.permissions.map((rp) => rp.permissionId),
           children: role.children.map((c) => ({
             id: c.id,
             name: c.name,

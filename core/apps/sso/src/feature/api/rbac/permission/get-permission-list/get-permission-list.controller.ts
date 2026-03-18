@@ -15,11 +15,11 @@ export class GetPermissionListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getPermissionList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetPermissionListResponse })
-  @RequirePermission('permission.read')
+  @RequirePermission('permission.list')
   async execute(): Promise<GetPermissionListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const permissions = await dbContext.permission.findMany({
-        include: { resource: true, action: true, group: true },
+        include: { resource: true, action: true, group: { include: { client: true } } },
         orderBy: [{ resource: { name: 'asc' } }, { action: { name: 'asc' } }],
       });
 
@@ -33,6 +33,8 @@ export class GetPermissionListController {
           resourceName: p.resource.name,
           actionName: p.action.name,
           groupName: p.group?.name ?? null,
+          clientId: p.group?.clientId ?? null,
+          clientName: p.group?.client?.name ?? null,
           isActive: p.isActive,
           createdAt: p.createdAt,
         })),

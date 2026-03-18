@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '@core/api/api.service';
 import {
   GetRbacResourceListResponse,
@@ -12,6 +12,7 @@ import {
   OverlayStore,
   Button,
   httpQuery,
+  httpMutation,
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
 import { CreateResourceComponent } from './create-resource/create-resource.component';
@@ -26,11 +27,18 @@ import { UpdateResourceComponent } from './update-resource/update-resource.compo
 export class ResourcesComponent {
   private apiService = inject(ApiService);
   overlayService = inject(OverlayStore);
+  private targetResourceId = signal<string>('');
 
   resourceList = httpQuery<GetRbacResourceListResponse>({
     request: () => ({ url: `${environment.apiUrl}/rbac/resources` }),
     handleSuccess: false,
     handleError: true,
+  });
+
+  deleteMutation = httpMutation({
+    request: () => this.apiService.deleteRbacResource(this.targetResourceId()),
+    handleSuccess: true,
+    onSuccess: () => this.resourceList.refetch(),
   });
 
   onCreate() {
@@ -86,11 +94,14 @@ export class ResourcesComponent {
         });
         break;
       case 'delete':
-        if (confirm(`Are you sure you want to delete resource "${item.name}"?`)) {
-          this.apiService.deleteRbacResource(item.id).subscribe({
-            next: () => this.resourceList.refetch(),
+        this.overlayService
+          .openAlert('Delete Resource', `Are you sure you want to delete "${item.name}"? This action cannot be undone.`)
+          .then((confirmed) => {
+            if (confirmed) {
+              this.targetResourceId.set(item.id);
+              this.deleteMutation.trigger();
+            }
           });
-        }
         break;
     }
   }

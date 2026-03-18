@@ -29,7 +29,7 @@ export async function handleUpdateMany(
     args.where = { ...args.where };
 
     if (!Array.isArray(args.data)) {
-        setAuditFields('updateMany', args, config);
+        setAuditFields('updateMany', args, config, model);
         const updatedRecords = await query(args);
         await setAuditLog('updateMany', 'update', model, null, null, args.data, userId, prismaTx, config);
         return updatedRecords;

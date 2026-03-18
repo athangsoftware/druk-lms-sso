@@ -18,7 +18,7 @@ export class GetUserRoleListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUserRoles' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetUserRoleListResponse })
-  @RequirePermission('role.read')
+  @RequirePermission('role.list')
   async execute(@Param('userId') userId: string): Promise<GetUserRoleListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id: userId } });

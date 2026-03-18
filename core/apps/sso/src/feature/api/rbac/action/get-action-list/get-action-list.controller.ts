@@ -15,7 +15,7 @@ export class GetActionListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getActionList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetActionListResponse })
-  @RequirePermission('action.read')
+  @RequirePermission('action.list')
   async execute(): Promise<GetActionListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const actions = await dbContext.action.findMany({ orderBy: { name: 'asc' } });

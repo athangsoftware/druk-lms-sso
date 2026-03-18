@@ -10,6 +10,12 @@ class UpdatePermissionGroupResponseData {
   @ApiPropertyOptional()
   description: string | null;
 
+  @ApiPropertyOptional()
+  clientId: string | null;
+
+  @ApiPropertyOptional()
+  clientName: string | null;
+
   @ApiProperty()
   createdAt: Date;
 }

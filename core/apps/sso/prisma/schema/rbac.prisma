@@ -46,7 +46,9 @@ model PermissionGroup {
   id          String  @id @default(uuid())
   name        String  @unique
   description String?
+  clientId    String? @map("client_id")
 
+  client      Client? @relation(fields: [clientId], references: [id])
   permissions Permission[]
 
   createdAt DateTime @default(now()) @map("created_at")

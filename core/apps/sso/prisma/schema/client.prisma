@@ -17,6 +17,7 @@ model Client {
   authorizationCodes     AuthorizationCode[]
   redirectUrls           RedirectURL[]
   postLogoutRedirectUrls PostLogoutRedirectURL[]
+  permissionGroups       PermissionGroup[]
 
   createdBy String?   @map("created_by")
   createdAt DateTime  @default(now()) @map("created_at")

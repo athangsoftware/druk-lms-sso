@@ -16,7 +16,7 @@ export class NdiWebhookStatusController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiWebhookStatus' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns NDI webhook status and recent logs' })
-  @RequirePermission('identity-provider.read')
+  @RequirePermission('identity-provider.list')
   async execute(
     @Query('limit') limit?: string,
   ): Promise<{

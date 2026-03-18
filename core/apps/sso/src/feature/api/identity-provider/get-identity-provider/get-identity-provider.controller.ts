@@ -20,7 +20,7 @@ export class GetIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns identity provider by ID', type: GetIdentityProviderResponse })
-  @RequirePermission('identity-provider.read')
+  @RequirePermission('identity-provider.list')
   async execute(@Param('id') id: string): Promise<GetIdentityProviderResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const provider = await dbContext.identityProvider.findUnique({ where: { id } });

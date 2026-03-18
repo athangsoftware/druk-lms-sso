@@ -716,6 +716,8 @@ export interface RbacPermissionItem {
   resourceName: string;
   actionName: string;
   groupName: string | null;
+  clientId: string | null;
+  clientName: string | null;
   isActive: boolean;
   createdAt: string;
 }
@@ -735,6 +737,7 @@ export interface GetRbacPermissionListResponse {
 export interface CreatePermissionGroupRequest {
   name: string;
   description?: string;
+  clientId?: string;
 }
 
 export interface CreatePermissionGroupResponse {
@@ -743,6 +746,8 @@ export interface CreatePermissionGroupResponse {
     id: string;
     name: string;
     description: string | null;
+    clientId: string | null;
+    clientName: string | null;
     createdAt: string;
   };
 }
@@ -750,6 +755,7 @@ export interface CreatePermissionGroupResponse {
 export interface UpdatePermissionGroupRequest {
   name?: string;
   description?: string;
+  clientId?: string;
 }
 
 export interface UpdatePermissionGroupResponse {
@@ -758,6 +764,8 @@ export interface UpdatePermissionGroupResponse {
     id: string;
     name: string;
     description: string | null;
+    clientId: string | null;
+    clientName: string | null;
     createdAt: string;
   };
 }
@@ -777,6 +785,8 @@ export interface PermissionGroupItem {
   id: string;
   name: string;
   description: string | null;
+  clientId: string | null;
+  clientName: string | null;
   permissions: PermissionGroupPermissionItem[];
   createdAt: string;
 }
@@ -814,6 +824,7 @@ export interface RbacRoleItem {
   isActive: boolean;
   createdAt: string;
   permissions: string[];
+  permissionIds: string[];
   children: RbacRoleChildItem[];
 }
 

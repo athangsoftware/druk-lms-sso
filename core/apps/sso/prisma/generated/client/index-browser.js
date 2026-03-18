@@ -247,6 +247,7 @@ exports.Prisma.PermissionGroupScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  clientId: 'clientId',
   createdAt: 'createdAt'
 };
 
@@ -458,7 +459,8 @@ exports.Prisma.PermissionOrderByRelevanceFieldEnum = {
 exports.Prisma.PermissionGroupOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  clientId: 'clientId'
 };
 
 exports.Prisma.RoleOrderByRelevanceFieldEnum = {

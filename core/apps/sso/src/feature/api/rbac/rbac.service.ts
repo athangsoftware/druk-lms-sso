@@ -81,9 +81,12 @@ export class RbacService {
 
   /**
    * Check if a user has a specific permission (resource.action format).
+   * Supports wildcard matching (e.g., user.* matches user.read).
    */
   async hasPermission(userId: string, permission: string): Promise<boolean> {
     const permissions = await this.getUserPermissions(userId);
-    return permissions.includes(permission);
+    if (permissions.includes(permission)) return true;
+    const [resource] = permission.split('.');
+    return permissions.includes(`${resource}.*`);
   }
 }

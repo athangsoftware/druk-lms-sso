@@ -1,0 +1,23 @@
+<ui-base-overlay [title]="'Permission Settings'">
+  <div body>
+    <div class="flex flex-col gap-4 min-h-[400px]">
+
+      <ui-tab [tabsConfig]="tabs" (tabChange)="onTabChange($event)">
+        <div tab-content>
+          @switch (activeTab()) {
+            @case ('resources') {
+              <app-resources class="block h-full"></app-resources>
+            }
+            @case ('actions') {
+              <app-actions class="block h-full"></app-actions>
+            }
+            @case ('groups') {
+              <app-permission-groups class="block h-full"></app-permission-groups>
+            }
+          }
+        </div>
+      </ui-tab>
+
+    </div>
+  </div>
+</ui-base-overlay>

@@ -16,7 +16,7 @@ export class GetClientController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getClient' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns client by ID', type: GetClientResponse })
-  @RequirePermission('client.read')
+  @RequirePermission('client.list')
   async execute(@Param('id') id: string): Promise<GetClientResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const client = await dbContext.client.findUnique({

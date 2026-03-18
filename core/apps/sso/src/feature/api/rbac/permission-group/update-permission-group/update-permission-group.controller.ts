@@ -33,12 +33,24 @@ export class UpdatePermissionGroupController {
 
       const group = await dbContext.permissionGroup.update({
         where: { id },
-        data: { name: body.name ?? undefined, description: body.description ?? undefined },
+        data: {
+          name: body.name ?? undefined,
+          description: body.description ?? undefined,
+          clientId: body.clientId !== undefined ? body.clientId : undefined,
+        },
+        include: { client: true },
       });
 
       return {
         successMessage: SuccessMessages.updateSuccess('Permission Group'),
-        data: group,
+        data: {
+          id: group.id,
+          name: group.name,
+          description: group.description,
+          clientId: group.clientId,
+          clientName: group.client?.name ?? null,
+          createdAt: group.createdAt,
+        },
       };
     });
   }

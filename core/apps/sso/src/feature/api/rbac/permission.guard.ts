@@ -35,7 +35,7 @@ export class PermissionGuard implements CanActivate {
     // Check if user has permissions from JWT payload first (cached)
     if (user.permissions && Array.isArray(user.permissions)) {
       const hasPermission = requiredPermissions.some((perm) =>
-        user.permissions.includes(perm),
+        this.matchesPermission(user.permissions, perm),
       );
       if (hasPermission) return true;
       throw new ForbiddenException('Access denied: insufficient permissions');
@@ -44,7 +44,7 @@ export class PermissionGuard implements CanActivate {
     // Fallback: resolve permissions from database
     const userPermissions = await this.rbacService.getUserPermissions(user.sub);
     const hasPermission = requiredPermissions.some((perm) =>
-      userPermissions.includes(perm),
+      this.matchesPermission(userPermissions, perm),
     );
 
     if (!hasPermission) {
@@ -52,5 +52,11 @@ export class PermissionGuard implements CanActivate {
     }
 
     return true;
+  }
+
+  private matchesPermission(userPermissions: string[], required: string): boolean {
+    if (userPermissions.includes(required)) return true;
+    const [resource] = required.split('.');
+    return userPermissions.includes(`${resource}.*`);
   }
 }

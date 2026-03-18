@@ -52,6 +52,12 @@ export class PermissionGroupsComponent {
           sortKey: 'name',
         },
         {
+          title: 'Client',
+          type: 'text',
+          alignment: 'left',
+          displayTemplate: '$clientName',
+        },
+        {
           title: 'Description',
           type: 'text',
           alignment: 'left',

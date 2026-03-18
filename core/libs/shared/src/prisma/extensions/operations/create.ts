@@ -18,7 +18,7 @@ export async function handleCreate(
         args.data = { ...args.data, [tenantFieldName]: tenantId };
     }
 
-    setAuditFields('create', args, config);
+    setAuditFields('create', args, config, model);
 
     const newValue = await query(args);
 

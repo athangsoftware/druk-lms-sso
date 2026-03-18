@@ -25,7 +25,7 @@ export async function handleCreateMany(
         }
     }
 
-    setAuditFields('create', args, config);
+    setAuditFields('create', args, config, model);
 
     const result = await query(args);
 

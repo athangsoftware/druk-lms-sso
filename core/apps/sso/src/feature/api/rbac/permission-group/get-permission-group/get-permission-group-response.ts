@@ -36,6 +36,12 @@ class GetPermissionGroupResponseData {
   @ApiPropertyOptional()
   description: string | null;
 
+  @ApiPropertyOptional()
+  clientId: string | null;
+
+  @ApiPropertyOptional()
+  clientName: string | null;
+
   @ApiPropertyOptional({ type: [PermissionItem] })
   permissions: PermissionItem[];
 

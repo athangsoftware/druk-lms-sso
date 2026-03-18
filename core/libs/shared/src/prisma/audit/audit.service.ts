@@ -46,10 +46,16 @@ export async function setAuditLog(
 export function setAuditFields(
     operation: string,
     args: any,
-    config: PrismaLibConfig
+    config: PrismaLibConfig,
+    model?: string
 ): void {
     // Skip if config is missing or audit log is disabled
     if (!config || config.enableAuditLog === false) {
+        return;
+    }
+
+    // Skip models that don't have audit fields
+    if (model && config.auditUnawareModels?.includes(model)) {
         return;
     }
 

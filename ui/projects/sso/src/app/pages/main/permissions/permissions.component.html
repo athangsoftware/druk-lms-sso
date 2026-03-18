@@ -5,7 +5,10 @@
     <div>
       <h1 class="text-xl font-semibold text-neutral-800">Permissions</h1>
     </div>
-    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Permission</ui-button>
+    <div class="flex items-center gap-2">
+      <ui-button [iconSrc]="'icons/settings.svg'" [appearance]="'outline'" (click)="onOpenSettings()" type="button">Configure</ui-button>
+      <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Permission</ui-button>
+    </div>
   </div>
 
   <!-- Table -->

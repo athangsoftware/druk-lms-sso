@@ -76,7 +76,11 @@ export class AuthHelperService {
     const token = this.getAccessToken();
     if (!token) return false;
     const decoded = this.decodeToken(token);
-    return decoded?.permissions?.includes(permission) ?? false;
+    const perms = decoded?.permissions;
+    if (!perms) return false;
+    if (perms.includes(permission)) return true;
+    const [resource] = permission.split('.');
+    return perms.includes(`${resource}.*`);
   }
 
   isMember(): boolean {

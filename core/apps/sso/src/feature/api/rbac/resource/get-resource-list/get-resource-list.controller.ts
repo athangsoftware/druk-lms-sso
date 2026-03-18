@@ -15,7 +15,7 @@ export class GetResourceListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getResourceList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetResourceListResponse })
-  @RequirePermission('resource.read')
+  @RequirePermission('resource.list')
   async execute(): Promise<GetResourceListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const resources = await dbContext.resource.findMany({ orderBy: { name: 'asc' } });

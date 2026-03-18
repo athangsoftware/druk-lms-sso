@@ -21,7 +21,7 @@ export class GetIdentityProviderListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getIdentityProviderList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetIdentityProviderListResponse })
-  @RequirePermission('identity-provider.read')
+  @RequirePermission('identity-provider.list')
   async execute(@Query() request: GetIdentityProviderListRequest): Promise<GetIdentityProviderListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const whereCondition: Prisma.IdentityProviderWhereInput = { AND: [] };

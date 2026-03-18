@@ -39,6 +39,9 @@ class GetRoleListItem {
   @ApiPropertyOptional({ type: [String] })
   permissions: string[];
 
+  @ApiPropertyOptional({ type: [String] })
+  permissionIds: string[];
+
   @ApiPropertyOptional({ type: [RoleChildItem] })
   children: RoleChildItem[];
 }

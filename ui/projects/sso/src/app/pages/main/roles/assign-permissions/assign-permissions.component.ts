@@ -16,6 +16,13 @@ interface PermissionGroup {
   permissions: RbacPermissionItem[];
 }
 
+interface ClientGroup {
+  clientName: string;
+  clientId: string | null;
+  groups: PermissionGroup[];
+  allPermissions: RbacPermissionItem[];
+}
+
 @Component({
   selector: 'app-assign-permissions',
   standalone: true,
@@ -30,37 +37,81 @@ export class AssignPermissionsComponent {
   allPermissions = signal<RbacPermissionItem[]>([]);
   selectedPermissionIds = signal<Set<string>>(new Set());
   searchTerm = signal('');
+  selectedClientFilter = signal('');
 
-  groupedPermissions = computed<PermissionGroup[]>(() => {
+  clientNames = computed<{ id: string | null; name: string }[]>(() => {
+    const seen = new Map<string, string | null>();
+    for (const p of this.allPermissions()) {
+      const name = p.clientName ?? 'Ungrouped';
+      if (!seen.has(name)) seen.set(name, p.clientId);
+    }
+    return Array.from(seen.entries())
+      .map(([name, id]) => ({ id, name }))
+      .sort((a, b) => {
+        if (a.name === 'Ungrouped') return 1;
+        if (b.name === 'Ungrouped') return -1;
+        return a.name.localeCompare(b.name);
+      });
+  });
+
+  clientGroupedPermissions = computed<ClientGroup[]>(() => {
     const term = this.searchTerm().toLowerCase();
-    const permissions = term
-      ? this.allPermissions().filter((p) =>
-          `${p.resourceName}:${p.actionName}`.toLowerCase().includes(term) ||
-          (p.groupName?.toLowerCase().includes(term) ?? false)
-        )
-      : this.allPermissions();
-    const groupMap = new Map<string, RbacPermissionItem[]>();
+    const clientFilter = this.selectedClientFilter();
+    let permissions = this.allPermissions();
+
+    if (term) {
+      permissions = permissions.filter((p) =>
+        `${p.resourceName}:${p.actionName}`.toLowerCase().includes(term) ||
+        (p.groupName?.toLowerCase().includes(term) ?? false) ||
+        (p.clientName?.toLowerCase().includes(term) ?? false)
+      );
+    }
+
+    if (clientFilter) {
+      permissions = permissions.filter((p) => (p.clientId ?? '') === clientFilter);
+    }
+
+    // Group by client, then by permission group
+    const clientMap = new Map<string, { clientId: string | null; groupMap: Map<string, RbacPermissionItem[]> }>();
 
     for (const p of permissions) {
-      const key = p.groupName ?? 'Ungrouped';
-      if (!groupMap.has(key)) groupMap.set(key, []);
-      groupMap.get(key)!.push(p);
-    }
-
-    const groups: PermissionGroup[] = [];
-    for (const [name, perms] of groupMap) {
-      if (name !== 'Ungrouped') {
-        groups.push({ name, permissions: perms });
+      const clientKey = p.clientName ?? 'Ungrouped';
+      if (!clientMap.has(clientKey)) {
+        clientMap.set(clientKey, { clientId: p.clientId, groupMap: new Map() });
       }
-    }
-    groups.sort((a, b) => a.name.localeCompare(b.name));
-
-    const ungrouped = groupMap.get('Ungrouped');
-    if (ungrouped?.length) {
-      groups.push({ name: 'Ungrouped', permissions: ungrouped });
+      const groupKey = p.groupName ?? 'Ungrouped';
+      const entry = clientMap.get(clientKey)!;
+      if (!entry.groupMap.has(groupKey)) entry.groupMap.set(groupKey, []);
+      entry.groupMap.get(groupKey)!.push(p);
     }
 
-    return groups;
+    const result: ClientGroup[] = [];
+    for (const [clientName, { clientId, groupMap }] of clientMap) {
+      if (clientName === 'Ungrouped') continue;
+      const groups: PermissionGroup[] = [];
+      const allPerms: RbacPermissionItem[] = [];
+      for (const [gName, perms] of groupMap) {
+        groups.push({ name: gName, permissions: perms });
+        allPerms.push(...perms);
+      }
+      groups.sort((a, b) => a.name.localeCompare(b.name));
+      result.push({ clientName, clientId, groups, allPermissions: allPerms });
+    }
+    result.sort((a, b) => a.clientName.localeCompare(b.clientName));
+
+    const ungroupedClient = clientMap.get('Ungrouped');
+    if (ungroupedClient) {
+      const groups: PermissionGroup[] = [];
+      const allPerms: RbacPermissionItem[] = [];
+      for (const [gName, perms] of ungroupedClient.groupMap) {
+        groups.push({ name: gName, permissions: perms });
+        allPerms.push(...perms);
+      }
+      groups.sort((a, b) => a.name.localeCompare(b.name));
+      result.push({ clientName: 'Ungrouped', clientId: null, groups, allPermissions: allPerms });
+    }
+
+    return result;
   });
 
   permissionListQuery = httpQuery<GetRbacPermissionListResponse>({
@@ -77,7 +128,7 @@ export class AssignPermissionsComponent {
     handleSuccess: false,
     handleError: true,
     onSuccess: (response) => {
-      this.selectedPermissionIds.set(new Set(response.data?.permissions ?? []));
+      this.selectedPermissionIds.set(new Set(response.data?.permissionIds ?? []));
     },
   });
 
@@ -107,6 +158,7 @@ export class AssignPermissionsComponent {
     return this.selectedPermissionIds().has(permissionId);
   }
 
+  // Group-level toggles
   isGroupAllSelected(group: PermissionGroup): boolean {
     return group.permissions.every((p) => this.selectedPermissionIds().has(p.id));
   }
@@ -133,6 +185,67 @@ export class AssignPermissionsComponent {
 
   groupSelectedCount(group: PermissionGroup): number {
     return group.permissions.filter((p) => this.selectedPermissionIds().has(p.id)).length;
+  }
+
+  // Client-level toggles
+  isClientAllSelected(clientGroup: ClientGroup): boolean {
+    return clientGroup.allPermissions.every((p) => this.selectedPermissionIds().has(p.id));
+  }
+
+  isClientPartiallySelected(clientGroup: ClientGroup): boolean {
+    const selected = clientGroup.allPermissions.filter((p) => this.selectedPermissionIds().has(p.id));
+    return selected.length > 0 && selected.length < clientGroup.allPermissions.length;
+  }
+
+  toggleClient(clientGroup: ClientGroup) {
+    const allSelected = this.isClientAllSelected(clientGroup);
+    this.selectedPermissionIds.update((current) => {
+      const next = new Set(current);
+      for (const p of clientGroup.allPermissions) {
+        if (allSelected) {
+          next.delete(p.id);
+        } else {
+          next.add(p.id);
+        }
+      }
+      return next;
+    });
+  }
+
+  clientSelectedCount(clientGroup: ClientGroup): number {
+    return clientGroup.allPermissions.filter((p) => this.selectedPermissionIds().has(p.id)).length;
+  }
+
+  // Access All (*) — wildcard permissions only
+  allWildcardPermissions = computed(() => {
+    return this.allPermissions().filter((p) => p.actionName === '*');
+  });
+
+  isAccessAllSelected = computed(() => {
+    const wildcards = this.allWildcardPermissions();
+    return wildcards.length > 0 && wildcards.every((p) => this.selectedPermissionIds().has(p.id));
+  });
+
+  isAccessAllPartial = computed(() => {
+    const wildcards = this.allWildcardPermissions();
+    const selected = wildcards.filter((p) => this.selectedPermissionIds().has(p.id));
+    return selected.length > 0 && selected.length < wildcards.length;
+  });
+
+  toggleAccessAll() {
+    const allSelected = this.isAccessAllSelected();
+    const wildcards = this.allWildcardPermissions();
+    this.selectedPermissionIds.update((current) => {
+      const next = new Set(current);
+      for (const p of wildcards) {
+        if (allSelected) {
+          next.delete(p.id);
+        } else {
+          next.add(p.id);
+        }
+      }
+      return next;
+    });
   }
 
   async onSubmit() {

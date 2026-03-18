@@ -2317,6 +2317,7 @@ export namespace Prisma {
     authorizationCodes: number
     redirectUrls: number
     postLogoutRedirectUrls: number
+    permissionGroups: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2324,6 +2325,7 @@ export namespace Prisma {
     authorizationCodes?: boolean | ClientCountOutputTypeCountAuthorizationCodesArgs
     redirectUrls?: boolean | ClientCountOutputTypeCountRedirectUrlsArgs
     postLogoutRedirectUrls?: boolean | ClientCountOutputTypeCountPostLogoutRedirectUrlsArgs
+    permissionGroups?: boolean | ClientCountOutputTypeCountPermissionGroupsArgs
   }
 
   // Custom InputTypes
@@ -2363,6 +2365,13 @@ export namespace Prisma {
    */
   export type ClientCountOutputTypeCountPostLogoutRedirectUrlsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostLogoutRedirectURLWhereInput
+  }
+
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountPermissionGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PermissionGroupWhereInput
   }
 
 
@@ -4625,6 +4634,7 @@ export namespace Prisma {
     authorizationCodes?: boolean | Client$authorizationCodesArgs<ExtArgs>
     redirectUrls?: boolean | Client$redirectUrlsArgs<ExtArgs>
     postLogoutRedirectUrls?: boolean | Client$postLogoutRedirectUrlsArgs<ExtArgs>
+    permissionGroups?: boolean | Client$permissionGroupsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -4651,6 +4661,7 @@ export namespace Prisma {
     authorizationCodes?: boolean | Client$authorizationCodesArgs<ExtArgs>
     redirectUrls?: boolean | Client$redirectUrlsArgs<ExtArgs>
     postLogoutRedirectUrls?: boolean | Client$postLogoutRedirectUrlsArgs<ExtArgs>
+    permissionGroups?: boolean | Client$permissionGroupsArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4661,6 +4672,7 @@ export namespace Prisma {
       authorizationCodes: Prisma.$AuthorizationCodePayload<ExtArgs>[]
       redirectUrls: Prisma.$RedirectURLPayload<ExtArgs>[]
       postLogoutRedirectUrls: Prisma.$PostLogoutRedirectURLPayload<ExtArgs>[]
+      permissionGroups: Prisma.$PermissionGroupPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5019,6 +5031,7 @@ export namespace Prisma {
     authorizationCodes<T extends Client$authorizationCodesArgs<ExtArgs> = {}>(args?: Subset<T, Client$authorizationCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuthorizationCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     redirectUrls<T extends Client$redirectUrlsArgs<ExtArgs> = {}>(args?: Subset<T, Client$redirectUrlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RedirectURLPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postLogoutRedirectUrls<T extends Client$postLogoutRedirectUrlsArgs<ExtArgs> = {}>(args?: Subset<T, Client$postLogoutRedirectUrlsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostLogoutRedirectURLPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    permissionGroups<T extends Client$permissionGroupsArgs<ExtArgs> = {}>(args?: Subset<T, Client$permissionGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5496,6 +5509,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostLogoutRedirectURLScalarFieldEnum | PostLogoutRedirectURLScalarFieldEnum[]
+  }
+
+  /**
+   * Client.permissionGroups
+   */
+  export type Client$permissionGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionGroup
+     */
+    select?: PermissionGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionGroup
+     */
+    omit?: PermissionGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionGroupInclude<ExtArgs> | null
+    where?: PermissionGroupWhereInput
+    orderBy?: PermissionGroupOrderByWithRelationInput | PermissionGroupOrderByWithRelationInput[]
+    cursor?: PermissionGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PermissionGroupScalarFieldEnum | PermissionGroupScalarFieldEnum[]
   }
 
   /**
@@ -12501,6 +12538,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    clientId: string | null
     createdAt: Date | null
   }
 
@@ -12508,6 +12546,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    clientId: string | null
     createdAt: Date | null
   }
 
@@ -12515,6 +12554,7 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    clientId: number
     createdAt: number
     _all: number
   }
@@ -12524,6 +12564,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    clientId?: true
     createdAt?: true
   }
 
@@ -12531,6 +12572,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    clientId?: true
     createdAt?: true
   }
 
@@ -12538,6 +12580,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    clientId?: true
     createdAt?: true
     _all?: true
   }
@@ -12618,6 +12661,7 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    clientId: string | null
     createdAt: Date
     _count: PermissionGroupCountAggregateOutputType | null
     _min: PermissionGroupMinAggregateOutputType | null
@@ -12642,7 +12686,9 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    clientId?: boolean
     createdAt?: boolean
+    client?: boolean | PermissionGroup$clientArgs<ExtArgs>
     permissions?: boolean | PermissionGroup$permissionsArgs<ExtArgs>
     _count?: boolean | PermissionGroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["permissionGroup"]>
@@ -12653,11 +12699,13 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    clientId?: boolean
     createdAt?: boolean
   }
 
-  export type PermissionGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt", ExtArgs["result"]["permissionGroup"]>
+  export type PermissionGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "clientId" | "createdAt", ExtArgs["result"]["permissionGroup"]>
   export type PermissionGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    client?: boolean | PermissionGroup$clientArgs<ExtArgs>
     permissions?: boolean | PermissionGroup$permissionsArgs<ExtArgs>
     _count?: boolean | PermissionGroupCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -12665,12 +12713,14 @@ export namespace Prisma {
   export type $PermissionGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PermissionGroup"
     objects: {
+      client: Prisma.$ClientPayload<ExtArgs> | null
       permissions: Prisma.$PermissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       description: string | null
+      clientId: string | null
       createdAt: Date
     }, ExtArgs["result"]["permissionGroup"]>
     composites: {}
@@ -13012,6 +13062,7 @@ export namespace Prisma {
    */
   export interface Prisma__PermissionGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    client<T extends PermissionGroup$clientArgs<ExtArgs> = {}>(args?: Subset<T, PermissionGroup$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     permissions<T extends PermissionGroup$permissionsArgs<ExtArgs> = {}>(args?: Subset<T, PermissionGroup$permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13045,6 +13096,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PermissionGroup", 'String'>
     readonly name: FieldRef<"PermissionGroup", 'String'>
     readonly description: FieldRef<"PermissionGroup", 'String'>
+    readonly clientId: FieldRef<"PermissionGroup", 'String'>
     readonly createdAt: FieldRef<"PermissionGroup", 'DateTime'>
   }
     
@@ -13386,6 +13438,25 @@ export namespace Prisma {
      * Limit how many PermissionGroups to delete.
      */
     limit?: number
+  }
+
+  /**
+   * PermissionGroup.client
+   */
+  export type PermissionGroup$clientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
   }
 
   /**
@@ -20560,6 +20631,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    clientId: 'clientId',
     createdAt: 'createdAt'
   };
 
@@ -20840,7 +20912,8 @@ export namespace Prisma {
   export const PermissionGroupOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
-    description: 'description'
+    description: 'description',
+    clientId: 'clientId'
   };
 
   export type PermissionGroupOrderByRelevanceFieldEnum = (typeof PermissionGroupOrderByRelevanceFieldEnum)[keyof typeof PermissionGroupOrderByRelevanceFieldEnum]
@@ -21153,6 +21226,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeListRelationFilter
     redirectUrls?: RedirectURLListRelationFilter
     postLogoutRedirectUrls?: PostLogoutRedirectURLListRelationFilter
+    permissionGroups?: PermissionGroupListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -21172,6 +21246,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeOrderByRelationAggregateInput
     redirectUrls?: RedirectURLOrderByRelationAggregateInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLOrderByRelationAggregateInput
+    permissionGroups?: PermissionGroupOrderByRelationAggregateInput
     _relevance?: ClientOrderByRelevanceInput
   }
 
@@ -21196,6 +21271,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeListRelationFilter
     redirectUrls?: RedirectURLListRelationFilter
     postLogoutRedirectUrls?: PostLogoutRedirectURLListRelationFilter
+    permissionGroups?: PermissionGroupListRelationFilter
   }, "id" | "clientId" | "clientId_clientSecret">
 
   export type ClientOrderByWithAggregationInput = {
@@ -21805,7 +21881,9 @@ export namespace Prisma {
     id?: StringFilter<"PermissionGroup"> | string
     name?: StringFilter<"PermissionGroup"> | string
     description?: StringNullableFilter<"PermissionGroup"> | string | null
+    clientId?: StringNullableFilter<"PermissionGroup"> | string | null
     createdAt?: DateTimeFilter<"PermissionGroup"> | Date | string
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     permissions?: PermissionListRelationFilter
   }
 
@@ -21813,7 +21891,9 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    client?: ClientOrderByWithRelationInput
     permissions?: PermissionOrderByRelationAggregateInput
     _relevance?: PermissionGroupOrderByRelevanceInput
   }
@@ -21825,7 +21905,9 @@ export namespace Prisma {
     OR?: PermissionGroupWhereInput[]
     NOT?: PermissionGroupWhereInput | PermissionGroupWhereInput[]
     description?: StringNullableFilter<"PermissionGroup"> | string | null
+    clientId?: StringNullableFilter<"PermissionGroup"> | string | null
     createdAt?: DateTimeFilter<"PermissionGroup"> | Date | string
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     permissions?: PermissionListRelationFilter
   }, "id" | "name">
 
@@ -21833,6 +21915,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PermissionGroupCountOrderByAggregateInput
     _max?: PermissionGroupMaxOrderByAggregateInput
@@ -21846,6 +21929,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PermissionGroup"> | string
     name?: StringWithAggregatesFilter<"PermissionGroup"> | string
     description?: StringNullableWithAggregatesFilter<"PermissionGroup"> | string | null
+    clientId?: StringNullableWithAggregatesFilter<"PermissionGroup"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PermissionGroup"> | Date | string
   }
 
@@ -22549,6 +22633,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -22568,6 +22653,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUncheckedCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLUncheckedCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -22587,6 +22673,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -22606,6 +22693,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUncheckedUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUncheckedUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -23279,6 +23367,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
+    client?: ClientCreateNestedOneWithoutPermissionGroupsInput
     permissions?: PermissionCreateNestedManyWithoutGroupInput
   }
 
@@ -23286,6 +23375,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    clientId?: string | null
     createdAt?: Date | string
     permissions?: PermissionUncheckedCreateNestedManyWithoutGroupInput
   }
@@ -23295,6 +23385,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutPermissionGroupsNestedInput
     permissions?: PermissionUpdateManyWithoutGroupNestedInput
   }
 
@@ -23302,6 +23393,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: PermissionUncheckedUpdateManyWithoutGroupNestedInput
   }
@@ -23310,6 +23402,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    clientId?: string | null
     createdAt?: Date | string
   }
 
@@ -23324,6 +23417,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24175,6 +24269,12 @@ export namespace Prisma {
     none?: PostLogoutRedirectURLWhereInput
   }
 
+  export type PermissionGroupListRelationFilter = {
+    every?: PermissionGroupWhereInput
+    some?: PermissionGroupWhereInput
+    none?: PermissionGroupWhereInput
+  }
+
   export type RefreshTokenOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -24188,6 +24288,10 @@ export namespace Prisma {
   }
 
   export type PostLogoutRedirectURLOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PermissionGroupOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24685,6 +24789,11 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ClientNullableScalarRelationFilter = {
+    is?: ClientWhereInput | null
+    isNot?: ClientWhereInput | null
+  }
+
   export type PermissionGroupOrderByRelevanceInput = {
     fields: PermissionGroupOrderByRelevanceFieldEnum | PermissionGroupOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -24695,6 +24804,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    clientId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24702,6 +24812,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    clientId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24709,6 +24820,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    clientId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -25114,6 +25226,13 @@ export namespace Prisma {
     connect?: PostLogoutRedirectURLWhereUniqueInput | PostLogoutRedirectURLWhereUniqueInput[]
   }
 
+  export type PermissionGroupCreateNestedManyWithoutClientInput = {
+    create?: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput> | PermissionGroupCreateWithoutClientInput[] | PermissionGroupUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PermissionGroupCreateOrConnectWithoutClientInput | PermissionGroupCreateOrConnectWithoutClientInput[]
+    createMany?: PermissionGroupCreateManyClientInputEnvelope
+    connect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+  }
+
   export type RefreshTokenUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<RefreshTokenCreateWithoutClientInput, RefreshTokenUncheckedCreateWithoutClientInput> | RefreshTokenCreateWithoutClientInput[] | RefreshTokenUncheckedCreateWithoutClientInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutClientInput | RefreshTokenCreateOrConnectWithoutClientInput[]
@@ -25140,6 +25259,13 @@ export namespace Prisma {
     connectOrCreate?: PostLogoutRedirectURLCreateOrConnectWithoutClientInput | PostLogoutRedirectURLCreateOrConnectWithoutClientInput[]
     createMany?: PostLogoutRedirectURLCreateManyClientInputEnvelope
     connect?: PostLogoutRedirectURLWhereUniqueInput | PostLogoutRedirectURLWhereUniqueInput[]
+  }
+
+  export type PermissionGroupUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput> | PermissionGroupCreateWithoutClientInput[] | PermissionGroupUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PermissionGroupCreateOrConnectWithoutClientInput | PermissionGroupCreateOrConnectWithoutClientInput[]
+    createMany?: PermissionGroupCreateManyClientInputEnvelope
+    connect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
   }
 
   export type EnumClientTypeFieldUpdateOperationsInput = {
@@ -25210,6 +25336,20 @@ export namespace Prisma {
     deleteMany?: PostLogoutRedirectURLScalarWhereInput | PostLogoutRedirectURLScalarWhereInput[]
   }
 
+  export type PermissionGroupUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput> | PermissionGroupCreateWithoutClientInput[] | PermissionGroupUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PermissionGroupCreateOrConnectWithoutClientInput | PermissionGroupCreateOrConnectWithoutClientInput[]
+    upsert?: PermissionGroupUpsertWithWhereUniqueWithoutClientInput | PermissionGroupUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PermissionGroupCreateManyClientInputEnvelope
+    set?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    disconnect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    delete?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    connect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    update?: PermissionGroupUpdateWithWhereUniqueWithoutClientInput | PermissionGroupUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PermissionGroupUpdateManyWithWhereWithoutClientInput | PermissionGroupUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PermissionGroupScalarWhereInput | PermissionGroupScalarWhereInput[]
+  }
+
   export type RefreshTokenUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<RefreshTokenCreateWithoutClientInput, RefreshTokenUncheckedCreateWithoutClientInput> | RefreshTokenCreateWithoutClientInput[] | RefreshTokenUncheckedCreateWithoutClientInput[]
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutClientInput | RefreshTokenCreateOrConnectWithoutClientInput[]
@@ -25264,6 +25404,20 @@ export namespace Prisma {
     update?: PostLogoutRedirectURLUpdateWithWhereUniqueWithoutClientInput | PostLogoutRedirectURLUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: PostLogoutRedirectURLUpdateManyWithWhereWithoutClientInput | PostLogoutRedirectURLUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: PostLogoutRedirectURLScalarWhereInput | PostLogoutRedirectURLScalarWhereInput[]
+  }
+
+  export type PermissionGroupUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput> | PermissionGroupCreateWithoutClientInput[] | PermissionGroupUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: PermissionGroupCreateOrConnectWithoutClientInput | PermissionGroupCreateOrConnectWithoutClientInput[]
+    upsert?: PermissionGroupUpsertWithWhereUniqueWithoutClientInput | PermissionGroupUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: PermissionGroupCreateManyClientInputEnvelope
+    set?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    disconnect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    delete?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    connect?: PermissionGroupWhereUniqueInput | PermissionGroupWhereUniqueInput[]
+    update?: PermissionGroupUpdateWithWhereUniqueWithoutClientInput | PermissionGroupUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: PermissionGroupUpdateManyWithWhereWithoutClientInput | PermissionGroupUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: PermissionGroupScalarWhereInput | PermissionGroupScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutAuthorizationCodesInput = {
@@ -25506,6 +25660,12 @@ export namespace Prisma {
     deleteMany?: RolePermissionScalarWhereInput | RolePermissionScalarWhereInput[]
   }
 
+  export type ClientCreateNestedOneWithoutPermissionGroupsInput = {
+    create?: XOR<ClientCreateWithoutPermissionGroupsInput, ClientUncheckedCreateWithoutPermissionGroupsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPermissionGroupsInput
+    connect?: ClientWhereUniqueInput
+  }
+
   export type PermissionCreateNestedManyWithoutGroupInput = {
     create?: XOR<PermissionCreateWithoutGroupInput, PermissionUncheckedCreateWithoutGroupInput> | PermissionCreateWithoutGroupInput[] | PermissionUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: PermissionCreateOrConnectWithoutGroupInput | PermissionCreateOrConnectWithoutGroupInput[]
@@ -25518,6 +25678,16 @@ export namespace Prisma {
     connectOrCreate?: PermissionCreateOrConnectWithoutGroupInput | PermissionCreateOrConnectWithoutGroupInput[]
     createMany?: PermissionCreateManyGroupInputEnvelope
     connect?: PermissionWhereUniqueInput | PermissionWhereUniqueInput[]
+  }
+
+  export type ClientUpdateOneWithoutPermissionGroupsNestedInput = {
+    create?: XOR<ClientCreateWithoutPermissionGroupsInput, ClientUncheckedCreateWithoutPermissionGroupsInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutPermissionGroupsInput
+    upsert?: ClientUpsertWithoutPermissionGroupsInput
+    disconnect?: ClientWhereInput | boolean
+    delete?: ClientWhereInput | boolean
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutPermissionGroupsInput, ClientUpdateWithoutPermissionGroupsInput>, ClientUncheckedUpdateWithoutPermissionGroupsInput>
   }
 
   export type PermissionUpdateManyWithoutGroupNestedInput = {
@@ -26360,6 +26530,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PermissionGroupCreateWithoutClientInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    permissions?: PermissionCreateNestedManyWithoutGroupInput
+  }
+
+  export type PermissionGroupUncheckedCreateWithoutClientInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    permissions?: PermissionUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type PermissionGroupCreateOrConnectWithoutClientInput = {
+    where: PermissionGroupWhereUniqueInput
+    create: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput>
+  }
+
+  export type PermissionGroupCreateManyClientInputEnvelope = {
+    data: PermissionGroupCreateManyClientInput | PermissionGroupCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RefreshTokenUpsertWithWhereUniqueWithoutClientInput = {
     where: RefreshTokenWhereUniqueInput
     update: XOR<RefreshTokenUpdateWithoutClientInput, RefreshTokenUncheckedUpdateWithoutClientInput>
@@ -26494,6 +26690,33 @@ export namespace Prisma {
     updatedIp?: StringNullableFilter<"PostLogoutRedirectURL"> | string | null
   }
 
+  export type PermissionGroupUpsertWithWhereUniqueWithoutClientInput = {
+    where: PermissionGroupWhereUniqueInput
+    update: XOR<PermissionGroupUpdateWithoutClientInput, PermissionGroupUncheckedUpdateWithoutClientInput>
+    create: XOR<PermissionGroupCreateWithoutClientInput, PermissionGroupUncheckedCreateWithoutClientInput>
+  }
+
+  export type PermissionGroupUpdateWithWhereUniqueWithoutClientInput = {
+    where: PermissionGroupWhereUniqueInput
+    data: XOR<PermissionGroupUpdateWithoutClientInput, PermissionGroupUncheckedUpdateWithoutClientInput>
+  }
+
+  export type PermissionGroupUpdateManyWithWhereWithoutClientInput = {
+    where: PermissionGroupScalarWhereInput
+    data: XOR<PermissionGroupUpdateManyMutationInput, PermissionGroupUncheckedUpdateManyWithoutClientInput>
+  }
+
+  export type PermissionGroupScalarWhereInput = {
+    AND?: PermissionGroupScalarWhereInput | PermissionGroupScalarWhereInput[]
+    OR?: PermissionGroupScalarWhereInput[]
+    NOT?: PermissionGroupScalarWhereInput | PermissionGroupScalarWhereInput[]
+    id?: StringFilter<"PermissionGroup"> | string
+    name?: StringFilter<"PermissionGroup"> | string
+    description?: StringNullableFilter<"PermissionGroup"> | string | null
+    clientId?: StringNullableFilter<"PermissionGroup"> | string | null
+    createdAt?: DateTimeFilter<"PermissionGroup"> | Date | string
+  }
+
   export type ClientCreateWithoutAuthorizationCodesInput = {
     id?: string
     name: string
@@ -26510,6 +26733,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutAuthorizationCodesInput = {
@@ -26528,6 +26752,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLUncheckedCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutAuthorizationCodesInput = {
@@ -26613,6 +26838,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutAuthorizationCodesInput = {
@@ -26631,6 +26857,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUncheckedUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type UserUpsertWithoutAuthorizationCodesInput = {
@@ -26706,6 +26933,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
     authorizationCodes?: AuthorizationCodeCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutRedirectUrlsInput = {
@@ -26724,6 +26952,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
     authorizationCodes?: AuthorizationCodeUncheckedCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutRedirectUrlsInput = {
@@ -26758,6 +26987,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
     authorizationCodes?: AuthorizationCodeUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutRedirectUrlsInput = {
@@ -26776,6 +27006,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
     authorizationCodes?: AuthorizationCodeUncheckedUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateWithoutPostLogoutRedirectUrlsInput = {
@@ -26794,6 +27025,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
     authorizationCodes?: AuthorizationCodeCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutPostLogoutRedirectUrlsInput = {
@@ -26812,6 +27044,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
     authorizationCodes?: AuthorizationCodeUncheckedCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLUncheckedCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutPostLogoutRedirectUrlsInput = {
@@ -26846,6 +27079,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
     authorizationCodes?: AuthorizationCodeUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutPostLogoutRedirectUrlsInput = {
@@ -26864,6 +27098,7 @@ export namespace Prisma {
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
     authorizationCodes?: AuthorizationCodeUncheckedUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PermissionCreateWithoutResourceInput = {
@@ -27005,12 +27240,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
+    client?: ClientCreateNestedOneWithoutPermissionGroupsInput
   }
 
   export type PermissionGroupUncheckedCreateWithoutPermissionsInput = {
     id?: string
     name: string
     description?: string | null
+    clientId?: string | null
     createdAt?: Date | string
   }
 
@@ -27099,12 +27336,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutPermissionGroupsNestedInput
   }
 
   export type PermissionGroupUncheckedUpdateWithoutPermissionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27130,6 +27369,49 @@ export namespace Prisma {
     NOT?: RolePermissionScalarWhereInput | RolePermissionScalarWhereInput[]
     roleId?: StringFilter<"RolePermission"> | string
     permissionId?: StringFilter<"RolePermission"> | string
+  }
+
+  export type ClientCreateWithoutPermissionGroupsInput = {
+    id?: string
+    name: string
+    clientId: string
+    clientSecret?: string | null
+    clientType?: $Enums.ClientType
+    disableStrictUrlValidation?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutClientInput
+    authorizationCodes?: AuthorizationCodeCreateNestedManyWithoutClientInput
+    redirectUrls?: RedirectURLCreateNestedManyWithoutClientInput
+    postLogoutRedirectUrls?: PostLogoutRedirectURLCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutPermissionGroupsInput = {
+    id?: string
+    name: string
+    clientId: string
+    clientSecret?: string | null
+    clientType?: $Enums.ClientType
+    disableStrictUrlValidation?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+    createdIp?: string | null
+    updatedBy?: string | null
+    updatedAt?: Date | string | null
+    updatedIp?: string | null
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutClientInput
+    authorizationCodes?: AuthorizationCodeUncheckedCreateNestedManyWithoutClientInput
+    redirectUrls?: RedirectURLUncheckedCreateNestedManyWithoutClientInput
+    postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutPermissionGroupsInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutPermissionGroupsInput, ClientUncheckedCreateWithoutPermissionGroupsInput>
   }
 
   export type PermissionCreateWithoutGroupInput = {
@@ -27158,6 +27440,55 @@ export namespace Prisma {
   export type PermissionCreateManyGroupInputEnvelope = {
     data: PermissionCreateManyGroupInput | PermissionCreateManyGroupInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ClientUpsertWithoutPermissionGroupsInput = {
+    update: XOR<ClientUpdateWithoutPermissionGroupsInput, ClientUncheckedUpdateWithoutPermissionGroupsInput>
+    create: XOR<ClientCreateWithoutPermissionGroupsInput, ClientUncheckedCreateWithoutPermissionGroupsInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutPermissionGroupsInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutPermissionGroupsInput, ClientUncheckedUpdateWithoutPermissionGroupsInput>
+  }
+
+  export type ClientUpdateWithoutPermissionGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: EnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType
+    disableStrictUrlValidation?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshTokens?: RefreshTokenUpdateManyWithoutClientNestedInput
+    authorizationCodes?: AuthorizationCodeUpdateManyWithoutClientNestedInput
+    redirectUrls?: RedirectURLUpdateManyWithoutClientNestedInput
+    postLogoutRedirectUrls?: PostLogoutRedirectURLUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutPermissionGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    clientId?: StringFieldUpdateOperationsInput | string
+    clientSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    clientType?: EnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType
+    disableStrictUrlValidation?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdIp?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutClientNestedInput
+    authorizationCodes?: AuthorizationCodeUncheckedUpdateManyWithoutClientNestedInput
+    redirectUrls?: RedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type PermissionUpsertWithWhereUniqueWithoutGroupInput = {
@@ -28036,6 +28367,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutRefreshTokensInput = {
@@ -28054,6 +28386,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUncheckedCreateNestedManyWithoutClientInput
     redirectUrls?: RedirectURLUncheckedCreateNestedManyWithoutClientInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedCreateNestedManyWithoutClientInput
+    permissionGroups?: PermissionGroupUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutRefreshTokensInput = {
@@ -28145,6 +28478,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutRefreshTokensInput = {
@@ -28163,6 +28497,7 @@ export namespace Prisma {
     authorizationCodes?: AuthorizationCodeUncheckedUpdateManyWithoutClientNestedInput
     redirectUrls?: RedirectURLUncheckedUpdateManyWithoutClientNestedInput
     postLogoutRedirectUrls?: PostLogoutRedirectURLUncheckedUpdateManyWithoutClientNestedInput
+    permissionGroups?: PermissionGroupUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type RefreshTokenCreateManyClientInput = {
@@ -28217,6 +28552,13 @@ export namespace Prisma {
     updatedBy?: string | null
     updatedAt?: Date | string | null
     updatedIp?: string | null
+  }
+
+  export type PermissionGroupCreateManyClientInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
   }
 
   export type RefreshTokenUpdateWithoutClientInput = {
@@ -28379,6 +28721,29 @@ export namespace Prisma {
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedIp?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PermissionGroupUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: PermissionUpdateManyWithoutGroupNestedInput
+  }
+
+  export type PermissionGroupUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permissions?: PermissionUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type PermissionGroupUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PermissionCreateManyResourceInput = {

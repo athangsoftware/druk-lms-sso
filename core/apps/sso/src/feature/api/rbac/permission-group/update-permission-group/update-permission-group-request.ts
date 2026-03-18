@@ -12,4 +12,9 @@ export class UpdatePermissionGroupRequest {
   @IsOptional()
   @IsString({ message: ErrorMessages.string('description') })
   description?: string;
+
+  @ApiPropertyOptional({ example: 'iam', description: 'Client ID for grouping' })
+  @IsOptional()
+  @IsString({ message: ErrorMessages.string('clientId') })
+  clientId?: string;
 }

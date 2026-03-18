@@ -22,6 +22,12 @@ class GetPermissionListItem {
   @ApiPropertyOptional()
   groupName: string | null;
 
+  @ApiPropertyOptional()
+  clientId: string | null;
+
+  @ApiPropertyOptional()
+  clientName: string | null;
+
   @ApiProperty()
   isActive: boolean;
 

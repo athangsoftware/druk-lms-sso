@@ -17,7 +17,7 @@ export class GetClientListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getClientList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetClientListResponse })
-  @RequirePermission('client.read')
+  @RequirePermission('client.list')
   async execute(@Query() request: GetClientListRequest): Promise<GetClientListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const whereCondition: Prisma.ClientWhereInput = { AND: [] };

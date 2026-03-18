@@ -16,7 +16,7 @@ export class DashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboardStats', summary: 'Get aggregated dashboard statistics' })
   @ApiResponse({ status: HttpStatus.OK, type: DashboardStatsResponse })
-  @RequirePermission('dashboard.read')
+  @RequirePermission('dashboard.list')
   async getStats(): Promise<DashboardStatsResponse> {
     return this.prismaService.client(async ({ dbContext }) => {
       // ─── User counts ────────────────────────────────────────

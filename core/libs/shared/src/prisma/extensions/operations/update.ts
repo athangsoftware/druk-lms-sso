@@ -19,7 +19,7 @@ export async function handleUpdate(
         args.data = { ...args.data, [tenantFieldName]: tenantId };
     }
 
-    setAuditFields('update', args, config);
+    setAuditFields('update', args, config, model);
 
     const oldValue = await prismaTx[model].findFirst({ where: args.where });
 

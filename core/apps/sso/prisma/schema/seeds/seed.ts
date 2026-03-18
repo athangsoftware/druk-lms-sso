@@ -115,7 +115,7 @@ async function main() {
     for (const group of permissionGroupSeeds) {
       const result = await (prisma as any).permissionGroup.upsert({
         where: { name: group.name },
-        update: { description: group.description },
+        update: { description: group.description, clientId: group.clientId ?? null },
         create: group,
       });
       groupMap.set(group.name, result.id);

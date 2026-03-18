@@ -17,7 +17,7 @@ export class NdiTestConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiTestConnection' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Tests NDI connection by authenticating' })
-  @RequirePermission('identity-provider.read')
+  @RequirePermission('identity-provider.list')
   async execute(): Promise<{ successMessage: string; data: { connected: boolean } }> {
     this.logger.log('Admin triggered NDI connection test');
 

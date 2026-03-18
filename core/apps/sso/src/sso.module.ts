@@ -47,7 +47,9 @@ import { ApiModule } from './feature/api/api.module';
       inject: [ConfigService],
     }),
     BcryptModule,
-    PrismaModule.forRoot(),
+    PrismaModule.forRoot({
+      auditUnawareModels: ['RolePermission', 'UserRole'],
+    }),
     RequestContextModule,
   ],
   controllers: [AppController],

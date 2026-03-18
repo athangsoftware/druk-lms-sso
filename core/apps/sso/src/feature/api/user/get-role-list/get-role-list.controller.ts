@@ -13,7 +13,7 @@ export class GetRoleListController {
   @Get()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetRoleListResponse })
   @ApiOperation({ operationId: 'getRoleList' })
-  @RequirePermission('role.read')
+  @RequirePermission('role.list')
   @HttpCode(200)
   async execute(): Promise<GetRoleListResponse> {
     return {

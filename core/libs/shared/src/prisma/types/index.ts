@@ -39,6 +39,9 @@ export interface PrismaLibConfig {
     /** Enable audit logging @default true */
     enableAuditLog?: boolean;
 
+    /** Models excluded from audit field injection (createdBy/updatedBy) @default [] */
+    auditUnawareModels?: string[];
+
     /** Enable SQL query logging @default false */
     enableQueryLogging?: boolean;
 

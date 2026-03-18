@@ -14,7 +14,7 @@ export class GetUserListController {
   @Get()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetUserListResponse })
   @ApiOperation({ operationId: 'getUserList' })
-  @RequirePermission('user.read')
+  @RequirePermission('user.list')
   @HttpCode(200)
   async execute(@Query() request: GetUserListRequest): Promise<GetUserListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {

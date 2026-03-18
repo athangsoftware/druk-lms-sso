@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '@core/api/api.service';
 import {
   GetRbacActionListResponse,
@@ -12,6 +12,7 @@ import {
   OverlayStore,
   Button,
   httpQuery,
+  httpMutation,
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
 import { CreateActionComponent } from './create-action/create-action.component';
@@ -26,11 +27,18 @@ import { UpdateActionComponent } from './update-action/update-action.component';
 export class ActionsComponent {
   private apiService = inject(ApiService);
   overlayService = inject(OverlayStore);
+  private targetActionId = signal<string>('');
 
   actionList = httpQuery<GetRbacActionListResponse>({
     request: () => ({ url: `${environment.apiUrl}/rbac/actions` }),
     handleSuccess: false,
     handleError: true,
+  });
+
+  deleteMutation = httpMutation({
+    request: () => this.apiService.deleteRbacAction(this.targetActionId()),
+    handleSuccess: true,
+    onSuccess: () => this.actionList.refetch(),
   });
 
   onCreate() {
@@ -86,11 +94,14 @@ export class ActionsComponent {
         });
         break;
       case 'delete':
-        if (confirm(`Are you sure you want to delete action "${item.name}"?`)) {
-          this.apiService.deleteRbacAction(item.id).subscribe({
-            next: () => this.actionList.refetch(),
+        this.overlayService
+          .openAlert('Delete Action', `Are you sure you want to delete "${item.name}"? This action cannot be undone.`)
+          .then((confirmed) => {
+            if (confirmed) {
+              this.targetActionId.set(item.id);
+              this.deleteMutation.trigger();
+            }
           });
-        }
         break;
     }
   }

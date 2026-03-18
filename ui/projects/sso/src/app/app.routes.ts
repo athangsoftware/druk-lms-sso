@@ -39,13 +39,13 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./pages/main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
-        data: { permissions: ['dashboard.read'] },
+        data: { permissions: ['dashboard.list'] },
       },
       {
         path: 'users',
         loadComponent: () =>
           import('./pages/main/user-list/user-list.component').then((m) => m.UserListComponent),
-        data: { permissions: ['user.read'] },
+        data: { permissions: ['user.list'] },
       },
       {
         path: 'my-profile',
@@ -53,49 +53,31 @@ export const routes: Routes = [
           import('./pages/main/account-setting/my-profile/my-profile.component').then(
             (m) => m.MyProfileComponent,
           ),
-        data: { permissions: ['user.read'] },
+        data: { permissions: ['user.list'] },
       },
       {
         path: 'clients',
         loadComponent: () =>
           import('./pages/main/clients/clients.component').then((m) => m.ClientsComponent),
-        data: { permissions: ['client.read'] },
+        data: { permissions: ['client.list'] },
       },
       {
         path: 'identity-providers',
         loadComponent: () =>
           import('./pages/main/identity-providers/identity-providers.component').then((m) => m.IdentityProvidersComponent),
-        data: { permissions: ['identity-provider.read'] },
+        data: { permissions: ['identity-provider.list'] },
       },
       {
         path: 'roles',
         loadComponent: () =>
           import('./pages/main/roles/roles.component').then((m) => m.RolesComponent),
-        data: { permissions: ['role.read'] },
+        data: { permissions: ['role.list'] },
       },
       {
         path: 'permissions',
         loadComponent: () =>
           import('./pages/main/permissions/permissions.component').then((m) => m.PermissionsComponent),
-        data: { permissions: ['permission.read'] },
-      },
-      {
-        path: 'permission-groups',
-        loadComponent: () =>
-          import('./pages/main/permission-groups/permission-groups.component').then((m) => m.PermissionGroupsComponent),
-        data: { permissions: ['permission.read'] },
-      },
-      {
-        path: 'resources',
-        loadComponent: () =>
-          import('./pages/main/resources/resources.component').then((m) => m.ResourcesComponent),
-        data: { permissions: ['resource.read'] },
-      },
-      {
-        path: 'actions',
-        loadComponent: () =>
-          import('./pages/main/actions/actions.component').then((m) => m.ActionsComponent),
-        data: { permissions: ['action.read'] },
+        data: { permissions: ['permission.list'] },
       },
     ],
   },

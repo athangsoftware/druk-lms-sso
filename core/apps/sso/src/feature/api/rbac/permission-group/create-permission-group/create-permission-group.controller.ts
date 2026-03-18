@@ -25,12 +25,20 @@ export class CreatePermissionGroupController {
       }
 
       const group = await dbContext.permissionGroup.create({
-        data: { name: body.name, description: body.description },
+        data: { name: body.name, description: body.description, clientId: body.clientId },
+        include: { client: true },
       });
 
       return {
         successMessage: SuccessMessages.insertSuccess('Permission Group'),
-        data: group,
+        data: {
+          id: group.id,
+          name: group.name,
+          description: group.description,
+          clientId: group.clientId,
+          clientName: group.client?.name ?? null,
+          createdAt: group.createdAt,
+        },
       };
     });
   }

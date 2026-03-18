@@ -15,7 +15,7 @@ export class GetUserSelfController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUserSelf' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns user by ID', type: GetUserSelfResponse })
-  @RequirePermission('user.read')
+  @RequirePermission('user.list')
   async execute(@CurrentUser() currentUser: any): Promise<GetUserSelfResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id: currentUser.sub } });

@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { ApiService } from '@core/api/api.service';
 import {
   GetRbacPermissionListResponse,
-  RbacPermissionItem,
 } from '@core/api/model';
 import {
   ColumnGroup,
@@ -13,6 +12,7 @@ import {
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
 import { CreatePermissionComponent } from './create-permission/create-permission.component';
+import { PermissionSettingsComponent } from './permission-settings/permission-settings.component';
 
 @Component({
   selector: 'app-permissions',
@@ -37,6 +37,13 @@ export class PermissionsComponent {
     });
   }
 
+  onOpenSettings() {
+    this.overlayService.openBackdrop(PermissionSettingsComponent, {
+      disableClose: false,
+      onClose: () => this.permissionList.refetch(),
+    });
+  }
+
   columnGroups: ColumnGroup[] = [
     {
       title: 'Manage Permissions',
@@ -54,6 +61,12 @@ export class PermissionsComponent {
           alignment: 'left',
           displayTemplate: '$actionName',
           sortKey: 'actionName',
+        },
+        {
+          title: 'Client',
+          type: 'text',
+          alignment: 'left',
+          displayTemplate: '$clientName',
         },
         {
           title: 'Group',
