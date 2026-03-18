@@ -6,11 +6,11 @@ import {
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
   httpMutation,
 } from '@projects/shared-lib';
@@ -21,7 +21,7 @@ import { UpdateActionComponent } from './update-action/update-action.component';
 @Component({
   selector: 'app-actions',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './actions.component.html',
 })
 export class ActionsComponent {
@@ -40,6 +40,22 @@ export class ActionsComponent {
     handleSuccess: true,
     onSuccess: () => this.actionList.refetch(),
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Create Action',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreateActionComponent, {

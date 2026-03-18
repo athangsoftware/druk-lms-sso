@@ -1,9 +1,4 @@
-<div class="w-full h-full flex flex-col gap-4">
-
-  <!-- Create Button -->
-  <div class="flex justify-end">
-    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Resource</ui-button>
-  </div>
+<div class="w-full h-full flex flex-col gap-4 p-4">
 
   <!-- Table -->
   <div class="flex-1 min-h-0">
@@ -13,6 +8,8 @@
       [data]="resourceList.value()?.data ?? []"
       [totalCount]="resourceList.value()?.data?.length ?? 0"
       [hasError]="!!resourceList.error()"
+      [tableActions]="tableActions"
+      (tableAction)="onTableAction($event)"
       (action)="onAction($event)"
       (rowClick)="onRowClicked($event)"
     ></ui-data-table>

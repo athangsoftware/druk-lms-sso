@@ -6,11 +6,11 @@ import {
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
@@ -20,7 +20,7 @@ import { UpdatePermissionGroupComponent } from './update-permission-group/update
 @Component({
   selector: 'app-permission-groups',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './permission-groups.component.html',
 })
 export class PermissionGroupsComponent {
@@ -32,6 +32,22 @@ export class PermissionGroupsComponent {
     handleSuccess: false,
     handleError: true,
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Create Group',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreatePermissionGroupComponent, {

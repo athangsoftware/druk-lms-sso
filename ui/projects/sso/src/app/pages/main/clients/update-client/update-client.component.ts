@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpQuery, httpMutation, CheckboxField } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpQuery, httpMutation, CheckboxField } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { ClientType, GetClientListItem, GetClientResponse, UpdateClientResponse } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -17,7 +17,7 @@ interface UpdateClientData {
 @Component({
   selector: 'app-update-client',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField, CheckboxField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField, CheckboxField],
   templateUrl: './update-client.component.html',
 })
 export class UpdateClientComponent {

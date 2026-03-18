@@ -11,13 +11,14 @@
       </div>
 
       <div>
-        <app-single-selection-field
-          [title]="'Client Type'"
-          [items]="clientTypeOptions"
-          [display]="'name'"
-          [value]="'id'"
-          [formField]="clientForm.clientType"
-        ></app-single-selection-field>
+        <ui-select-dropdown-field
+          [label]="'Client Type'"
+          [options]="clientTypeOptions"
+          [displayProperty]="'name'"
+          [valueProperty]="'id'"
+          [field]="clientForm.clientType"
+          [width]="'full'"
+        ></ui-select-dropdown-field>
       </div>
 
       <div class="md:col-span-2">

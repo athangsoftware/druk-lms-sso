@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, SingleSelectionFieldComponent, httpMutation, httpQuery } from '@projects/shared-lib';
+import { BaseOverlay, Button, SelectDropdownField, httpMutation, httpQuery } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import {
   CreateRbacPermissionResponse,
@@ -23,7 +23,7 @@ interface CreatePermissionData {
 @Component({
   selector: 'app-create-permission',
   standalone: true,
-  imports: [BaseOverlay, Button, SingleSelectionFieldComponent, FormField],
+  imports: [BaseOverlay, Button, SelectDropdownField],
   templateUrl: './create-permission.component.html',
 })
 export class CreatePermissionComponent {
@@ -50,7 +50,9 @@ export class CreatePermissionComponent {
     handleSuccess: false,
     handleError: true,
     onSuccess: (response) => {
-      this.resourceOptions = response.data.map((r: RbacResourceItem) => ({ id: r.id, name: r.name }));
+      setTimeout(() => {
+        this.resourceOptions = response.data.map((r: RbacResourceItem) => ({ id: r.id, name: r.name }));
+      });
     },
   });
 
@@ -59,7 +61,9 @@ export class CreatePermissionComponent {
     handleSuccess: false,
     handleError: true,
     onSuccess: (response) => {
-      this.actionOptions = response.data.map((a: RbacActionItem) => ({ id: a.id, name: a.name }));
+      setTimeout(() => {
+        this.actionOptions = response.data.map((a: RbacActionItem) => ({ id: a.id, name: a.name }));
+      });
     },
   });
 
@@ -68,7 +72,9 @@ export class CreatePermissionComponent {
     handleSuccess: false,
     handleError: true,
     onSuccess: (response) => {
-      this.groupOptions = response.data.map((g: PermissionGroupItem) => ({ id: g.id, name: g.name }));
+      setTimeout(() => {
+        this.groupOptions = response.data.map((g: PermissionGroupItem) => ({ id: g.id, name: g.name }));
+      });
     },
   });
 

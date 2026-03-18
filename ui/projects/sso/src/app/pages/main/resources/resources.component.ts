@@ -6,11 +6,11 @@ import {
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
   httpMutation,
 } from '@projects/shared-lib';
@@ -21,7 +21,7 @@ import { UpdateResourceComponent } from './update-resource/update-resource.compo
 @Component({
   selector: 'app-resources',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './resources.component.html',
 })
 export class ResourcesComponent {
@@ -40,6 +40,22 @@ export class ResourcesComponent {
     handleSuccess: true,
     onSuccess: () => this.resourceList.refetch(),
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Create Resource',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreateResourceComponent, {

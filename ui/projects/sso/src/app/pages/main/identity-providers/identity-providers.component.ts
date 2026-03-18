@@ -8,12 +8,12 @@ import {
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   TableStateEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
   httpMutation,
 } from '@projects/shared-lib';
@@ -26,7 +26,7 @@ import { IdentityProviderListStore } from './identity-providers.store';
 @Component({
   selector: 'app-identity-providers',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './identity-providers.component.html',
   providers: [IdentityProviderListStore],
 })
@@ -83,6 +83,22 @@ export class IdentityProvidersComponent {
     handleSuccess: false,
     handleError: true,
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Add Provider',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreateIdentityProviderComponent, {

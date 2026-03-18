@@ -1,29 +1,35 @@
 <ui-base-overlay [title]="'Create Permission'">
   <div body>
     <form class="grid grid-cols-1 gap-y-4" (submit)="onSubmit()">
-      <app-single-selection-field
-        [title]="'Resource'"
-        [items]="resourceOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="permissionForm.resourceId"
-      ></app-single-selection-field>
+        <ui-select-dropdown-field
+          [label]="'Resource'"
+          [options]="resourceOptions"
+          [displayProperty]="'name'"
+          [valueProperty]="'id'"
+          [field]="permissionForm.resourceId"
+          [width]="'full'"
+        ></ui-select-dropdown-field>
+      
 
-      <app-single-selection-field
-        [title]="'Action'"
-        [items]="actionOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="permissionForm.actionId"
-      ></app-single-selection-field>
+        <ui-select-dropdown-field
+          [label]="'Action'"
+          [options]="actionOptions"
+          [displayProperty]="'name'"
+          [valueProperty]="'id'"
+          [field]="permissionForm.actionId"
+          [width]="'full'"
+        ></ui-select-dropdown-field>
+      
 
-      <app-single-selection-field
-        [title]="'Permission Group (optional)'"
-        [items]="groupOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="permissionForm.groupId"
-      ></app-single-selection-field>
+        <ui-select-dropdown-field
+          [label]="'Permission Group (optional)'"
+          [options]="groupOptions"
+          [displayProperty]="'name'"
+          [valueProperty]="'id'"
+          [field]="permissionForm.groupId"
+          [width]="'full'"
+        ></ui-select-dropdown-field>
+      
 
       <div class="flex justify-center pt-2">
         <ui-button [loading]="createPermissionMutation.isLoading()" type="submit">Submit</ui-button>

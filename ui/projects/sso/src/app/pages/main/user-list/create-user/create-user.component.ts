@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { email as emailValidator, form, FormField, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpMutation } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { CreateUserResponse, UserType, UserTypeType } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -18,7 +18,7 @@ interface CreateUserData {
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField],
   templateUrl: './create-user.component.html',
 })
 export class CreateUserComponent implements OnInit {

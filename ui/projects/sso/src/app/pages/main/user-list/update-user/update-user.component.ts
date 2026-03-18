@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { email as emailValidator, form, FormField, required } from '@angular/forms/signals';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation, httpQuery } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpMutation, httpQuery } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { GetUserListItem, GetUserResponse, UpdateUserResponse, UserType, UserTypeType } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -17,7 +17,7 @@ interface UpdateUserData {
 @Component({
   selector: 'app-update-user',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField],
   templateUrl: './update-user.component.html',
 })
 export class UpdateUserComponent {

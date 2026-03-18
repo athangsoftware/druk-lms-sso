@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation, httpQuery } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpMutation, httpQuery } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { CreateRbacRoleResponse, GetRbacRoleListResponse, RbacRoleItem } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -14,7 +14,7 @@ interface CreateRoleData {
 @Component({
   selector: 'app-create-role',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField],
   templateUrl: './create-role.component.html',
 })
 export class CreateRoleComponent {

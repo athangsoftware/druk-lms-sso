@@ -1,11 +1,10 @@
 <div class="w-full sm:px-4 h-full flex flex-col gap-4">
 
-  <!-- Page Header -->
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col gap-1">
     <div>
       <h1 class="text-xl font-semibold text-neutral-800">Roles</h1>
     </div>
-    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Role</ui-button>
+    <p class="text-sm text-neutral-600">Create and manage RBAC roles for fine-grained access control.</p>
   </div>
 
   <!-- Table -->
@@ -16,6 +15,8 @@
       [data]="roleList.value()?.data ?? []"
       [totalCount]="roleList.value()?.data?.length ?? 0"
       [hasError]="!!roleList.error()"
+      [tableActions]="tableActions"
+      (tableAction)="onTableAction($event)"
       (action)="onAction($event)"
       (rowClick)="onRowClicked($event)"
     ></ui-data-table>

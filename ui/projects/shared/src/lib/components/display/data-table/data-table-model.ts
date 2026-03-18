@@ -12,7 +12,7 @@ export interface ColumnGroup {
 }
 
 export interface HeaderCell {
-  title: string;
+  title?: string;
   colspan: number;
   rowspan: number;
   node: ColumnNode;
@@ -21,7 +21,7 @@ export interface HeaderCell {
 }
 
 export interface ColumnDef {
-  title: string;
+  title?: string;
   key?: string;
   displayTemplate?: string;
   sortKey?: string;

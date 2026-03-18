@@ -14,13 +14,14 @@
         <app-text-input [label]="'Phone Number'" [fullWidth]="true" [placeholder]="'Phone Number'" [formField]="userForm.phoneNumber"></app-text-input>
       </div>
       <div>
-        <app-single-selection-field
-        [title]="'User Type'"
-        [items]="userTypeOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="userForm.userType"
-      ></app-single-selection-field>
+        <ui-select-dropdown-field
+          [label]="'User Type'"
+          [options]="userTypeOptions"
+          [displayProperty]="'name'"
+          [valueProperty]="'id'"
+          [field]="userForm.userType"
+          [width]="'full'"
+        ></ui-select-dropdown-field>
       </div>
       <div class="md:col-span-2 flex justify-center pt-2">
         <ui-button [loading]="updateUserMutation.isLoading()" type="submit">Submit</ui-button>

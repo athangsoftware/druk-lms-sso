@@ -115,11 +115,11 @@ export class SelectDropdownField<T> {
   sizeClasses = computed(() => {
     switch (this.size()) {
       case 'sm':
-        return 'h-8 text-sm';
+        return 'text-sm';
       case 'lg':
-        return 'h-12 text-lg';
+        return 'text-lg';
       default:
-        return 'h-10 text-sm';
+        return 'text-sm';
     }
   });
 
@@ -137,20 +137,22 @@ export class SelectDropdownField<T> {
 
     this.isDropdownOpen.update((prev) => !prev);
     if (this.isDropdownOpen()) {
-      this.filteredOptions.set(this.options());
-      this.updateHighlightedIndex();
-      this.adjustDropdownPosition();
-      this.updateDropdownWidth();
-      this.cdr.detectChanges();
-      this.setDropdownMaxHeight();
-      this.scrollToHighlightedOption();
+      // Defer DOM-related updates outside of the current change-detection cycle.
+      setTimeout(() => {
+        this.filteredOptions.set(this.options());
+        this.updateHighlightedIndex();
+        this.adjustDropdownPosition();
+        this.updateDropdownWidth();
+        this.setDropdownMaxHeight();
+        this.scrollToHighlightedOption();
 
-      if (this.enableSearch()) {
-        const searchField = this.searchField()?.nativeElement;
-        if (searchField) {
-          searchField.focus();
+        if (this.enableSearch()) {
+          const searchField = this.searchField()?.nativeElement;
+          if (searchField) {
+            searchField.focus();
+          }
         }
-      }
+      });
     } else {
       if (this.field()) {
         this.fieldState()?.markAsTouched();
@@ -202,9 +204,11 @@ export class SelectDropdownField<T> {
       } else {
         this.search.emit('');
       }
-      this.highlightedIndex.set(0);
-      this.scrollToHighlightedOption();
-      searchField.focus();
+      setTimeout(() => {
+        this.highlightedIndex.set(0);
+        this.scrollToHighlightedOption();
+        searchField.focus();
+      });
     }
   }
 
@@ -218,19 +222,24 @@ export class SelectDropdownField<T> {
   protected handleKeydown(event: KeyboardEvent): void {
     if (!this.isDropdownOpen()) return;
 
+    const updateHighlight = (newIndex: number) => {
+      setTimeout(() => {
+        this.highlightedIndex.set(newIndex);
+        this.scrollToHighlightedOption();
+      });
+    };
+
     switch (event.key) {
       case 'ArrowDown':
         if (this.highlightedIndex() < this.filteredOptions().length - 1) {
-          this.highlightedIndex.update((prev) => prev + 1);
+          updateHighlight(this.highlightedIndex() + 1);
         }
-        this.scrollToHighlightedOption();
         event.preventDefault();
         break;
       case 'ArrowUp':
         if (this.highlightedIndex() > 0) {
-          this.highlightedIndex.update((prev) => prev - 1);
+          updateHighlight(this.highlightedIndex() - 1);
         }
-        this.scrollToHighlightedOption();
         event.preventDefault();
         break;
       case 'Enter':
@@ -252,8 +261,7 @@ export class SelectDropdownField<T> {
       });
 
       if (matchingIndex !== -1) {
-        this.highlightedIndex.set(matchingIndex);
-        this.scrollToHighlightedOption();
+        updateHighlight(matchingIndex);
       }
     }
   }
@@ -315,8 +323,10 @@ export class SelectDropdownField<T> {
 
   private updateFilteredOptions(searchKeyword: string): void {
     if (!searchKeyword || searchKeyword.trim() === '') {
-      this.filteredOptions.set(this.options());
-      this.highlightedIndex.set(0);
+      setTimeout(() => {
+        this.filteredOptions.set(this.options());
+        this.highlightedIndex.set(0);
+      });
       return;
     }
 
@@ -325,8 +335,10 @@ export class SelectDropdownField<T> {
       return typeof displayString === 'string' && displayString.toLowerCase().includes(searchKeyword.toLowerCase());
     });
 
-    this.filteredOptions.set(filtered);
-    this.updateHighlightedIndex();
+    setTimeout(() => {
+      this.filteredOptions.set(filtered);
+      this.updateHighlightedIndex();
+    });
   }
 
   private updateHighlightedIndex(): void {

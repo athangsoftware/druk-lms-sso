@@ -3,12 +3,12 @@ import { ApiService } from '@core/api/api.service';
 import { GetClientListItem, GetClientListParams, GetClientListResponse } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   TableStateEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
   httpMutation,
 } from '@projects/shared-lib';
@@ -20,7 +20,7 @@ import { ClientListStore } from './clients.store';
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './clients.component.html',
   providers: [ClientListStore],
 })
@@ -66,6 +66,22 @@ export class ClientsComponent {
     handleError: true,
   });
 
+  tableActions: TableAction[] = [
+    {
+      label: 'Create Client',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
+
   onCreate() {
     this.overlayService.openModal(CreateClientComponent, {
       disableClose: true,
@@ -75,7 +91,7 @@ export class ClientsComponent {
 
   columnGroups: ColumnGroup[] = [
     {
-      title: 'Manage OAuth / OIDC client applications',
+      title: '',
       children: [
         {
           title: 'Name',

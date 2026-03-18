@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpQuery, httpMutation } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpQuery, httpMutation } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { RbacRoleItem, GetRbacRoleResponse, UpdateRbacRoleResponse, GetRbacRoleListResponse } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -15,7 +15,7 @@ interface UpdateRoleData {
 @Component({
   selector: 'app-update-role',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField],
   templateUrl: './update-role.component.html',
 })
 export class UpdateRoleComponent {

@@ -1,11 +1,10 @@
 <div class="w-full sm:px-4 h-full flex flex-col gap-4">
 
-  <!-- Page Header -->
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col gap-1">
     <div>
       <h1 class="text-xl font-semibold text-neutral-800">Users</h1>
     </div>
-    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create User</ui-button>
+    <p class="text-sm text-neutral-600">Browse, manage and provision access for users across your organization.</p>
   </div>
 
   <!-- Table -->
@@ -17,6 +16,8 @@
       [totalCount]="userList.value()?.totalCount ?? 0"
       
       [hasError]="!!userList.error()"
+      [tableActions]="tableActions"
+      (tableAction)="onTableAction($event)"
       (action)="onAction($event)"
       (stateChange)="onTableStateChanged($event)"
       [initialValue]="store.tableState()"

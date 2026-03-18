@@ -6,11 +6,12 @@ import {
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
+  TableStateEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
@@ -21,7 +22,7 @@ import { AssignPermissionsComponent } from './assign-permissions/assign-permissi
 @Component({
   selector: 'app-roles',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './roles.component.html',
 })
 export class RolesComponent {
@@ -33,6 +34,22 @@ export class RolesComponent {
     handleSuccess: false,
     handleError: true,
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Create Role',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreateRoleComponent, {

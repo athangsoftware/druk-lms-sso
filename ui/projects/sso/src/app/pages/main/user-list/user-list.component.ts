@@ -4,12 +4,12 @@ import { GetUserListItem, GetUserListParams, GetUserListResponse } from '@core/a
 import { AuthHelperService } from '@core/auth-helper.service';
 import {
   ColumnGroup,
+  TableAction,
   TableActionEvent,
   TableStateEvent,
   DataTable,
   ContextMenuActionConfig,
   OverlayStore,
-  Button,
   httpQuery,
   httpMutation,
 } from '@projects/shared-lib';
@@ -23,7 +23,7 @@ import { AssignUserRolesComponent } from '../user-roles/assign-user-roles/assign
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './user-list.component.html',
   providers: [UserListStore],
 })
@@ -77,6 +77,22 @@ export class UserListComponent {
     handleError: true,
   });
 
+  tableActions: TableAction[] = [
+    {
+      label: 'Create User',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
+
   onCreate() {
     this.overlayService.openModal(CreateUserComponent, {
       disableClose: true,
@@ -86,7 +102,7 @@ export class UserListComponent {
 
   columnGroups: ColumnGroup[] = [
     {
-      title: 'Manage user accounts and access roles',
+      title: '',
       children: [
         {
           title: 'First Name',

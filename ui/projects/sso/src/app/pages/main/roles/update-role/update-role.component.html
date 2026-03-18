@@ -8,21 +8,23 @@
         [formField]="roleForm.name"
       ></app-text-input>
 
-      <app-single-selection-field
-        [title]="'Parent Role (optional)'"
-        [items]="parentRoleOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="roleForm.parentRoleId"
-      ></app-single-selection-field>
+      <ui-select-dropdown-field
+        [label]="'Parent Role (optional)'"
+        [options]="parentRoleOptions"
+        [displayProperty]="'name'"
+        [valueProperty]="'id'"
+        [field]="roleForm.parentRoleId"
+        [width]="'full'"
+      ></ui-select-dropdown-field>
 
-      <app-single-selection-field
-        [title]="'Status'"
-        [items]="statusOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="roleForm.isActive"
-      ></app-single-selection-field>
+      <ui-select-dropdown-field
+        [label]="'Status'"
+        [options]="statusOptions"
+        [displayProperty]="'name'"
+        [valueProperty]="'id'"
+        [field]="roleForm.isActive"
+        [width]="'full'"
+      ></ui-select-dropdown-field>
 
       <div class="md:col-span-2 flex justify-center pt-2">
         <ui-button [loading]="updateRoleMutation.isLoading()" type="submit">Submit</ui-button>

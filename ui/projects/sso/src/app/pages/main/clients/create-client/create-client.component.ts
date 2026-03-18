@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, effect, untracked } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation, CheckboxField } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpMutation, CheckboxField } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { ClientType, CreateClientResponse } from '@core/api/model';
 
@@ -37,7 +37,7 @@ function sanitizeClientId(value: string): string {
 @Component({
   selector: 'app-create-client',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField, CheckboxField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField, CheckboxField],
   templateUrl: './create-client.component.html',
 })
 export class CreateClientComponent {

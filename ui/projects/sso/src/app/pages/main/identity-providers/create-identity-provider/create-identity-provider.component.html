@@ -8,13 +8,14 @@
         [formField]="providerForm.name"
       ></app-text-input>
 
-      <app-single-selection-field
-        [title]="'Provider Type'"
-        [items]="typeOptions"
-        [display]="'name'"
-        [value]="'id'"
-        [formField]="providerForm.type"
-      ></app-single-selection-field>
+      <ui-select-dropdown-field
+        [label]="'Provider Type'"
+        [options]="typeOptions"
+        [displayProperty]="'name'"
+        [valueProperty]="'id'"
+        [field]="providerForm.type"
+        [width]="'full'"
+      ></ui-select-dropdown-field>
 
       <div class="md:col-span-2">
         <app-text-input

@@ -1,11 +1,10 @@
 <div class="w-full sm:px-4 h-full flex flex-col gap-4">
 
-  <!-- Page Header -->
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col gap-1">
     <div>
       <h1 class="text-xl font-semibold text-neutral-800">Identity Providers</h1>
     </div>
-    <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Add Provider</ui-button>
+    <p class="text-sm text-neutral-600">Configure external identity providers for single sign-on.</p>
   </div>
 
   <!-- Table -->
@@ -16,6 +15,8 @@
       [data]="providerList.value()?.data ?? []"
       [totalCount]="providerList.value()?.totalCount ?? 0"
       [hasError]="!!providerList.error()"
+      [tableActions]="tableActions"
+      (tableAction)="onTableAction($event)"
       (action)="onAction($event)"
       (stateChange)="onTableStateChanged($event)"
       [initialValue]="store.tableState()"

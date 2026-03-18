@@ -1,7 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, httpQuery, httpMutation } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SelectDropdownField, httpQuery, httpMutation } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
 import { CreatePermissionGroupResponse, GetClientListResponse, GetClientListItem } from '@core/api/model';
 import { environment } from '@environments/environment';
@@ -15,7 +15,7 @@ interface CreatePermissionGroupData {
 @Component({
   selector: 'app-create-permission-group',
   standalone: true,
-  imports: [BaseOverlay, TextInputComponent, Button, FormField],
+  imports: [BaseOverlay, TextInputComponent, Button, SelectDropdownField, FormField],
   templateUrl: './create-permission-group.component.html',
 })
 export class CreatePermissionGroupComponent {
@@ -29,6 +29,11 @@ export class CreatePermissionGroupComponent {
     description: '',
     clientId: '',
   });
+
+  clientOptions = computed(() => [
+    { id: '', name: '— No Client —' },
+    ...this.clients(),
+  ]);
 
   groupForm = form(this.groupModel, (s) => {
     required(s.name);
@@ -54,11 +59,6 @@ export class CreatePermissionGroupComponent {
       this.dialogRef.close(response);
     },
   });
-
-  onClientChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-    this.groupModel.update((m) => ({ ...m, clientId: value }));
-  }
 
   isFormValid() {
     return this.groupForm.name().valid();

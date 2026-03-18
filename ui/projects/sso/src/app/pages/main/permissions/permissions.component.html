@@ -1,14 +1,10 @@
 <div class="w-full sm:px-4 h-full flex flex-col gap-4">
 
-  <!-- Page Header -->
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col gap-1">
     <div>
       <h1 class="text-xl font-semibold text-neutral-800">Permissions</h1>
     </div>
-    <div class="flex items-center gap-2">
-      <ui-button [iconSrc]="'icons/settings.svg'" [appearance]="'outline'" (click)="onOpenSettings()" type="button">Configure</ui-button>
-      <ui-button [iconSrc]="'icons/plus.svg'" (click)="onCreate()" type="button">Create Permission</ui-button>
-    </div>
+    <p class="text-sm text-neutral-600">Define resource-action permissions and manage permission settings.</p>
   </div>
 
   <!-- Table -->
@@ -19,6 +15,8 @@
       [data]="permissionList.value()?.data ?? []"
       [totalCount]="permissionList.value()?.data?.length ?? 0"
       [hasError]="!!permissionList.error()"
+      [tableActions]="tableActions"
+      (tableAction)="onTableAction($event)"
       (rowClick)="onRowClicked($event)"
     ></ui-data-table>
   </div>

@@ -1,10 +1,10 @@
 <div class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-200"
-  [style.height]="containerHeight() ? containerHeight() : (enableSearch() ? 'calc(100vh - 160px)' : 'calc(100vh - 136px)')">
+  [style.height]="containerHeight() ? containerHeight() : (enableSearch() ? 'calc(100vh - 220px)' : 'calc(100vh - 200px)')">
   <!-- container start -->
 
   <!-- Search Bar & Actions -->
   <div
-    class="flex flex-row px-3 py-2 border-b border-gray-200 bg-white flex-shrink-0 gap-4 items-center justify-between">
+    class="flex flex-row px-3 py-1.5 border-b border-gray-200 bg-white flex-shrink-0 gap-4 items-center justify-between">
 
     <!-- Search (Left) -->
     <div class="flex-1 min-w-0 flex items-center">
@@ -65,22 +65,23 @@
         <thead
           class="sticky top-0 z-[80] flex-shrink-0 bg-gray-100 shadow-sm border-b border-gray-200">
           @for (level of getHeaderLevels(); track level) {
+          @if (shouldRenderHeaderRow(level)) {
           <tr sortableTable [sortKey]="sortBy()" [sortDirection]="sortDirection()" (sortChange)="onSortChanged($event)"
             class="text-xs font-semibold text-gray-700 uppercase tracking-wide"
             [class.opacity-50]="getState() === 'initializing'"
             [class.pointer-events-none]="getState() === 'initializing'">
 
             <!-- Expandable Column Header -->
-            @if (expandableComponent() && level === 0) {
+            @if (expandableComponent() && level === getFirstVisibleHeaderLevel()) {
             <th [attr.rowspan]="getHeaderRowSpan()"
-              class="sticky left-0 z-[100] bg-gray-100 w-12 px-2 py-2.5 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]">
+              class="sticky left-0 z-[100] bg-gray-100 w-12 px-2 py-2 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]">
             </th>
             }
 
             <!-- Checkbox Column Header -->
-            @if (enableRowSelection() && level === 0) {
+            @if (enableRowSelection() && level === getFirstVisibleHeaderLevel()) {
             <th [attr.rowspan]="getHeaderRowSpan()"
-              class="sticky z-[100] bg-gray-100 w-12 px-2 py-2.5 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]"
+              class="sticky z-[100] bg-gray-100 w-12 px-2 py-2 text-center border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)]"
               [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }">
               @if (getState() !== 'initializing') {
               <ui-checkbox-field [value]="isAllSelected()" [indeterminate]="isSelectAllIndeterminate()"
@@ -92,7 +93,7 @@
             @for (cell of getHeaderCellsAtLevel(level); track $index; let colIndex = $index) {
             <th [attr.colspan]="cell.colspan" [attr.rowspan]="cell.rowspan" [attr.data-sortable-key]="cell.sortKey"
               [attr.aria-sort]="getAriaSort(cell.sortKey)"
-              class="relative cursor-pointer px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide hover:bg-gray-200 bg-gray-100 border-r border-gray-200 transition-colors duration-200 align-middle"
+              class="relative cursor-pointer px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide hover:bg-gray-200 bg-gray-100 border-r border-gray-200 transition-colors duration-200 align-middle"
               [ngClass]="getHeaderThClass(cell)" [class.opacity-50]="getState() === 'initializing'"
               [class.pointer-events-none]="getState() === 'initializing'">
               <div class="flex items-center gap-1.5" [ngClass]="getHeaderAlignmentClass(cell.node)">
@@ -102,24 +103,26 @@
             }
           </tr>
           }
+          }
 
           <!-- Filter Row - FIXED STICKY POSITION -->
           @if (hasFilterConfig()) {
           <tr class="bg-gray-50 z-[90] border-b border-gray-200">
             @if (expandableComponent()) {
             <th
-              class="sticky left-0 z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-2 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle">
+              class="sticky left-0 z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-1 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle">
             </th>
             }
             @if (enableRowSelection()) {
             <th
-              class="sticky z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-2 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle"
+              class="sticky z-[120] bg-gray-50 w-12 min-w-[48px] max-w-[48px] px-2 py-1 border-r-2 border-gray-300 shadow-[2px_0_4px_rgba(0,0,0,0.1)] align-middle"
               [ngClass]="{ 'left-12': expandableComponent(), 'left-0': !expandableComponent() }">
             </th>
             }
 
             @for (column of allLeafColumns(); track column; let colIndex = $index) {
-            <th class="px-4 py-2 border-r border-gray-200 bg-gray-50 align-middle"
+            @if (column.type !== 'actions') {
+            <th class="px-4 py-1 border-r border-gray-200 bg-gray-50 align-middle"
               [ngClass]="getFilterCellClass(column)">
               <div class="w-full filter-wrapper" [ngClass]="getFilterContentAlignmentClass(column)">
                 @if (column.filterConfig) {
@@ -156,11 +159,11 @@
                 }
                 }
                 } @else {
-                <!-- Empty space for non-filter columns -->
-                <div class="h-10 opacity-0">&nbsp;</div>
+                <!-- No filter for this column -->
                 }
               </div>
             </th>
+            }
             }
           </tr>
           }
@@ -432,7 +435,7 @@
   </div>
 
   <!-- Footer -->
-  <div class="border-t-2 border-gray-300 bg-white px-4 py-2 flex-shrink-0">
+  <div class="border-t-2 border-gray-300 bg-white px-4 py-1.5 flex-shrink-0">
     @if (footerComponent()) {
     <ui-dynamic-renderer [component]="footerComponent()" [data]="data()"
       (actionPerformed)="onFooterActionPerformed($event)">

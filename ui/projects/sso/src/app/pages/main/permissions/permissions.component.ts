@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { ApiService } from '@core/api/api.service';
 import {
   GetRbacPermissionListResponse,
 } from '@core/api/model';
 import {
   ColumnGroup,
+  TableAction,
+  TableActionEvent,
   DataTable,
   OverlayStore,
-  Button,
   httpQuery,
 } from '@projects/shared-lib';
 import { environment } from '@environments/environment';
@@ -17,11 +17,10 @@ import { PermissionSettingsComponent } from './permission-settings/permission-se
 @Component({
   selector: 'app-permissions',
   standalone: true,
-  imports: [DataTable, Button],
+  imports: [DataTable],
   templateUrl: './permissions.component.html',
 })
 export class PermissionsComponent {
-  private apiService = inject(ApiService);
   overlayService = inject(OverlayStore);
 
   permissionList = httpQuery<GetRbacPermissionListResponse>({
@@ -29,6 +28,34 @@ export class PermissionsComponent {
     handleSuccess: false,
     handleError: true,
   });
+
+  tableActions: TableAction[] = [
+    {
+      label: 'Configure',
+      actionKey: 'configure',
+      type: 'outline',
+      icon: 'icons/settings.svg',
+      position: 'default',
+    },
+    {
+      label: 'Create Permission',
+      actionKey: 'create',
+      type: 'primary',
+      icon: 'icons/plus.svg',
+      position: 'default',
+    },
+  ];
+
+  onTableAction(event: TableActionEvent) {
+    if (event.actionKey === 'configure') {
+      this.onOpenSettings();
+      return;
+    }
+
+    if (event.actionKey === 'create') {
+      this.onCreate();
+    }
+  }
 
   onCreate() {
     this.overlayService.openModal(CreatePermissionComponent, {
@@ -46,7 +73,7 @@ export class PermissionsComponent {
 
   columnGroups: ColumnGroup[] = [
     {
-      title: 'Manage Permissions',
+      title: '',
       children: [
         {
           title: 'Resource',

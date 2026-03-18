@@ -854,24 +854,46 @@ export class DesktopDataTable<T> implements OnInit, AfterViewInit, OnDestroy {
     return node.children.reduce((sum, child) => sum + this.getLeafCount(child), 0);
   }
 
+  private isHeaderLevelEmpty(level: number): boolean {
+    const maxDepth = this.getMaxDepth();
+    let hasTitle = false;
+    const traverse = (node: ColumnNode, currentLevel: number) => {
+      if (hasTitle) return;
+      if (currentLevel === level) {
+        if (!!String((node as any).title ?? '').trim()) {
+          hasTitle = true;
+        }
+      } else if ('children' in node) {
+        node.children.forEach(child => traverse(child, currentLevel + 1));
+      }
+    };
+    this.columnGroupsSignal().forEach(node => traverse(node, 0));
+    return !hasTitle;
+  }
+
   getHeaderCellsAtLevel(level: number): HeaderCell[] {
     const cells: HeaderCell[] = [];
-    const maxDepth = this.getMaxDepth();
+    const visibleLevelsFromHere = this.getHeaderLevels()
+      .filter(l => l >= level && !this.isHeaderLevelEmpty(l)).length;
     const traverse = (node: ColumnNode, currentLevel: number) => {
       if (currentLevel === level) {
         const isGroup = 'children' in node;
         const colspan = this.getLeafCount(node);
         let rowspan = 1;
         if (!isGroup) {
-          rowspan = maxDepth - currentLevel;
+          rowspan = Math.max(1, visibleLevelsFromHere);
+          // Actions columns should also span the filter row
+          if ((node as ColumnDef).type === 'actions' && this.hasFilterConfig()) {
+            rowspan += 1;
+          }
         }
         if (colspan > 0) {
           cells.push({
-            title: node.title,
+            title: (node as any).title ?? '',
             colspan,
             rowspan,
             node,
-            sortKey: isGroup ? undefined : node.sortKey,
+            sortKey: isGroup ? undefined : (node as any).sortKey,
             alignment: node.alignment
           });
         }
@@ -883,12 +905,27 @@ export class DesktopDataTable<T> implements OnInit, AfterViewInit, OnDestroy {
     return cells;
   }
 
+  shouldRenderHeaderRow(level: number): boolean {
+    return !this.isHeaderLevelEmpty(level);
+  }
+
+  getFirstVisibleHeaderLevel(): number {
+    for (const level of this.getHeaderLevels()) {
+      if (this.shouldRenderHeaderRow(level)) return level;
+    }
+    return 0;
+  }
+
+  getVisibleHeaderRowCount(): number {
+    return this.getHeaderLevels().filter(level => this.shouldRenderHeaderRow(level)).length;
+  }
+
   isColumnGroup(node: ColumnNode): node is ColumnGroup {
     return 'children' in node;
   }
 
   getHeaderRowSpan(): number {
-    return this.getMaxDepth();
+    return this.getVisibleHeaderRowCount();
   }
 
   getTotalColspan(): number {
@@ -910,6 +947,10 @@ export class DesktopDataTable<T> implements OnInit, AfterViewInit, OnDestroy {
 
   getHeaderThClass(cell: HeaderCell): string {
     let classes = this.getAlignmentClass(cell.node);
+
+    // Add padding based on whether this header has a meaningful title.
+    const title = (cell.title ?? '').toString().trim();
+    classes += title ? ' py-2' : ' py-0';
 
     if (!this.isColumnGroup(cell.node) && (cell.node as ColumnDef).type === 'actions') {
       classes += ' sticky right-0 z-[110] bg-gray-100 shadow-[-2px_0_4px_rgba(0,0,0,0.1)] border-l border-gray-300 w-32 min-w-[128px] max-w-[128px]';
@@ -1029,7 +1070,7 @@ export class DesktopDataTable<T> implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getColumnTitle(column: ColumnDef): string {
-    return column.title;
+    return column.title ?? '';
   }
 
   getState(): 'initializing' | 'loading' | 'success' | 'error' | 'empty' {
