@@ -78,8 +78,9 @@ export class TokenController {
         }
 
         const roles = await this.rbacService.getUserRoleNames(user.id);
-        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, roles });
-        const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.userType, type: 'refresh' });
+        const permissions = await this.rbacService.getUserPermissions(user.id);
+        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, roles, permissions });
+        const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.userType, type: 'refresh', permissions });
 
         await dbContext.refreshToken.create({
           data: {
@@ -102,7 +103,7 @@ export class TokenController {
           throw new BadRequestException('Missing refresh_token');
         }
 
-        const storedToken = await dbContext.refreshToken.findUnique({
+        const storedToken = await dbContext.refreshToken.findFirst({
           where: { token: refresh_token },
           include: { user: true, client: true },
         });
@@ -141,8 +142,9 @@ export class TokenController {
         }
 
         const refreshRoles = await this.rbacService.getUserRoleNames(storedToken.user.id);
-        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, roles: refreshRoles });
-        const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, type: 'refresh' });
+        const permissions = await this.rbacService.getUserPermissions(storedToken.user.id);
+        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, roles: refreshRoles, permissions });
+        const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, type: 'refresh', permissions });
 
         await dbContext.refreshToken.update({
           where: { id: storedToken.id },

@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../../rbac';
 import { GetRoleListResponse } from './get-role-list-response';
 import { userTypes } from '../../../../core/enum-mapping';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -13,7 +13,7 @@ export class GetRoleListController {
   @Get()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetRoleListResponse })
   @ApiOperation({ operationId: 'getRoleList' })
-  @Authorize(UserType.MODRATOR, UserType.SUPER_ADMIN, UserType.DEV)
+  @RequirePermission('role.read')
   @HttpCode(200)
   async execute(): Promise<GetRoleListResponse> {
     return {

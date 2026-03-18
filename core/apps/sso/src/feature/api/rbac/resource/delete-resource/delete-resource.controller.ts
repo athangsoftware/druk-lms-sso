@@ -1,6 +1,6 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { DeleteResourceResponse } from './delete-resource-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -15,7 +15,7 @@ export class DeleteResourceController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteResource' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Resource deleted', type: DeleteResourceResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('resource.delete')
   async execute(@Param('id') id: string): Promise<DeleteResourceResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {

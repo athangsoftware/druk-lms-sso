@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Delete, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { DeleteClientResponse } from './delete-client-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -15,7 +16,7 @@ export class DeleteClientController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteClient' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Client successfully deleted', type: DeleteClientResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('client.delete')
   async execute(@Param('id') id: string): Promise<DeleteClientResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const client = await dbContext.client.findUnique({ where: { id } });

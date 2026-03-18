@@ -1,6 +1,7 @@
+import { RequirePermission } from '../rbac';
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService } from '@app/prisma-sso';
 import { UserType } from '@app/prisma-sso';
 import { DashboardStatsResponse } from './dashboard-response';
@@ -15,7 +16,7 @@ export class DashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboardStats', summary: 'Get aggregated dashboard statistics' })
   @ApiResponse({ status: HttpStatus.OK, type: DashboardStatsResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('dashboard.read')
   async getStats(): Promise<DashboardStatsResponse> {
     return this.prismaService.client(async ({ dbContext }) => {
       // ─── User counts ────────────────────────────────────────

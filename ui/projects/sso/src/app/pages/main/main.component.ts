@@ -100,17 +100,17 @@ export class MainComponent {
       },
     ];
 
-    if (this.authService.isMember()) {
-      return [
-        {
-          id: 'my-profile',
-          label: 'My Profile',
-          link: '/main/my-profile',
-          iconPath: 'icons/account.svg',
-          isEnabled: true,
-        },
-      ];
-    }
+    // if (!this.authService.hasPermission('user.create')) {
+    //   return [
+    //     {
+    //       id: 'my-profile',
+    //       label: 'My Profile',
+    //       link: '/main/my-profile',
+    //       iconPath: 'icons/account.svg',
+    //       isEnabled: true,
+    //     },
+    //   ];
+    // }
 
     return allMenus;
   }

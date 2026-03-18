@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { GetActionListResponse } from './get-action-list-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -15,7 +15,7 @@ export class GetActionListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getActionList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetActionListResponse })
-  @Authorize(UserType.SUPER_ADMIN, UserType.MODRATOR)
+  @RequirePermission('action.read')
   async execute(): Promise<GetActionListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const actions = await dbContext.action.findMany({ orderBy: { name: 'asc' } });

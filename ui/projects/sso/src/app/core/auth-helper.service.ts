@@ -62,7 +62,7 @@ export class AuthHelperService {
     return JSON.parse(sessionStorage.getItem(userKey) || '{}');
   }
 
-  public decodeToken(token: string): { role?: string } | null {
+  public decodeToken(token: string): { role?: string; permissions?: string[] } | null {
     try {
       const payload = token.split('.')[1];
       const decoded = atob(payload);
@@ -72,18 +72,22 @@ export class AuthHelperService {
     }
   }
 
+  hasPermission(permission: string): boolean {
+    const token = this.getAccessToken();
+    if (!token) return false;
+    const decoded = this.decodeToken(token);
+    return decoded?.permissions?.includes(permission) ?? false;
+  }
+
   isMember(): boolean {
     const token = this.getAccessToken();
     if (!token) return false;
     const decoded = this.decodeToken(token);
-    return decoded?.role?.toLowerCase() === 'member';
+    return decoded?.role === 'OrganizationUser';
   }
 
   isModerator(): boolean {
-    const token = this.getAccessToken();
-    if (!token) return false;
-    const decoded = this.decodeToken(token);
-    return decoded?.role?.toLowerCase() === 'modrator';
+    return this.hasPermission('user.create');
   }
 
   removePreference(): void {

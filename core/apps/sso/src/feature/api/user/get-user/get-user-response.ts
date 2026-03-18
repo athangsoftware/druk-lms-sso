@@ -19,8 +19,8 @@ export class GetUserResponseData {
   @ApiProperty({ example: 'johndoe', description: 'Username of the user' })
   username: string | null;
 
-  @ApiProperty({ example: 'MEMBER', description: 'Role of the user' })
-  role: string | null;
+  @ApiProperty({ example: 'InternalUser', description: 'User type of the user' })
+  userType: string | null;
 
   @ApiProperty({ example: true, description: 'Whether the user is active' })
   isActive: boolean | null;

@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { GetPermissionGroupResponse } from './get-permission-group-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -15,7 +15,7 @@ export class GetPermissionGroupController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getPermissionGroup' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetPermissionGroupResponse })
-  @Authorize(UserType.SUPER_ADMIN, UserType.MODRATOR)
+  @RequirePermission('permission.read')
   async execute(@Param('id') id: string): Promise<GetPermissionGroupResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const group = await dbContext.permissionGroup.findUnique({

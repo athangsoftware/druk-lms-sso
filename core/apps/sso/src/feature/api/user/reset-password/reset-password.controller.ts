@@ -1,9 +1,10 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Put, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResetPasswordRequest } from './reset-password-request';
 import { ResetPasswordResponse } from './reset-password-response';
 import { PrismaService } from '@app/prisma-sso';
-import { Authorize, BcryptService } from '@app/shared';
+import { BcryptService } from '@app/shared';
 import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
@@ -19,7 +20,7 @@ export class ResetPasswordController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'resetPassword' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Password successfully reset', type: ResetPasswordResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('user.update')
   async execute(@Body() body: ResetPasswordRequest): Promise<ResetPasswordResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const resetToken = await dbContext.passwordResetToken.findFirst({
@@ -35,7 +36,7 @@ export class ResetPasswordController {
         throw new HttpException('Token has expired', HttpStatus.BAD_REQUEST);
       }
 
-      if (resetToken.user.userType !== UserType.MEMBER) {
+      if (resetToken.user.userType !== UserType.InternalUser) {
         throw new HttpException('Can only reset passwords for MEMBER users', HttpStatus.FORBIDDEN);
       }
 

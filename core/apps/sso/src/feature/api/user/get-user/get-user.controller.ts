@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../../rbac';
 import { GetUserResponse, GetUserResponseData } from './get-user-response';
 import { PrismaService } from '@app/prisma-sso';
 import { UserType } from '@app/prisma-sso';
@@ -14,7 +14,7 @@ export class GetUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns user by ID', type: GetUserResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('user.read')
   async execute(@Param('id') id: string): Promise<GetUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id } });
@@ -30,7 +30,7 @@ export class GetUserController {
         email: user.email,
         phoneNumber: user.phoneNumber || null,
         username: user.username,
-        role: user.userType,
+        userType: user.userType,
         isActive: user.isActive,
         createdAt: user.createdAt.toISOString(),
       };

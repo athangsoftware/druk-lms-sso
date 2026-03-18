@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, Prisma, UserType } from '@app/prisma-sso';
 import { GetClientListRequest } from './get-client-list-request';
 import { GetClientListResponse } from './get-client-list-response';
@@ -16,7 +17,7 @@ export class GetClientListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getClientList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetClientListResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('client.read')
   async execute(@Query() request: GetClientListRequest): Promise<GetClientListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const whereCondition: Prisma.ClientWhereInput = { AND: [] };

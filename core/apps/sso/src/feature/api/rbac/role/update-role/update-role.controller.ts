@@ -1,6 +1,7 @@
+import { RequirePermission } from '../..';
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdateRoleRequest } from './update-role-request';
 import { UpdateRoleResponse } from './update-role-response';
@@ -16,7 +17,7 @@ export class UpdateRoleController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateRole' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Role successfully updated', type: UpdateRoleResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('role.update')
   async execute(@Param('id') id: string, @Body() body: UpdateRoleRequest): Promise<UpdateRoleResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.role.findUnique({ where: { id } });

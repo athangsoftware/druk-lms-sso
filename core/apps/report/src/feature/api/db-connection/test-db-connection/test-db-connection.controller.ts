@@ -30,7 +30,7 @@ export class TestDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'testDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: TestDbConnectionResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(@Param('id') id: string): Promise<TestDbConnectionResponse> {
     const connection = await this.prismaService.client(
       async ({ dbContext }) => {

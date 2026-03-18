@@ -17,7 +17,7 @@ export class CreateDashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createDashboard' })
   @ApiResponse({ status: HttpStatus.OK, type: CreateDashboardResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Body() body: CreateDashboardRequest,
   ): Promise<CreateDashboardResponse> {

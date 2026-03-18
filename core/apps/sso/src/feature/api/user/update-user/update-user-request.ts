@@ -24,9 +24,13 @@ export class UpdateUserRequest {
   @IsString({ message: ErrorMessages.string('phone number') })
   phoneNumber?: string;
 
-  @ApiPropertyOptional({ example: 'johndoe', description: 'Role of the user' })
+  @ApiPropertyOptional({ example: 'InternalUser', description: 'User type of the user' })
   @IsOptional()
-  @IsString({ message: ErrorMessages.string('role') })
-  @IsEnum(UserType, { message: ErrorMessages.enum('role', UserType) })
-  role: UserType;
+  @IsString({ message: ErrorMessages.string('user type') })
+  @IsEnum(UserType, { message: ErrorMessages.enum('user type', UserType) })
+  userType: UserType;
+
+  @ApiPropertyOptional({ enum: UserType, example: UserType.InternalUser, description: 'Legacy role value (for backwards compatibility)' })
+  @IsOptional()
+  role?: UserType;
 }

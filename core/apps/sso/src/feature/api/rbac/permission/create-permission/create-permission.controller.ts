@@ -1,6 +1,6 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreatePermissionRequest } from './create-permission-request';
 import { CreatePermissionResponse } from './create-permission-response';
@@ -16,7 +16,7 @@ export class CreatePermissionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createPermission' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Permission successfully created', type: CreatePermissionResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('permission.create')
   async execute(@Body() body: CreatePermissionRequest): Promise<CreatePermissionResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const resource = await dbContext.resource.findUnique({ where: { id: body.resourceId } });

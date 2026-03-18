@@ -1,6 +1,6 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdatePermissionGroupRequest } from './update-permission-group-request';
 import { UpdatePermissionGroupResponse } from './update-permission-group-response';
@@ -16,7 +16,7 @@ export class UpdatePermissionGroupController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updatePermissionGroup' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Permission group successfully updated', type: UpdatePermissionGroupResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('permission.create')
   async execute(@Param('id') id: string, @Body() body: UpdatePermissionGroupRequest): Promise<UpdatePermissionGroupResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.permissionGroup.findUnique({ where: { id } });

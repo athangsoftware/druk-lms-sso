@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { email as emailValidator, form, FormField, required } from '@angular/forms/signals';
 import { DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpQuery, httpMutation } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
-import { CreateUserResponse, GetRoleListResponse, UserRoleType } from '@core/api/model';
+import { CreateUserResponse, UserType, UserTypeType } from '@core/api/model';
 import { environment } from '@environments/environment';
 
 interface CreateUserData {
@@ -12,7 +12,7 @@ interface CreateUserData {
   email: string;
   phoneNumber: string;
   password: string;
-  role: string;
+  userType: UserTypeType;
 }
 
 @Component({
@@ -21,7 +21,8 @@ interface CreateUserData {
   imports: [BaseOverlay, TextInputComponent, Button, SingleSelectionFieldComponent, FormField],
   templateUrl: './create-user.component.html',
 })
-export class CreateUserComponent {
+export class CreateUserComponent implements OnInit {
+  @Input() isOrganizationUser = false;
   private apiService = inject(ApiService);
   dialogRef = inject(DialogRef);
 
@@ -31,28 +32,33 @@ export class CreateUserComponent {
     email: '',
     phoneNumber: '',
     password: '',
-    role: '',
+    userType: UserType.InternalUser,
   });
+
+  ngOnInit() {
+    if (this.isOrganizationUser) {
+      this.userModel.update((model) => ({ ...model, userType: UserType.OrganizationUser }));
+    }
+  }
 
   userForm = form(this.userModel, (s) => {
     required(s.firstName);
     required(s.lastName);
     emailValidator(s.email);
     required(s.password);
-    required(s.role);
+    required(s.userType);
   });
 
-  roleList = httpQuery<GetRoleListResponse>({
-    request: () => `${environment.apiUrl}/roles`,
-    handleSuccess: false,
-    handleError: true,
-  });
+  userTypeOptions: Array<{ id: UserTypeType; name: string }> = [
+    { id: UserType.InternalUser, name: 'Internal User' },
+    { id: UserType.OrganizationUser, name: 'Organization User' },
+  ];
 
   createUserMutation = httpMutation<CreateUserResponse>({
-    request: () => this.apiService.createUser({
-      ...this.userModel(),
-      role: this.userModel().role as UserRoleType,
-    }),
+    request: () =>
+      this.apiService.createUser({
+        ...this.userModel(),
+      }),
     handleSuccess: true,
     onSuccess: (response) => {
       this.dialogRef.close(response);
@@ -64,7 +70,7 @@ export class CreateUserComponent {
       this.userForm.firstName().valid() &&
       this.userForm.lastName().valid() &&
       this.userForm.password().valid() &&
-      this.userForm.role().valid()
+      this.userForm.userType().valid()
     );
   }
 

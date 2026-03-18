@@ -1,9 +1,8 @@
 import { Controller, Put, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../../rbac';
 import { DisableUserResponse } from './disable-user-response';
 import { PrismaService } from '@app/prisma-sso';
-import { UserType } from '@app/prisma-sso';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -14,7 +13,7 @@ export class DisableUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'disableUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User successfully disabled', type: DisableUserResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('user.update')
   async execute(@Param('id') id: string): Promise<DisableUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id } });

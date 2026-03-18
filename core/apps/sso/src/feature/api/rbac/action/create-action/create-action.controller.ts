@@ -1,6 +1,6 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateActionRequest } from './create-action-request';
 import { CreateActionResponse } from './create-action-response';
@@ -16,7 +16,7 @@ export class CreateActionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createAction' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Action successfully created', type: CreateActionResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('action.create')
   async execute(@Body() body: CreateActionRequest): Promise<CreateActionResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.action.findUnique({ where: { name: body.name } });

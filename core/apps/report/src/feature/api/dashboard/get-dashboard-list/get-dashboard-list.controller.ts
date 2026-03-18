@@ -17,7 +17,7 @@ export class GetDashboardListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboardList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDashboardListResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Query() request: GetDashboardListRequest,
   ): Promise<GetDashboardListResponse> {

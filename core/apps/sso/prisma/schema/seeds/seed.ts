@@ -172,6 +172,21 @@ async function main() {
     }
     console.log('✅ Roles seeded successfully\n');
 
+    // Assign SUPER_ADMIN role to admin user
+    console.log('👑 Assigning SUPER_ADMIN role to admin user...');
+    const adminUserId = 'bcbbeda1-c832-4349-829e-de771a4c5fd9';
+    const superAdminRoleId = roleMap.get('SUPER_ADMIN');
+    if (superAdminRoleId) {
+      await (prisma as any).userRole.upsert({
+        where: { userId_roleId: { userId: adminUserId, roleId: superAdminRoleId } },
+        update: {},
+        create: { userId: adminUserId, roleId: superAdminRoleId },
+      });
+      console.log('✅ Admin user assigned SUPER_ADMIN role\n');
+    } else {
+      console.warn('⚠️ SUPER_ADMIN role not found, skipping admin role assignment\n');
+    }
+
     const userCount = await prisma.user.count();
     const clientCount = await (prisma as any).client.count();
     const idpCount = await (prisma as any).identityProvider.count();

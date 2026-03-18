@@ -1,6 +1,6 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateResourceRequest } from './create-resource-request';
 import { CreateResourceResponse } from './create-resource-response';
@@ -16,7 +16,7 @@ export class CreateResourceController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createResource' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Resource successfully created', type: CreateResourceResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('resource.create')
   async execute(@Body() body: CreateResourceRequest): Promise<CreateResourceResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.resource.findUnique({ where: { name: body.name } });

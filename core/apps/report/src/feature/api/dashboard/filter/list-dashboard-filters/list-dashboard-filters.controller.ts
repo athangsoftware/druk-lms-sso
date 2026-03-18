@@ -23,7 +23,7 @@ export class ListDashboardFiltersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'listDashboardFilters' })
   @ApiResponse({ status: HttpStatus.OK, type: ListDashboardFiltersResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Param('id') dashboardId: string,
   ): Promise<ListDashboardFiltersResponse> {

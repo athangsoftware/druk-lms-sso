@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Post, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { UserType } from '@app/prisma-sso';
 import { BhutanNdiService } from '../../bhutan-ndi.service';
 
@@ -16,7 +17,7 @@ export class NdiTestConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'ndiTestConnection' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Tests NDI connection by authenticating' })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('identity-provider.read')
   async execute(): Promise<{ successMessage: string; data: { connected: boolean } }> {
     this.logger.log('Admin triggered NDI connection test');
 

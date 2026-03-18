@@ -25,7 +25,7 @@ export class UpsertGlobalFilterOverridesController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'upsertGlobalFilterOverrides' })
   @ApiResponse({ status: HttpStatus.OK, type: UpsertGlobalFilterOverridesResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Param('id') dashboardId: string,
     @Body() body: GlobalFilterOverrideItemRequest[],

@@ -14,7 +14,13 @@
         <app-text-input [label]="'Phone Number'" [fullWidth]="true" [placeholder]="'Phone Number'" [formField]="userForm.phoneNumber"></app-text-input>
       </div>
       <div>
-        <app-single-selection-field [title]="'Roles'" [items]="roleList.value()?.data ?? []" [display]="'name'" [value]="'id'" [formField]="userForm.role"></app-single-selection-field>
+        <app-single-selection-field
+        [title]="'User Type'"
+        [items]="userTypeOptions"
+        [display]="'name'"
+        [value]="'id'"
+        [formField]="userForm.userType"
+      ></app-single-selection-field>
       </div>
       <div class="md:col-span-2 flex justify-center pt-2">
         <ui-button [loading]="updateUserMutation.isLoading()" type="submit">Submit</ui-button>

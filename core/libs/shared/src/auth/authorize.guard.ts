@@ -44,6 +44,18 @@ export class AuthorizeGuard implements CanActivate {
       userAccess?.some((access: string) => access === required),
     );
 
-    return hasExactMatch;
+    if (hasExactMatch) {
+      return true;
+    }
+
+    // Fallback: check if the user has a permissions array (e.g., RBAC permissions)
+    const permissions = (user as any).permissions;
+    if (Array.isArray(permissions)) {
+      return requiredAccess.some((required) =>
+        permissions.some((permission: string) => permission === required),
+      );
+    }
+
+    return false;
   }
 }

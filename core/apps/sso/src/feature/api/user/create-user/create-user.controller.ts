@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize, BcryptService } from '@app/shared';
+import { BcryptService } from '@app/shared';
 import { CreateUserRequest } from './create-user-request';
 import { CreateUserResponse } from './create-user-response';
 import { PrismaService } from '@app/prisma-sso';
@@ -19,7 +20,7 @@ export class CreateUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User successfully created', type: CreateUserResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('user.create')
   async execute(@Body() body: CreateUserRequest): Promise<CreateUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existingUser = await dbContext.user.findFirst({ where: { email: body.email } });
@@ -38,7 +39,7 @@ export class CreateUserController {
           phoneNumber: body.phoneNumber,
           username: body.username ?? body.email,
           password: hashedPassword,
-          userType: body.role ?? UserType.MEMBER,
+          userType: body.userType ?? body.role ?? UserType.InternalUser,
         },
       });
 
@@ -50,7 +51,7 @@ export class CreateUserController {
           lastName: user.lastName,
           email: user.email,
           phoneNumber: user.phoneNumber,
-          role: user.userType,
+          userType: user.userType,
         },
       };
     });

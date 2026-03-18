@@ -50,7 +50,7 @@ export class CreateUserWithPasswordExternalController {
           phoneNumber: body.phoneNumber,
           username: body.email,
           password: hashedPassword,
-          userType: UserType.MEMBER,
+          userType: UserType.InternalUser,
           ndiIdentifier: body.ndiIdentifier,
           isVerified: true,
         },

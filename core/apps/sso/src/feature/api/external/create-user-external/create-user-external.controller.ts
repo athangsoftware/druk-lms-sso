@@ -50,7 +50,7 @@ export class CreateUserExternalController {
           email: body.email,
           phoneNumber: body.phoneNumber,
           username: body.email,
-          userType: UserType.MEMBER,
+          userType: UserType.InternalUser,
           ndiIdentifier: body.ndiIdentifier,
         },
       });

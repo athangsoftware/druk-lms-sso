@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { email as emailValidator, form, FormField, required } from '@angular/forms/signals';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpQuery, httpMutation } from '@projects/shared-lib';
+import { BaseOverlay, Button, TextInputComponent, SingleSelectionFieldComponent, httpMutation, httpQuery } from '@projects/shared-lib';
 import { ApiService } from '@core/api/api.service';
-import { GetRoleListResponse, GetUserListItem, GetUserResponse, UpdateUserResponse } from '@core/api/model';
+import { GetUserListItem, GetUserResponse, UpdateUserResponse, UserType, UserTypeType } from '@core/api/model';
 import { environment } from '@environments/environment';
 
 interface UpdateUserData {
@@ -11,7 +11,7 @@ interface UpdateUserData {
   lastName: string;
   email: string;
   phoneNumber: string;
-  role: string;
+  userType: UserTypeType;
 }
 
 @Component({
@@ -30,21 +30,20 @@ export class UpdateUserComponent {
     lastName: '',
     email: '',
     phoneNumber: '',
-    role: '',
+    userType: UserType.InternalUser,
   });
 
   userForm = form(this.userModel, (s) => {
     required(s.firstName);
     required(s.lastName);
     emailValidator(s.email);
-    required(s.role);
+    required(s.userType);
   });
 
-  roleList = httpQuery<GetRoleListResponse>({
-    request: () => `${environment.apiUrl}/roles`,
-    handleSuccess: false,
-    handleError: true,
-  });
+  userTypeOptions: Array<{ id: UserTypeType; name: string }> = [
+    { id: UserType.InternalUser, name: 'Internal User' },
+    { id: UserType.OrganizationUser, name: 'Organization User' },
+  ];
 
   userQuery = httpQuery<GetUserResponse>({
     request: () => `${environment.apiUrl}/users/${this.data.id}`,
@@ -56,7 +55,7 @@ export class UpdateUserComponent {
         lastName: response.data?.lastName ?? '',
         email: response.data?.email ?? '',
         phoneNumber: response.data?.phoneNumber ?? '',
-        role: response.data?.role ?? '',
+        userType: (response.data?.userType as UserTypeType) ?? UserType.InternalUser,
       });
     },
   });
@@ -64,7 +63,7 @@ export class UpdateUserComponent {
   updateUserMutation = httpMutation<UpdateUserResponse>({
     request: () => this.apiService.updateUser(this.data.id, this.userModel()),
     handleSuccess: true,
-    onSuccess: (response) => {
+    onSuccess: (response: UpdateUserResponse) => {
       this.dialogRef.close(response);
     },
   });
@@ -73,7 +72,7 @@ export class UpdateUserComponent {
     return (
       this.userForm.firstName().valid() &&
       this.userForm.lastName().valid() &&
-      this.userForm.role().valid()
+      this.userForm.userType().valid()
     );
   }
 

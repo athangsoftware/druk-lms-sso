@@ -128,10 +128,8 @@ export type IdentityProviderType = (typeof IdentityProviderType)[keyof typeof Id
 
 
 export const UserType: {
-  MEMBER: 'MEMBER',
-  MODRATOR: 'MODRATOR',
-  DEV: 'DEV',
-  SUPER_ADMIN: 'SUPER_ADMIN'
+  InternalUser: 'InternalUser',
+  OrganizationUser: 'OrganizationUser'
 };
 
 export type UserType = (typeof UserType)[keyof typeof UserType]
@@ -22262,10 +22260,10 @@ export namespace Prisma {
 
   export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    token?: string
     AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
     OR?: RefreshTokenWhereInput[]
     NOT?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    token?: StringFilter<"RefreshToken"> | string
     userId?: StringFilter<"RefreshToken"> | string
     clientId?: StringFilter<"RefreshToken"> | string
     expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
@@ -22278,7 +22276,7 @@ export namespace Prisma {
     updatedIp?: StringNullableFilter<"RefreshToken"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
-  }, "id" | "token">
+  }, "id">
 
   export type RefreshTokenOrderByWithAggregationInput = {
     id?: SortOrder

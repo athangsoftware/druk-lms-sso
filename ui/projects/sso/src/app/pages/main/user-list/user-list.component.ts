@@ -113,26 +113,22 @@ export class UserListComponent {
           filterConfig: { type: 'text', placeholder: '' },
         },
         {
-          title: 'Role',
+          title: 'User Type',
           type: 'badge',
           alignment: 'left',
           displayTemplate: '$roleName',
           sortKey: 'roleId',
           badgeConfig: {
             properties: [
-              { data: 'MEMBER', displayText: 'Member', backgroundColorClass: 'bg-blue-50', borderColorClass: 'border-blue-200', textColorClass: 'text-blue-700', indicatorColorClass: 'bg-blue-500' },
-              { data: 'MODRATOR', displayText: 'Moderator', backgroundColorClass: 'bg-purple-50', borderColorClass: 'border-purple-200', textColorClass: 'text-purple-700', indicatorColorClass: 'bg-purple-500' },
-              { data: 'DEV', displayText: 'Developer', backgroundColorClass: 'bg-amber-50', borderColorClass: 'border-amber-200', textColorClass: 'text-amber-700', indicatorColorClass: 'bg-amber-500' },
-              { data: 'SUPER_ADMIN', displayText: 'Super Admin', backgroundColorClass: 'bg-red-50', borderColorClass: 'border-red-200', textColorClass: 'text-red-700', indicatorColorClass: 'bg-red-500' },
+              { data: 'InternalUser', displayText: 'Internal User', backgroundColorClass: 'bg-blue-50', borderColorClass: 'border-blue-200', textColorClass: 'text-blue-700', indicatorColorClass: 'bg-blue-500' },
+              { data: 'OrganizationUser', displayText: 'Organization User', backgroundColorClass: 'bg-green-50', borderColorClass: 'border-green-200', textColorClass: 'text-green-700', indicatorColorClass: 'bg-green-500' },
             ],
           },
           filterConfig: {
             type: 'select',
             options: [
-              { value: 'MEMBER', label: 'Member' },
-              { value: 'MODRATOR', label: 'Moderator' },
-              { value: 'DEV', label: 'Developer' },
-              { value: 'SUPER_ADMIN', label: 'Super Admin' },
+              { value: 'InternalUser', label: 'Internal User' },
+              { value: 'OrganizationUser', label: 'Organization User' },
             ],
           },
         },

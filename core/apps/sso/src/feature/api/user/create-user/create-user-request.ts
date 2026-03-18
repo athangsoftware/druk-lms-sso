@@ -35,7 +35,11 @@ export class CreateUserRequest {
   @MinLength(6, { message: ErrorMessages.minSize('password', 6) })
   password?: string;
 
-  @ApiPropertyOptional({ enum: UserType, example: UserType.MEMBER, description: 'Role of the user' })
+  @ApiPropertyOptional({ enum: UserType, example: UserType.InternalUser, description: 'User type of the user' })
+  @IsOptional()
+  userType?: UserType;
+
+  @ApiPropertyOptional({ enum: UserType, example: UserType.InternalUser, description: 'Legacy role value (for backwards compatibility)' })
   @IsOptional()
   role?: UserType;
 }

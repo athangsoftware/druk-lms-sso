@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Get, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize, CurrentUser } from '@app/shared';
+import { CurrentUser } from '@app/shared';
 import { GetUserSelfResponse, GetUserSelfResponseData } from './get-user-self-response';
 import { PrismaService } from '@app/prisma-sso';
 import { UserType } from '@app/prisma-sso';
@@ -14,7 +15,7 @@ export class GetUserSelfController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUserSelf' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns user by ID', type: GetUserSelfResponse })
-  @Authorize(UserType.MODRATOR, UserType.MEMBER)
+  @RequirePermission('user.read')
   async execute(@CurrentUser() currentUser: any): Promise<GetUserSelfResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id: currentUser.sub } });

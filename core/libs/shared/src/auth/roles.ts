@@ -3,8 +3,6 @@
  * Mirrors the Prisma UserType enum from the SSO schema.
  */
 export enum UserType {
-    MEMBER = 'MEMBER',
-    MODRATOR = 'MODRATOR',
-    DEV = 'DEV',
-    SUPER_ADMIN = 'SUPER_ADMIN',
+    InternalUser = 'InternalUser',
+    OrganizationUser = 'OrganizationUser',
 }

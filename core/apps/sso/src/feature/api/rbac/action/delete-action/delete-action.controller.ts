@@ -1,6 +1,6 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { DeleteActionResponse } from './delete-action-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -15,7 +15,7 @@ export class DeleteActionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteAction' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Action deleted', type: DeleteActionResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('action.delete')
   async execute(@Param('id') id: string): Promise<DeleteActionResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {

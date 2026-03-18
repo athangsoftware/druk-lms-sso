@@ -1,7 +1,7 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
-import { PrismaService, UserType } from '@app/prisma-sso';
+import { RequirePermission } from '../..';
+import { PrismaService } from '@app/prisma-sso';
 import { AssignRolePermissionsRequest } from './assign-role-permissions-request';
 import { AssignRolePermissionsResponse } from './assign-role-permissions-response';
 
@@ -15,7 +15,7 @@ export class AssignRolePermissionsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'assignPermissionsToRole' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Permissions assigned to role', type: AssignRolePermissionsResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('role.assign')
   async execute(
     @Param('id') id: string,
     @Body() body: AssignRolePermissionsRequest,

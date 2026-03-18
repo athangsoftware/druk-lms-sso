@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Get, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { GetIdentityProviderResponse } from './get-identity-provider-response';
 import { SuccessMessages } from '../../../../core/models/message';
@@ -19,7 +20,7 @@ export class GetIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns identity provider by ID', type: GetIdentityProviderResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('identity-provider.read')
   async execute(@Param('id') id: string): Promise<GetIdentityProviderResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const provider = await dbContext.identityProvider.findUnique({ where: { id } });

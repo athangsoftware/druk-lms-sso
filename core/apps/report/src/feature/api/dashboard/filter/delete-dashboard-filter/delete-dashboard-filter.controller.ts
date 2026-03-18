@@ -23,7 +23,7 @@ export class DeleteDashboardFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteDashboardFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteDashboardFilterResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Param('id') dashboardId: string,
     @Param('filterId') filterId: string,

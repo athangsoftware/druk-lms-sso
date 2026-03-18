@@ -1,6 +1,6 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdateActionRequest } from './update-action-request';
 import { UpdateActionResponse } from './update-action-response';
@@ -16,7 +16,7 @@ export class UpdateActionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateAction' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Action updated', type: UpdateActionResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('action.update')
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateActionRequest,

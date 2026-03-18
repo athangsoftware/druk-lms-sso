@@ -17,7 +17,7 @@ class CreateUserResponseData {
   phoneNumber: string | null;
 
   @ApiPropertyOptional()
-  role: string | null;
+  userType: string | null;
 }
 
 export class CreateUserResponse {

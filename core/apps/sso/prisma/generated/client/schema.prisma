@@ -266,10 +266,8 @@ datasource db {
 // User and authentication related models
 
 enum UserType {
-  MEMBER
-  MODRATOR
-  DEV
-  SUPER_ADMIN
+  InternalUser
+  OrganizationUser
 }
 
 model User {
@@ -281,7 +279,7 @@ model User {
   username      String   @unique
   ndiIdentifier String?  @unique @map("ndi_identifier")
   password      String?
-  userType      UserType @default(MEMBER) @map("role")
+  userType      UserType @default(InternalUser) @map("role")
   isVerified    Boolean  @default(false) @map("is_verified")
   isActive      Boolean  @default(true) @map("is_active")
 
@@ -321,7 +319,7 @@ model PasswordResetToken {
 
 model RefreshToken {
   id        String   @id @default(uuid())
-  token     String   @unique @db.VarChar(768)
+  token     String   @db.Text
   userId    String
   clientId  String
   expiresAt DateTime

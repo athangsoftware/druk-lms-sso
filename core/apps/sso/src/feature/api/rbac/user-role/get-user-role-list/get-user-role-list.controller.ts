@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { GetUserRoleListResponse } from './get-user-role-list-response';
 import { RbacService } from '../../rbac.service';
@@ -18,7 +18,7 @@ export class GetUserRoleListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getUserRoles' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetUserRoleListResponse })
-  @Authorize(UserType.SUPER_ADMIN, UserType.MODRATOR)
+  @RequirePermission('role.read')
   async execute(@Param('userId') userId: string): Promise<GetUserRoleListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id: userId } });

@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateClientRequest } from './create-client-request';
 import { CreateClientResponse } from './create-client-response';
@@ -27,7 +28,7 @@ export class CreateClientController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createClient' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Client successfully created', type: CreateClientResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('client.create')
   async execute(@Body() body: CreateClientRequest): Promise<CreateClientResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const clientId = body.clientId ?? toOidcClientId(body.name);

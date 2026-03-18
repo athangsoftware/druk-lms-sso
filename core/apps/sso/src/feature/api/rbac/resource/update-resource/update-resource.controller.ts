@@ -1,6 +1,6 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { UpdateResourceRequest } from './update-resource-request';
 import { UpdateResourceResponse } from './update-resource-response';
@@ -16,7 +16,7 @@ export class UpdateResourceController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateResource' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Resource updated', type: UpdateResourceResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('resource.update')
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateResourceRequest,

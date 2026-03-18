@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { GetResourceListResponse } from './get-resource-list-response';
 import { SuccessMessages } from '../../../../../core/models/message';
@@ -15,7 +15,7 @@ export class GetResourceListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getResourceList' })
   @ApiResponse({ status: HttpStatus.OK, description: '', type: GetResourceListResponse })
-  @Authorize(UserType.SUPER_ADMIN, UserType.MODRATOR)
+  @RequirePermission('resource.read')
   async execute(): Promise<GetResourceListResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const resources = await dbContext.resource.findMany({ orderBy: { name: 'asc' } });

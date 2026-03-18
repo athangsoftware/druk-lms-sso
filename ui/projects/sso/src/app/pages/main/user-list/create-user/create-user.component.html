@@ -5,7 +5,15 @@
       <app-text-input [label]="'Last Name'" [fullWidth]="true" [placeholder]="'Last Name'" [formField]="userForm.lastName"></app-text-input>
       <app-text-input type="email" [label]="'Email'" [fullWidth]="true" [placeholder]="'Email'" [formField]="userForm.email"></app-text-input>
       <app-text-input [label]="'Phone Number'" [fullWidth]="true" [placeholder]="'Phone Number'" [formField]="userForm.phoneNumber"></app-text-input>
-      <app-single-selection-field [title]="'Roles'" [items]="roleList.value()?.data ?? []" [display]="'name'" [value]="'id'" [formField]="userForm.role"></app-single-selection-field>
+      <ng-container *ngIf="!isOrganizationUser">
+        <app-single-selection-field
+          [title]="'User Type'"
+          [items]="userTypeOptions"
+          [display]="'name'"
+          [value]="'id'"
+          [formField]="userForm.userType"
+        ></app-single-selection-field>
+      </ng-container>
       <app-text-input type="password" [label]="'Password'" [fullWidth]="true" [placeholder]="'Password'" [formField]="userForm.password"></app-text-input>
       <div class="md:col-span-2 flex justify-center">
         <ui-button [loading]="createUserMutation.isLoading()" type="submit">Submit</ui-button>

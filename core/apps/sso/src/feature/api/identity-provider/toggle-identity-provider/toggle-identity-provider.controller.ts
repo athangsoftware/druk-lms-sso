@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Put, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { ToggleIdentityProviderResponse } from './toggle-identity-provider-response';
 import { IdentityProviderService } from '../../identity-provider.service';
@@ -18,7 +19,7 @@ export class ToggleIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'toggleIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Identity provider toggled', type: ToggleIdentityProviderResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('identity-provider.update')
   async execute(@Param('id') id: string): Promise<ToggleIdentityProviderResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const provider = await dbContext.identityProvider.findUnique({ where: { id } });

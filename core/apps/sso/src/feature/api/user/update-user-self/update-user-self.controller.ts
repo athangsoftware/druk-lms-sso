@@ -1,6 +1,7 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Put, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize, CurrentUser } from '@app/shared';
+import { CurrentUser } from '@app/shared';
 import { UpdateUserSelfRequest } from './update-user-self-request';
 import { UpdateUserSelfResponse } from './update-user-self-response';
 import { PrismaService } from '@app/prisma-sso';
@@ -14,7 +15,7 @@ export class UpdateUserSelfController {
   @Put()
   @ApiResponse({ status: HttpStatus.OK, description: '', type: UpdateUserSelfResponse })
   @ApiOperation({ operationId: 'updateUserSelf' })
-  @Authorize(UserType.MODRATOR, UserType.MEMBER)
+  @RequirePermission('user.update')
   @HttpCode(200)
   async execute(@CurrentUser() currentUser: any, @Body() body: UpdateUserSelfRequest): Promise<UpdateUserSelfResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {

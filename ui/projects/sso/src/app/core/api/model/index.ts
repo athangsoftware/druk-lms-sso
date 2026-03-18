@@ -63,6 +63,13 @@ export const UserRole = {
 
 export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
 
+export const UserType = {
+  InternalUser: 'InternalUser',
+  OrganizationUser: 'OrganizationUser',
+} as const;
+
+export type UserTypeType = (typeof UserType)[keyof typeof UserType];
+
 export interface CreateUserRequest {
   firstName: string;
   lastName?: string;
@@ -70,7 +77,7 @@ export interface CreateUserRequest {
   phoneNumber?: string;
   username?: string;
   password?: string;
-  role?: UserRoleType;
+  userType?: UserTypeType;
 }
 
 export interface CreateUserResponse {
@@ -81,7 +88,7 @@ export interface CreateUserResponse {
     lastName: string;
     email: string;
     phoneNumber?: string;
-    role: string;
+    userType: string;
   };
 }
 
@@ -90,7 +97,7 @@ export interface UpdateUserRequest {
   lastName?: string;
   email?: string;
   phoneNumber?: string;
-  role?: string;
+  userType?: string;
 }
 
 export interface UpdateUserResponse {
@@ -156,7 +163,7 @@ export interface UserData {
   email: string;
   phoneNumber?: string;
   username: string;
-  role: string;
+  userType: string;
   isActive: boolean;
   createdAt: string;
 }

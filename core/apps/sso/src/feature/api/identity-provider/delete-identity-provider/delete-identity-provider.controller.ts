@@ -1,7 +1,8 @@
+import { RequirePermission } from '../../rbac';
 import { Controller, Delete, HttpCode, HttpStatus, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
-import { PrismaService, UserType } from '@app/prisma-sso';
+
+import { PrismaService } from '@app/prisma-sso';
 import { DeleteIdentityProviderResponse } from './delete-identity-provider-response';
 import { SuccessMessages } from '../../../../core/models/message';
 import { IdentityProviderService } from '../../identity-provider.service';
@@ -19,7 +20,7 @@ export class DeleteIdentityProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteIdentityProvider' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Identity provider successfully deleted', type: DeleteIdentityProviderResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('identity-provider.delete')
   async execute(@Param('id') id: string): Promise<DeleteIdentityProviderResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const provider = await dbContext.identityProvider.findUnique({ where: { id } });

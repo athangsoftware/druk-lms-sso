@@ -25,7 +25,7 @@ export class CreateGlobalFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createGlobalFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: CreateGlobalFilterResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Body() body: CreateGlobalFilterRequest,
   ): Promise<CreateGlobalFilterResponse> {

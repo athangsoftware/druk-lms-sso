@@ -23,7 +23,7 @@ export class DeleteGlobalFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteGlobalFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteGlobalFilterResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Param('id') id: string,
   ): Promise<DeleteGlobalFilterResponse> {

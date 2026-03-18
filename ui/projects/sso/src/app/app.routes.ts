@@ -39,15 +39,13 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./pages/main/dashboard/dashboard.component').then((m) => m.DashboardComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['dashboard.read'] },
       },
       {
         path: 'users',
         loadComponent: () =>
           import('./pages/main/user-list/user-list.component').then((m) => m.UserListComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['user.read'] },
       },
       {
         path: 'my-profile',
@@ -55,57 +53,49 @@ export const routes: Routes = [
           import('./pages/main/account-setting/my-profile/my-profile.component').then(
             (m) => m.MyProfileComponent,
           ),
-        canActivate: [roleGuard],
-        data: { roles: ['member', 'modrator'] },
+        data: { permissions: ['user.read'] },
       },
       {
         path: 'clients',
         loadComponent: () =>
           import('./pages/main/clients/clients.component').then((m) => m.ClientsComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['client.read'] },
       },
       {
         path: 'identity-providers',
         loadComponent: () =>
           import('./pages/main/identity-providers/identity-providers.component').then((m) => m.IdentityProvidersComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['identity-provider.read'] },
       },
       {
         path: 'roles',
         loadComponent: () =>
           import('./pages/main/roles/roles.component').then((m) => m.RolesComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['role.read'] },
       },
       {
         path: 'permissions',
         loadComponent: () =>
           import('./pages/main/permissions/permissions.component').then((m) => m.PermissionsComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['permission.read'] },
       },
       {
         path: 'permission-groups',
         loadComponent: () =>
           import('./pages/main/permission-groups/permission-groups.component').then((m) => m.PermissionGroupsComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['permission.read'] },
       },
       {
         path: 'resources',
         loadComponent: () =>
           import('./pages/main/resources/resources.component').then((m) => m.ResourcesComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['resource.read'] },
       },
       {
         path: 'actions',
         loadComponent: () =>
           import('./pages/main/actions/actions.component').then((m) => m.ActionsComponent),
-        canActivate: [roleGuard],
-        data: { roles: ['modrator'] },
+        data: { permissions: ['action.read'] },
       },
     ],
   },

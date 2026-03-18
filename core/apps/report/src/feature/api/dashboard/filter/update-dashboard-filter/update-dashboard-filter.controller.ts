@@ -28,7 +28,7 @@ export class UpdateDashboardFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateDashboardFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateDashboardFilterResponse })
-  @Authorize(UserType.MEMBER, UserType.MODRATOR, UserType.DEV, UserType.SUPER_ADMIN)
+  @Authorize('user.read')
   async execute(
     @Param('id') dashboardId: string,
     @Param('filterId') filterId: string,

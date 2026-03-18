@@ -1,6 +1,6 @@
 import { Controller, Put, HttpCode, HttpStatus, Body, Param, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../../rbac';
 import { UpdateUserRequest } from './update-user-request';
 import { UpdateUserResponse } from './update-user-response';
 import { PrismaService } from '@app/prisma-sso';
@@ -15,7 +15,7 @@ export class UpdateUserController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateUser' })
   @ApiResponse({ status: HttpStatus.OK, description: 'User successfully updated', type: UpdateUserResponse })
-  @Authorize(UserType.MODRATOR)
+  @RequirePermission('user.update')
   async execute(@Param('id') id: string, @Body() body: UpdateUserRequest): Promise<UpdateUserResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const user = await dbContext.user.findUnique({ where: { id } });
@@ -31,7 +31,7 @@ export class UpdateUserController {
           lastName: body.lastName,
           email: body.email,
           phoneNumber: body.phoneNumber,
-          userType: body.role,
+          userType: body.userType ?? body.role,
         },
       });
 

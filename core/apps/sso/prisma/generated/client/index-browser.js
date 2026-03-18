@@ -535,10 +535,8 @@ exports.IdentityProviderType = exports.$Enums.IdentityProviderType = {
 };
 
 exports.UserType = exports.$Enums.UserType = {
-  MEMBER: 'MEMBER',
-  MODRATOR: 'MODRATOR',
-  DEV: 'DEV',
-  SUPER_ADMIN: 'SUPER_ADMIN'
+  InternalUser: 'InternalUser',
+  OrganizationUser: 'OrganizationUser'
 };
 
 exports.Prisma.ModelName = {

@@ -1,6 +1,6 @@
 import { Controller, Post, HttpCode, HttpStatus, Body, HttpException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@app/shared';
+import { RequirePermission } from '../..';
 import { PrismaService, UserType } from '@app/prisma-sso';
 import { CreateRoleRequest } from './create-role-request';
 import { CreateRoleResponse } from './create-role-response';
@@ -16,7 +16,7 @@ export class CreateRoleController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createRole' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Role successfully created', type: CreateRoleResponse })
-  @Authorize(UserType.SUPER_ADMIN)
+  @RequirePermission('role.create')
   async execute(@Body() body: CreateRoleRequest): Promise<CreateRoleResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.role.findUnique({ where: { name: body.name } });
