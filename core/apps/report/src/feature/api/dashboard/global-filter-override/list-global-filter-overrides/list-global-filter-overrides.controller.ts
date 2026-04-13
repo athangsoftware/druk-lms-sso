@@ -23,7 +23,7 @@ export class ListGlobalFilterOverridesController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'listGlobalFilterOverrides' })
   @ApiResponse({ status: HttpStatus.OK, type: ListGlobalFilterOverridesResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') dashboardId: string,
   ): Promise<ListGlobalFilterOverridesResponse> {

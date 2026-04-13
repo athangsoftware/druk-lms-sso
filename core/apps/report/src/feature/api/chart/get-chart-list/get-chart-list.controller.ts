@@ -17,7 +17,7 @@ export class GetChartListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getChartList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetChartListResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Query() request: GetChartListRequest,
   ): Promise<GetChartListResponse> {

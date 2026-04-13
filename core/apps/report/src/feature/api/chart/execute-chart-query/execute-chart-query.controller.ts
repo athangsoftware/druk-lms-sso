@@ -38,7 +38,7 @@ export class ExecuteChartQueryController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'executeChartQuery' })
   @ApiResponse({ status: HttpStatus.OK, type: ExecuteChartQueryResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') id: string,
     @Body() body: ExecuteChartQueryRequest,

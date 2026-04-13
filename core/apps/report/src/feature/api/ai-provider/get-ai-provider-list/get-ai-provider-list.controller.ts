@@ -17,7 +17,7 @@ export class GetAiProviderListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getAiProviderList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetAiProviderListResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Query() request: GetAiProviderListRequest,
   ): Promise<GetAiProviderListResponse> {

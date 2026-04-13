@@ -32,7 +32,7 @@ export class UpdateDbConnectionController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateDbConnection' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateDbConnectionResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateDbConnectionRequest,

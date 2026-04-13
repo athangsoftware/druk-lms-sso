@@ -40,11 +40,11 @@ export class AuthorizeGuard implements CanActivate {
       userAccess = [userAccess];
     }
 
-    const hasExactMatch = requiredAccess.some((required) =>
-      userAccess?.some((access: string) => access === required),
+    const hasMatch = requiredAccess.some((required) =>
+      this.matchesAccess(userAccess, required),
     );
 
-    if (hasExactMatch) {
+    if (hasMatch) {
       return true;
     }
 
@@ -52,10 +52,35 @@ export class AuthorizeGuard implements CanActivate {
     const permissions = (user as any).permissions;
     if (Array.isArray(permissions)) {
       return requiredAccess.some((required) =>
-        permissions.some((permission: string) => permission === required),
+        this.matchesAccess(permissions, required),
       );
     }
 
     return false;
+  }
+
+  private matchesAccess(
+    accessValue: string | string[] | undefined,
+    requiredAccess: string,
+  ): boolean {
+    if (!accessValue) {
+      return false;
+    }
+
+    const accesses = Array.isArray(accessValue) ? accessValue : [accessValue];
+
+    return accesses.some((access) => {
+      if (access === requiredAccess) {
+        return true;
+      }
+      if (access === '*' || access === '.*') {
+        return true;
+      }
+      if (access.endsWith('.*')) {
+        const prefix = access.slice(0, -2);
+        return requiredAccess.startsWith(`${prefix}.`);
+      }
+      return false;
+    });
   }
 }

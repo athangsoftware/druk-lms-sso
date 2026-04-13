@@ -25,7 +25,7 @@ export class UpdateChartLayoutController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateChartLayout' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateChartLayoutResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('dashboardId') dashboardId: string,
     @Param('chartId') chartId: string,

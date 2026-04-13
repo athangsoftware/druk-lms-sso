@@ -30,7 +30,7 @@ export class CreateAiProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'createAiProvider' })
   @ApiResponse({ status: HttpStatus.OK, type: CreateAiProviderResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Body() body: CreateAiProviderRequest,
   ): Promise<CreateAiProviderResponse> {

@@ -41,7 +41,7 @@ export class AiModifyChartController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'aiModifyChart' })
   @ApiResponse({ status: HttpStatus.OK, type: AiModifyChartResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') id: string,
     @Body() body: AiModifyChartRequest,

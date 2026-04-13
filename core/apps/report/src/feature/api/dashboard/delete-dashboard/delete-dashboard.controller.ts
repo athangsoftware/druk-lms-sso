@@ -23,7 +23,7 @@ export class DeleteDashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'deleteDashboard' })
   @ApiResponse({ status: HttpStatus.OK, type: DeleteDashboardResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(@Param('id') id: string): Promise<DeleteDashboardResponse> {
     return await this.prismaService.client(async ({ dbContext }) => {
       const existing = await dbContext.dashboard.findUnique({ where: { id } });

@@ -17,7 +17,7 @@ export class GetDbConnectionListController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDbConnectionList' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDbConnectionListResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Query() request: GetDbConnectionListRequest,
   ): Promise<GetDbConnectionListResponse> {

@@ -32,7 +32,7 @@ export class UpdateAiProviderController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateAiProvider' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateAiProviderResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateAiProviderRequest,

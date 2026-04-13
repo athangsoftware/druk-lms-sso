@@ -23,7 +23,7 @@ export class RemoveChartFromDashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'removeChartFromDashboard' })
   @ApiResponse({ status: HttpStatus.OK, type: RemoveChartFromDashboardResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('dashboardId') dashboardId: string,
     @Param('chartId') chartId: string,

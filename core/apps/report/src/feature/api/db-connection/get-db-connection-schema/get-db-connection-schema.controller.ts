@@ -30,7 +30,7 @@ export class GetDbConnectionSchemaController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDbConnectionSchema' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDbConnectionSchemaResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(@Param('id') id: string): Promise<GetDbConnectionSchemaResponse> {
     const connection = await this.prismaService.client(
       async ({ dbContext }) => {

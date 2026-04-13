@@ -23,7 +23,7 @@ export class GetDashboardController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getDashboard' })
   @ApiResponse({ status: HttpStatus.OK, type: GetDashboardResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(@Param('id') id: string): Promise<GetDashboardResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {

@@ -27,7 +27,7 @@ export class UpdateGlobalFilterController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'updateGlobalFilter' })
   @ApiResponse({ status: HttpStatus.OK, type: UpdateGlobalFilterResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(
     @Param('id') id: string,
     @Body() body: UpdateGlobalFilterRequest,

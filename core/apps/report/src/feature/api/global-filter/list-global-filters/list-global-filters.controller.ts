@@ -21,7 +21,7 @@ export class ListGlobalFiltersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'listGlobalFilters' })
   @ApiResponse({ status: HttpStatus.OK, type: ListGlobalFiltersResponse })
-  @Authorize('user.read')
+  @Authorize('dashboard.*')
   async execute(): Promise<ListGlobalFiltersResponse> {
     return await this.prismaService.client(
       async ({ dbContext }) => {
