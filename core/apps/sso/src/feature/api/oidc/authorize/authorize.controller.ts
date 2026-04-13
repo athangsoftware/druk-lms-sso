@@ -23,7 +23,7 @@ export class AuthorizeController {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<any> {
-    const { client_id, redirect_uri, code_challenge, code_challenge_method, state } = param;
+    const { client_id, redirect_uri, code_challenge, code_challenge_method, state, scope } = param;
     const userId = req.session.userId;
 
     if (!userId) {
@@ -32,6 +32,7 @@ export class AuthorizeController {
       loginUrl.searchParams.set('redirect_uri', redirect_uri);
       loginUrl.searchParams.set('code_challenge', code_challenge ?? '');
       loginUrl.searchParams.set('code_challenge_method', code_challenge_method ?? '');
+      if (scope) loginUrl.searchParams.set('scope', scope);
       if (state) loginUrl.searchParams.set('state', state);
 
       return res.redirect(loginUrl.toString());
@@ -64,8 +65,9 @@ export class AuthorizeController {
           codeChallenge: code_challenge,
           codeChallengeMethod: code_challenge_method,
           state,
+          scope,
           expiresAt: new Date(Date.now() + 5 * 60 * 1000),
-        },
+        } as any,
       });
 
       const redirectUrl = new URL(redirect_uri);

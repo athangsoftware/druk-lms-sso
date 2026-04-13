@@ -1,7 +1,6 @@
-import { RequirePermission } from '../..';
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@app/shared';
+import { CurrentUser, JwtAuthGuard } from '@app/shared';
 import { RbacService } from '../../rbac.service';
 import { GetMyPermissionsResponse } from './get-my-permissions-response';
 
@@ -15,7 +14,7 @@ export class GetMyPermissionsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ operationId: 'getMyPermissions' })
   @ApiResponse({ status: HttpStatus.OK, type: GetMyPermissionsResponse })
-  @RequirePermission('permission.list')
+  @UseGuards(JwtAuthGuard)
   async execute(@CurrentUser() user: any): Promise<GetMyPermissionsResponse> {
     const [roles, permissions] = await Promise.all([
       this.rbacService.getUserRoleNames(user.sub),

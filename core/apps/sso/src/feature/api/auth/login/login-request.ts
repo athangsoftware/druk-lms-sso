@@ -5,32 +5,37 @@ export class LoginRequest {
   @ApiProperty({ description: 'The username for the login request' })
   @IsString()
   @IsNotEmpty()
-  username: string;
+  username!: string;
 
   @ApiProperty({ description: 'The password for the login request' })
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password!: string;
 
   @ApiProperty({ description: 'The client ID associated with the login request' })
   @IsString()
   @IsNotEmpty()
-  clientId: string;
+  clientId!: string;
 
   @ApiProperty({ description: 'The redirect URI after login' })
   @IsString()
   @IsNotEmpty()
-  redirectUri: string;
+  redirectUri!: string;
 
   @ApiProperty({ description: 'The code challenge for the login request' })
   @IsString()
   @IsNotEmpty()
-  codeChallenge: string;
+  codeChallenge!: string;
 
   @ApiProperty({ description: 'The method used to generate the code challenge' })
   @IsString()
   @IsNotEmpty()
-  codeChallengeMethod: string;
+  codeChallengeMethod!: string;
+
+  @ApiProperty({ description: 'Optional scope parameter', required: false })
+  @IsOptional()
+  @IsString()
+  scope?: string;
 
   @ApiProperty({ description: 'Optional state parameter', required: false })
   @IsOptional()

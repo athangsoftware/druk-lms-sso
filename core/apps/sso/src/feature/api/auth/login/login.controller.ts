@@ -28,7 +28,7 @@ export class LoginController {
     @Req() req: Request,
     @Res() res: Response,
   ): Promise<LoginResponse | void> {
-    const { username, password, clientId, redirectUri, codeChallenge, codeChallengeMethod, state } = body;
+    const { username, password, clientId, redirectUri, codeChallenge, codeChallengeMethod, scope, state } = body;
     const hostUrl = RequestContext.fullBaseUrl;
 
     return await this.prismaService.client(async ({ dbContext }) => {
@@ -51,6 +51,7 @@ export class LoginController {
       authUrl.searchParams.set('redirect_uri', redirectUri);
       authUrl.searchParams.set('code_challenge', codeChallenge);
       authUrl.searchParams.set('code_challenge_method', codeChallengeMethod);
+      if (scope) authUrl.searchParams.set('scope', scope);
       if (state) authUrl.searchParams.set('state', state);
 
       res.json({ redirectUrl: authUrl.toString() });

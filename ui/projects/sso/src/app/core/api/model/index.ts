@@ -7,6 +7,7 @@ export interface LoginRequest {
   redirectUri: string;
   codeChallenge: string;
   codeChallengeMethod: string;
+  scope?: string;
   state?: string;
 }
 

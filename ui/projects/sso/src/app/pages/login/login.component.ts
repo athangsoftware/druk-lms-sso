@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
     request: () => {
       const { username, password } = this.loginModel();
       const queryParams = this.route.snapshot.queryParams;
-      const { client_id, redirect_uri, code_challenge, code_challenge_method, state } = queryParams;
+      const { client_id, redirect_uri, code_challenge, code_challenge_method, state, scope } = queryParams;
       return this.apiService.login({
         username,
         password,
@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
         redirect_uri,
         code_challenge,
         code_challenge_method,
+        ...(scope && { scope }),
         ...(state && { state }),
       } as any);
     },

@@ -66,6 +66,7 @@ model AuthorizationCode {
   codeChallenge       String?  @map("code_challenge")
   codeChallengeMethod String?  @map("code_challenge_method")
   state               String?
+  scope               String?  @map("scope")
   expiresAt           DateTime @map("expires_at")
   isUsed              Boolean  @default(false) @map("is_used")
 

@@ -91,7 +91,7 @@ export class OAuthService {
       response_type: 'code',
       client_id: environment.oidc.clientId,
       redirect_uri: environment.oidc.redirectUri,
-      scope: 'openid profile email',
+      scope: 'openid profile email role permissions',
       state,
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',

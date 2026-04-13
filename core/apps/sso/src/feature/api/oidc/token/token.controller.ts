@@ -79,8 +79,27 @@ export class TokenController {
 
         const roles = await this.rbacService.getUserRoleNames(user.id);
         const permissions = await this.rbacService.getUserPermissions(user.id);
-        const accessToken = await this.authService.sign({ sub: user.id, role: user.userType, roles, permissions });
-        const newRefreshToken = await this.authService.sign({ sub: user.id, role: user.userType, type: 'refresh', permissions });
+        const requestedScopes = authCode?.scope?.split(' ') ?? [];
+        const hasRoleScope = requestedScopes.includes('role') || requestedScopes.includes('roles');
+        const hasPermissionsScope = requestedScopes.includes('permissions') || requestedScopes.includes('permission');
+        const tokenPayload: any = { sub: user.id };
+        if (authCode?.scope) {
+          tokenPayload.scope = authCode.scope;
+        }
+        if (hasRoleScope) {
+          tokenPayload.role = user.userType;
+          tokenPayload.roles = roles;
+        }
+        if (hasPermissionsScope) {
+          tokenPayload.permissions = permissions;
+        }
+
+        const accessToken = await this.authService.sign(tokenPayload);
+        const refreshTokenPayload: any = { sub: user.id, type: 'refresh' };
+        if (authCode?.scope) {
+          refreshTokenPayload.scope = authCode.scope;
+        }
+        const newRefreshToken = await this.authService.sign(refreshTokenPayload);
 
         await dbContext.refreshToken.create({
           data: {
@@ -142,9 +161,28 @@ export class TokenController {
         }
 
         const refreshRoles = await this.rbacService.getUserRoleNames(storedToken.user.id);
-        const permissions = await this.rbacService.getUserPermissions(storedToken.user.id);
-        const accessToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, roles: refreshRoles, permissions });
-        const newRefreshToken = await this.authService.sign({ sub: storedToken.user.id, role: storedToken.user.userType, type: 'refresh', permissions });
+        const refreshPermissions = await this.rbacService.getUserPermissions(storedToken.user.id);
+        const decodedScopes = decoded.scope?.split(' ') ?? [];
+        const hasRefreshRoleScope = decodedScopes.includes('role') || decodedScopes.includes('roles');
+        const hasRefreshPermissionsScope = decodedScopes.includes('permissions') || decodedScopes.includes('permission');
+        const accessTokenPayload: any = { sub: storedToken.user.id };
+        if (decoded.scope) {
+          accessTokenPayload.scope = decoded.scope;
+        }
+        if (hasRefreshRoleScope) {
+          accessTokenPayload.role = storedToken.user.userType;
+          accessTokenPayload.roles = refreshRoles;
+        }
+        if (hasRefreshPermissionsScope) {
+          accessTokenPayload.permissions = refreshPermissions;
+        }
+
+        const accessToken = await this.authService.sign(accessTokenPayload);
+        const newRefreshTokenPayload: any = { sub: storedToken.user.id, type: 'refresh' };
+        if (decoded.scope) {
+          newRefreshTokenPayload.scope = decoded.scope;
+        }
+        const newRefreshToken = await this.authService.sign(newRefreshTokenPayload);
 
         await dbContext.refreshToken.update({
           where: { id: storedToken.id },

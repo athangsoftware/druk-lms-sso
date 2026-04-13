@@ -5573,6 +5573,7 @@ export namespace Prisma {
     codeChallenge: string | null
     codeChallengeMethod: string | null
     state: string | null
+    scope: string | null
     expiresAt: Date | null
     isUsed: boolean | null
     createdBy: string | null
@@ -5592,6 +5593,7 @@ export namespace Prisma {
     codeChallenge: string | null
     codeChallengeMethod: string | null
     state: string | null
+    scope: string | null
     expiresAt: Date | null
     isUsed: boolean | null
     createdBy: string | null
@@ -5611,6 +5613,7 @@ export namespace Prisma {
     codeChallenge: number
     codeChallengeMethod: number
     state: number
+    scope: number
     expiresAt: number
     isUsed: number
     createdBy: number
@@ -5632,6 +5635,7 @@ export namespace Prisma {
     codeChallenge?: true
     codeChallengeMethod?: true
     state?: true
+    scope?: true
     expiresAt?: true
     isUsed?: true
     createdBy?: true
@@ -5651,6 +5655,7 @@ export namespace Prisma {
     codeChallenge?: true
     codeChallengeMethod?: true
     state?: true
+    scope?: true
     expiresAt?: true
     isUsed?: true
     createdBy?: true
@@ -5670,6 +5675,7 @@ export namespace Prisma {
     codeChallenge?: true
     codeChallengeMethod?: true
     state?: true
+    scope?: true
     expiresAt?: true
     isUsed?: true
     createdBy?: true
@@ -5762,6 +5768,7 @@ export namespace Prisma {
     codeChallenge: string | null
     codeChallengeMethod: string | null
     state: string | null
+    scope: string | null
     expiresAt: Date
     isUsed: boolean
     createdBy: string | null
@@ -5798,6 +5805,7 @@ export namespace Prisma {
     codeChallenge?: boolean
     codeChallengeMethod?: boolean
     state?: boolean
+    scope?: boolean
     expiresAt?: boolean
     isUsed?: boolean
     createdBy?: boolean
@@ -5821,6 +5829,7 @@ export namespace Prisma {
     codeChallenge?: boolean
     codeChallengeMethod?: boolean
     state?: boolean
+    scope?: boolean
     expiresAt?: boolean
     isUsed?: boolean
     createdBy?: boolean
@@ -5831,7 +5840,7 @@ export namespace Prisma {
     updatedIp?: boolean
   }
 
-  export type AuthorizationCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "clientId" | "userId" | "redirectUri" | "codeChallenge" | "codeChallengeMethod" | "state" | "expiresAt" | "isUsed" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["authorizationCode"]>
+  export type AuthorizationCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "clientId" | "userId" | "redirectUri" | "codeChallenge" | "codeChallengeMethod" | "state" | "scope" | "expiresAt" | "isUsed" | "createdBy" | "createdAt" | "createdIp" | "updatedBy" | "updatedAt" | "updatedIp", ExtArgs["result"]["authorizationCode"]>
   export type AuthorizationCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     user?: boolean | AuthorizationCode$userArgs<ExtArgs>
@@ -5852,6 +5861,7 @@ export namespace Prisma {
       codeChallenge: string | null
       codeChallengeMethod: string | null
       state: string | null
+      scope: string | null
       expiresAt: Date
       isUsed: boolean
       createdBy: string | null
@@ -6239,6 +6249,7 @@ export namespace Prisma {
     readonly codeChallenge: FieldRef<"AuthorizationCode", 'String'>
     readonly codeChallengeMethod: FieldRef<"AuthorizationCode", 'String'>
     readonly state: FieldRef<"AuthorizationCode", 'String'>
+    readonly scope: FieldRef<"AuthorizationCode", 'String'>
     readonly expiresAt: FieldRef<"AuthorizationCode", 'DateTime'>
     readonly isUsed: FieldRef<"AuthorizationCode", 'Boolean'>
     readonly createdBy: FieldRef<"AuthorizationCode", 'String'>
@@ -20527,6 +20538,7 @@ export namespace Prisma {
     codeChallenge: 'codeChallenge',
     codeChallengeMethod: 'codeChallengeMethod',
     state: 'state',
+    scope: 'scope',
     expiresAt: 'expiresAt',
     isUsed: 'isUsed',
     createdBy: 'createdBy',
@@ -20827,6 +20839,7 @@ export namespace Prisma {
     codeChallenge: 'codeChallenge',
     codeChallengeMethod: 'codeChallengeMethod',
     state: 'state',
+    scope: 'scope',
     createdBy: 'createdBy',
     createdIp: 'createdIp',
     updatedBy: 'updatedBy',
@@ -21322,6 +21335,7 @@ export namespace Prisma {
     codeChallenge?: StringNullableFilter<"AuthorizationCode"> | string | null
     codeChallengeMethod?: StringNullableFilter<"AuthorizationCode"> | string | null
     state?: StringNullableFilter<"AuthorizationCode"> | string | null
+    scope?: StringNullableFilter<"AuthorizationCode"> | string | null
     expiresAt?: DateTimeFilter<"AuthorizationCode"> | Date | string
     isUsed?: BoolFilter<"AuthorizationCode"> | boolean
     createdBy?: StringNullableFilter<"AuthorizationCode"> | string | null
@@ -21343,6 +21357,7 @@ export namespace Prisma {
     codeChallenge?: SortOrderInput | SortOrder
     codeChallengeMethod?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
     expiresAt?: SortOrder
     isUsed?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -21368,6 +21383,7 @@ export namespace Prisma {
     codeChallenge?: StringNullableFilter<"AuthorizationCode"> | string | null
     codeChallengeMethod?: StringNullableFilter<"AuthorizationCode"> | string | null
     state?: StringNullableFilter<"AuthorizationCode"> | string | null
+    scope?: StringNullableFilter<"AuthorizationCode"> | string | null
     expiresAt?: DateTimeFilter<"AuthorizationCode"> | Date | string
     isUsed?: BoolFilter<"AuthorizationCode"> | boolean
     createdBy?: StringNullableFilter<"AuthorizationCode"> | string | null
@@ -21389,6 +21405,7 @@ export namespace Prisma {
     codeChallenge?: SortOrderInput | SortOrder
     codeChallengeMethod?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
     expiresAt?: SortOrder
     isUsed?: SortOrder
     createdBy?: SortOrderInput | SortOrder
@@ -21414,6 +21431,7 @@ export namespace Prisma {
     codeChallenge?: StringNullableWithAggregatesFilter<"AuthorizationCode"> | string | null
     codeChallengeMethod?: StringNullableWithAggregatesFilter<"AuthorizationCode"> | string | null
     state?: StringNullableWithAggregatesFilter<"AuthorizationCode"> | string | null
+    scope?: StringNullableWithAggregatesFilter<"AuthorizationCode"> | string | null
     expiresAt?: DateTimeWithAggregatesFilter<"AuthorizationCode"> | Date | string
     isUsed?: BoolWithAggregatesFilter<"AuthorizationCode"> | boolean
     createdBy?: StringNullableWithAggregatesFilter<"AuthorizationCode"> | string | null
@@ -22748,6 +22766,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -22769,6 +22788,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -22786,6 +22806,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22807,6 +22828,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22826,6 +22848,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -22843,6 +22866,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22862,6 +22886,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24408,6 +24433,7 @@ export namespace Prisma {
     codeChallenge?: SortOrder
     codeChallengeMethod?: SortOrder
     state?: SortOrder
+    scope?: SortOrder
     expiresAt?: SortOrder
     isUsed?: SortOrder
     createdBy?: SortOrder
@@ -24427,6 +24453,7 @@ export namespace Prisma {
     codeChallenge?: SortOrder
     codeChallengeMethod?: SortOrder
     state?: SortOrder
+    scope?: SortOrder
     expiresAt?: SortOrder
     isUsed?: SortOrder
     createdBy?: SortOrder
@@ -24446,6 +24473,7 @@ export namespace Prisma {
     codeChallenge?: SortOrder
     codeChallengeMethod?: SortOrder
     state?: SortOrder
+    scope?: SortOrder
     expiresAt?: SortOrder
     isUsed?: SortOrder
     createdBy?: SortOrder
@@ -26427,6 +26455,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -26446,6 +26475,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -26618,6 +26648,7 @@ export namespace Prisma {
     codeChallenge?: StringNullableFilter<"AuthorizationCode"> | string | null
     codeChallengeMethod?: StringNullableFilter<"AuthorizationCode"> | string | null
     state?: StringNullableFilter<"AuthorizationCode"> | string | null
+    scope?: StringNullableFilter<"AuthorizationCode"> | string | null
     expiresAt?: DateTimeFilter<"AuthorizationCode"> | Date | string
     isUsed?: BoolFilter<"AuthorizationCode"> | boolean
     createdBy?: StringNullableFilter<"AuthorizationCode"> | string | null
@@ -28052,6 +28083,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -28071,6 +28103,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -28522,6 +28555,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -28610,6 +28644,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28629,6 +28664,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28647,6 +28683,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28969,6 +29006,7 @@ export namespace Prisma {
     codeChallenge?: string | null
     codeChallengeMethod?: string | null
     state?: string | null
+    scope?: string | null
     expiresAt: Date | string
     isUsed?: boolean
     createdBy?: string | null
@@ -29072,6 +29110,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29091,6 +29130,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29109,6 +29149,7 @@ export namespace Prisma {
     codeChallenge?: NullableStringFieldUpdateOperationsInput | string | null
     codeChallengeMethod?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isUsed?: BoolFieldUpdateOperationsInput | boolean
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
